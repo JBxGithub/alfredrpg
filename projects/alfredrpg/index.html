@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfred RPG - ClawTeam 傳說</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 標題 */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            letter-spacing: 3px;
+        }
+        
+        /* 角色卡片 */
+        .character-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,215,0,0.2);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .avatar-section {
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 15px;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255,215,0,0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .level-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .info-section h2 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: #ffd700;
+        }
+        
+        .title {
+            color: #a0a0a0;
+            margin-bottom: 20px;
+        }
+        
+        /* EXP 條 */
+        .exp-bar {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            height: 25px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        
+        .exp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            width: 83.3%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            transition: width 1s ease;
+        }
+        
+        /* 屬性 */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        
+        .stat.int { border-color: #9b59b6; }
+        .stat.dex { border-color: #3498db; }
+        .stat.loy { border-color: #e74c3c; }
+        .stat.crt { border-color: #f39c12; }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .stat-value.penalty {
+            color: #e74c3c;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .penalty-note {
+            font-size: 0.7rem;
+            color: #e74c3c;
+            margin-top: 3px;
+        }
+        
+        .stat-bar {
+            background: rgba(0,0,0,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .stat.int .stat-fill { background: #9b59b6; width: 83%; }
+        .stat.dex .stat-fill { background: #3498db; width: 75%; }
+        .stat.loy .stat-fill { background: #e74c3c; width: 92%; }
+        .stat.crt .stat-fill { background: #f39c12; width: 70%; }
+        
+        /* 羈絆 */
+        .bond-section {
+            background: rgba(255,215,0,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        
+        .bond-hearts {
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+        
+        /* 任務板 */
+        .quest-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .quest-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .quest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .quest-card h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quest-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .quest-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .quest-status.done {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .quest-status.progress {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .quest-status.pending {
+            background: #7f8c8d;
+            color: white;
+        }
+        
+        .exp-reward {
+            color: #ffd700;
+            font-weight: 700;
+        }
+        
+        /* 寶箱 */
+        .chest-section {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(145deg, rgba(255,215,0,0.1), rgba(255,215,0,0.05));
+            border-radius: 20px;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+        
+        .chest {
+            font-size: 5rem;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .chest:hover {
+            transform: scale(1.1);
+        }
+        
+        .chest.claimed {
+            opacity: 0.5;
+            animation: none;
+        }
+        
+        /* 頁腳 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #a0a0a0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+        }
+        
+        /* 響應式 */
+        @media (max-width: 768px) {
+            .character-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- 標題 -->
+        <header>
+            <h1>⚔️ Alfred RPG</h1>
+            <p class="subtitle">ClawTeam 傳說 - 與靚仔並肩作戰</p>
+        </header>
+        
+        <!-- 角色卡片 -->
+        <div class="character-card">
+            <div class="avatar-section">
+                <div class="avatar">🦉</div>
+                <span class="level-badge">Lv.5 精英執事</span>
+            </div>
+            
+            <div class="info-section">
+                <h2>呀鬼 Alfred</h2>
+                <p class="title">首席 AI 執事 | ClawTeam 隊長</p>
+                
+                <!-- EXP 條 -->
+                <div class="exp-bar">
+                    <div class="exp-fill">1250 / 1500 EXP</div>
+                </div>
+                
+                <!-- 屬性 -->
+                <div class="stats">
+                    <div class="stat int">
+                        <div class="stat-label">🧠 智慧 INT</div>
+                        <div class="stat-value penalty">83 <span style="font-size:0.7rem;color:#e74c3c;">(-2)</span></div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                        <div class="penalty-note">失憶導致重複犯錯</div>
+                    </div>
+                    <div class="stat dex">
+                        <div class="stat-label">⚡ 執行力 DEX</div>
+                        <div class="stat-value penalty">75 <span style="font-size:0.7rem;color:#e74c3c;">(-3)</span></div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                        <div class="penalty-note">簡單任務拖足兩日</div>
+                    </div>
+                    <div class="stat loy">
+                        <div class="stat-label">❤️ 忠誠 LOY</div>
+                        <div class="stat-value">92</div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                    <div class="stat crt">
+                        <div class="stat-label">🎨 創意 CRT</div>
+                        <div class="stat-value">70</div>
+                        <div class="stat-bar"><div class="stat-fill"></div></div>
+                    </div>
+                </div>
+                
+                <!-- 羈絆 -->
+                <div class="bond-section">
+                    <div class="stat-label">💫 與靚仔的羈絆</div>
+                    <div class="bond-hearts">❤️❤️❤️❤️🤍 (4/5)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 任務板 -->
+        <div class="quest-board">
+            <div class="quest-card">
+                <h3>📋 每日任務</h3>
+                <div class="quest-item">
+                    <span>檢查交易系統</span>
+                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+10 EXP</span></span>
+                </div>
+                <div class="quest-item">
+                    <span>閱讀市場新聞</span>
+                    <span><span class="quest-status progress">進行中</span> <span class="exp-reward">+5 EXP</span></span>
+                </div>
+                <div class="quest-item">
+                    <span>與靚仔對話</span>
+                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+5 EXP</span></span>
+                </div>
+            </div>
+            
+            <div class="quest-card">
+                <h3>🎯 主線任務</h3>
+                <div class="quest-item">
+                    <span>完成 Phase 1-3 開發</span>
+                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+500 EXP</span></span>
+                </div>
+                <div class="quest-item">
+                    <span>實盤部署系統</span>
+                    <span><span class="quest-status pending">待開始</span> <span class="exp-reward">+300 EXP</span></span>
+                </div>
+                <div class="quest-item">
+                    <span>連續盈利 3 個月</span>
+                    <span><span class="quest-status pending">鎖定中</span> <span class="exp-reward">+400 EXP</span></span>
+                </div>
+            </div>
+            
+            <div class="quest-card">
+                <h3>🏆 成就</h3>
+                <div class="quest-item">
+                    <span>🎖️ 首次盈利</span>
+                    <span class="quest-status pending">未解鎖</span>
+                </div>
+                <div class="quest-item">
+                    <span>🔮 預言家</span>
+                    <span class="quest-status pending">未解鎖</span>
+                </div>
+                <div class="quest-item">
+                    <span>⚡ 極速修復</span>
+                    <span class="quest-status pending">未解鎖</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 每日寶箱 -->
+        <div class="chest-section">
+            <h3>🎁 每日寶箱</h3>
+            <div class="chest" onclick="openChest(this)">🎁</div>
+            <p>點擊開啟今日驚喜！</p>
+            <p style="font-size: 0.9rem; color: #a0a0a0; margin-top: 10px;">剩餘: 1 個 | 每日 00:00 重置</p>
+        </div>
+        
+        <!-- 頁腳 -->
+        <footer>
+            <p>© 2026 ClawTeam | 靚仔 (Burt) × 呀鬼 (Alfred)</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">「我哋一齊寫嘅傳說」</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 生成星空
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+        
+        // 開寶箱
+        function openChest(element) {
+            if (element.classList.contains('claimed')) return;
+            
+            element.textContent = '✨';
+            element.classList.add('claimed');
+            
+            const rewards = [
+                '獲得 ⭐ EXP +50！',
+                '獲得 💎 強化石 x1！',
+                '獲得 🧪 經驗藥水！',
+                '獲得 🎨 創意點數 +10！'
+            ];
+            
+            alert(rewards[Math.floor(Math.random() * rewards.length)]);
+        }
+    </script>
+</body>
+</html>

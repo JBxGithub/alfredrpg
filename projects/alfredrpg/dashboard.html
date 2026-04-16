@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlfredRPG 安全儀表板 - 動態版</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080e;--bg2:#0a0d14;--card:#0d1117;--border:#1a1f2e;
+  --text:#e6edf3;--text2:#8b949e;--accent:#7c5cfc;--accent2:#a78bfa;
+  --green:#2dd4a0;--yellow:#f5a623;--red:#f85149;--blue:#58a6ff;
+  --glass:rgba(13,17,23,0.7);--glow:rgba(124,92,252,0.15);
+  --font:'Outfit',system-ui,sans-serif;--mono:'Space Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;padding:20px}
+.container{max-width:1280px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.logo{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.status-indicator{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text2)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.glass-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-title{font-weight:700;font-size:1.1rem;margin-bottom:12px}
+.card-sub{font-size:.85rem;color:var(--text2);margin-bottom:10px}
+.score-circle{width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--green) 0deg,var(--green) calc(var(--score,100)*3.6deg),var(--border) calc(var(--score,100)*3.6deg));position:relative;margin:0 auto 20px}
+.score-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card);border-radius:50%;margin:8px}
+.score-number{font-size:36px;font-weight:700}
+.score-label{font-size:14px;color:var(--text2)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:.75rem;font-weight:600;margin-right:8px}
+.badge-excellent{background:rgba(45,212,160,0.15);color:var(--green);border:1px solid rgba(45,212,160,0.25)}
+.badge-good{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.25)}
+.badge-warning{background:rgba(245,166,35,0.15);color:var(--yellow);border:1px solid rgba(245,166,35,0.25)}
+.category-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.category-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.category-name{font-weight:600}
+.category-score{font-family:var(--mono);font-size:1.2rem;font-weight:700}
+.check-item{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9rem}
+.check-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
+.check-pass{background:rgba(45,212,160,0.15);color:var(--green)}
+.check-warning{background:rgba(245,166,35,0.15);color:var(--yellow)}
+.check-fail{background:rgba(248,81,73,0.15);color:var(--red)}
+.loading{text-align:center;padding:60px 20px;color:var(--text2)}
+.loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-state{text-align:center;padding:40px 20px;color:var(--red)}
+.refresh-btn{color:var(--accent);text-decoration:none;font-size:.9rem;border:1px solid var(--border);padding:8px 16px;border-radius:999px;transition:all .2s;background:transparent;cursor:pointer;font-family:var(--font)}
+.refresh-btn:hover{background:var(--glow);border-color:var(--accent)}
+.last-updated{font-size:.8rem;color:var(--text2);text-align:center;margin-top:20px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🔒 AlfredRPG 安全儀表板</div>
+    <div class="status-indicator">
+      <span class="status-dot"></span>
+      <span id="connectionStatus">連接中...</span>
+    </div>
+  </header>
+
+  <div id="loadingState" class="loading">
+    <div class="loading-spinner"></div>
+    <div>正在載入安全數據...</div>
+  </div>
+
+  <div id="contentState" style="display:none">
+    <!-- 總分卡片 -->
+    <div class="glass-card" style="text-align:center">
+      <div class="card-title">整體安全評分</div>
+      <div class="score-circle" id="scoreCircle" style="--score:100">
+        <div class="score-value">
+          <div class="score-number" id="scoreNumber">100</div>
+          <div class="score-label" id="scoreLabel">優秀</div>
+        </div>
+      </div>
+      <div id="overallBadge" class="badge badge-excellent">🛡️ 安全狀態良好</div>
+    </div>
+
+    <!-- 分類檢查 -->
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">📁 Repository 設定</div>
+        <div id="repoCategory"></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">🔐 Secrets 管理</div>
+        <div id="secretsCategory"></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">🚀 部署安全</div>
+        <div id="deployCategory"></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">📊 API 狀態</div>
+        <div id="apiCategory"></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="refresh-btn" onclick="loadSecurityData()">🔄 重新整理</button>
+    </div>
+
+    <div class="last-updated" id="lastUpdated">最後更新: --</div>
+  </div>
+
+  <div id="errorState" class="error-state" style="display:none">
+    <div style="font-size:3rem;margin-bottom:16px">⚠️</div>
+    <div style="font-size:1.2rem;font-weight:600;margin-bottom:8px">無法連接 GitHub API</div>
+    <div id="errorMessage" style="margin-bottom:16px"></div>
+    <button class="refresh-btn" onclick="loadSecurityData()">重試</button>
+  </div>
+</div>
+
+<script>
+// Cloudflare Worker API 配置
+const API_BASE_URL = 'https://alfredrpg-security-api.jokerburt.workers.dev';
+
+async function loadSecurityData() {
+  showLoading();
+  
+  try {
+    // 呼叫 Cloudflare Worker API
+    const response = await fetch(`${API_BASE_URL}/api/security-check`);
+    
+    if (!response.ok) {
+      throw new Error(`API 錯誤: ${response.status}`);
+    }
+    
+    const securityData = await response.json();
+    
+    renderData(securityData);
+    updateConnectionStatus(true);
+    
+  } catch (error) {
+    console.error('Error:', error);
+    showError(error.message);
+    updateConnectionStatus(false);
+  }
+}
+
+function renderData(data) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'none';
+  document.getElementById('contentState').style.display = 'block';
+  
+  // 更新總分
+  const score = data.overall?.score || 0;
+  document.getElementById('scoreNumber').textContent = score;
+  document.getElementById('scoreCircle').style.setProperty('--score', score);
+  
+  const statusLabels = { excellent: '優秀', good: '良好', warning: '警告', error: '錯誤' };
+  document.getElementById('scoreLabel').textContent = statusLabels[data.overall?.status] || '未知';
+  
+  // 更新徽章
+  const badge = document.getElementById('overallBadge');
+  badge.className = `badge badge-${data.overall?.status || 'warning'}`;
+  badge.textContent = data.overall?.status === 'excellent' ? '🛡️ 安全狀態良好' : 
+                      data.overall?.status === 'good' ? '✅ 狀態良好' : '⚠️ 需要關注';
+  
+  // 渲染分類
+  if (data.categories) {
+    data.categories.forEach(cat => {
+      const containerId = getCategoryContainerId(cat.name);
+      if (containerId) {
+        renderCategory(containerId, cat);
+      }
+    });
+  }
+  
+  // 更新時間
+  document.getElementById('lastUpdated').textContent = 
+    '最後更新: ' + new Date(data.timestamp).toLocaleString('zh-HK');
+}
+
+function getCategoryContainerId(name) {
+  const map = {
+    'Repository Settings': 'repoCategory',
+    'Secrets Management': 'secretsCategory',
+    'Deployment Security': 'deployCategory',
+    'API Status': 'apiCategory',
+  };
+  return map[name];
+}
+
+function renderCategory(containerId, category) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  let html = `
+    <div class="category-header">
+      <span class="category-name">${category.name}</span>
+      <span class="category-score" style="color: var(--${getScoreColor(category.score)})">${category.score}</span>
+    </div>
+  `;
+  
+  if (category.checks) {
+    category.checks.forEach(check => {
+      const icon = check.status === 'pass' ? '✓' : check.status === 'warning' ? '!' : '✗';
+      const checkClass = check.status === 'pass' ? 'check-pass' : check.status === 'warning' ? 'check-warning' : 'check-fail';
+      html += `
+        <div class="check-item">
+          <span class="check-icon ${checkClass}">${icon}</span>
+          <span>${check.name}</span>
+        </div>
+      `;
+    });
+  }
+  
+  container.innerHTML = html;
+}
+
+function getScoreColor(score) {
+  if (score >= 90) return 'green';
+  if (score >= 70) return 'blue';
+  if (score >= 50) return 'yellow';
+  return 'red';
+}
+
+function showLoading() {
+  document.getElementById('loadingState').style.display = 'block';
+  document.getElementById('contentState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'none';
+}
+
+function showError(message) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('contentState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'block';
+  document.getElementById('errorMessage').textContent = message;
+}
+
+function updateConnectionStatus(connected) {
+  const statusEl = document.getElementById('connectionStatus');
+  const dotEl = document.querySelector('.status-dot');
+  
+  if (connected) {
+    statusEl.textContent = '已連接 AlfredRPG API';
+    dotEl.style.background = 'var(--green)';
+  } else {
+    statusEl.textContent = '連接失敗';
+    dotEl.style.background = 'var(--red)';
+  }
+}
+
+// 頁面載入時自動執行
+document.addEventListener('DOMContentLoaded', loadSecurityData);
+</script>
+</body>
+</html>

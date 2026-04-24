@@ -1,4 +1,0 @@
-time,symbol,action,quantity,price,fee,pnl
-14:30:00,TEST,BUY,100,100.0,10.0,0.0
-21:46:59,AAPL,BUY,100,175.5,17.55,0.0
-21:46:59,TSLA,SELL,50,250.0,12.5,500.0

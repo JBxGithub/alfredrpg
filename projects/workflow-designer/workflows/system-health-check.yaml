@@ -1,0 +1,114 @@
+name: "系統健康檢查"
+description: "定期檢查系統狀態和資源使用"
+trigger:
+  type: cron
+  schedule: "0 */6 * * *"
+
+steps:
+  - name: check_disk_space
+    action: script
+    script: |
+      import shutil
+      total, used, free = shutil.disk_usage("/")
+      usage_percent = (used / total) * 100
+      return {
+        "total_gb": total // (2**30),
+        "used_gb": used // (2**30),
+        "free_gb": free // (2**30),
+        "usage_percent": round(usage_percent, 1)
+      }
+    
+  - name: check_memory
+    action: script
+    script: |
+      try:
+        import psutil
+        memory = psutil.virtual_memory()
+        return {
+          "total_gb": round(memory.total / (2**30), 1),
+          "used_gb": round(memory.used / (2**30), 1),
+          "percent": memory.percent
+        }
+      except ImportError:
+        return {"error": "psutil not installed"}
+    
+  - name: check_services
+    action: skill_call
+    skill: system-monitor
+    params:
+      action: "check_services"
+      services: ["openclaw-gateway", "futu-opend"]
+    
+  - name: check_logs
+    action: script
+    script: |
+      from pathlib import Path
+      from datetime import datetime, timedelta
+      
+      log_dir = Path.home() / "openclaw_workspace" / "logs"
+      errors = []
+      
+      if log_dir.exists():
+        for log_file in log_dir.glob("*.log"):
+          if log_file.stat().st_mtime > (datetime.now() - timedelta(hours=6)).timestamp():
+            with open(log_file) as f:
+              content = f.read()
+              if "ERROR" in content or "CRITICAL" in content:
+                errors.append(f"{log_file.name}: Found errors")
+      
+      return {"errors_found": len(errors), "details": errors}
+    
+  - name: generate_health_report
+    action: script
+    script: |
+      disk = steps.check_disk_space.result
+      memory = steps.check_memory.result
+      services = steps.check_services.result
+      logs = steps.check_logs.result
+      
+      # Determine health status
+      issues = []
+      if disk["usage_percent"] > 80:
+        issues.append(f"⚠️ Disk usage high: {disk['usage_percent']}%")
+      if memory.get("percent", 0) > 90:
+        issues.append(f"⚠️ Memory usage high: {memory['percent']}%")
+      if logs["errors_found"] > 0:
+        issues.append(f"⚠️ {logs['errors_found']} log files with errors")
+      
+      status = "✅ Healthy" if not issues else "⚠️ Issues Detected"
+      
+      report = f"""🏥 系統健康檢查報告
+
+狀態: {status}
+
+💾 磁盤使用: {disk['used_gb']}GB / {disk['total_gb']}GB ({disk['usage_percent']}%)
+🧠 內存使用: {memory.get('used_gb', 'N/A')}GB / {memory.get('total_gb', 'N/A')}GB ({memory.get('percent', 'N/A')}%)
+
+🔧 服務狀態:
+{chr(10).join([f"  • {s['name']}: {'✅' if s['running'] else '❌'}" for s in services])}
+
+📝 日誌檢查: {logs['errors_found']} 個文件有錯誤
+
+{chr(10).join(issues) if issues else '✅ 所有系統正常運行'}
+"""
+      return report
+    
+  - name: notify_if_issues
+    action: condition
+    expression: "{{steps.check_disk_space.result.usage_percent}} > 80 or {{steps.check_logs.result.errors_found}} > 0"
+    then:
+      - name: send_health_alert
+        action: notification
+        channel: whatsapp
+        message: "{{steps.generate_health_report.result}}"
+    else:
+      - name: log_healthy
+        action: script
+        script: |
+          import logging
+          logging.info("System health check: All systems healthy")
+
+on_error:
+  action: notification
+  channel: whatsapp
+  message: "🚨 系統健康檢查失敗: {{error.message}}"

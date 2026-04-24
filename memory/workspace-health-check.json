@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-04-11T17:14:31.421674",
+  "total_issues": 4,
+  "issues": [
+    {
+      "type": "suspicious_root_file",
+      "path": "backups",
+      "suggestion": "Move to appropriate subdirectory"
+    },
+    {
+      "type": "suspicious_root_file",
+      "path": "SUBAGENT_TASK_TEMPLATE.md",
+      "suggestion": "Move to appropriate subdirectory"
+    },
+    {
+      "type": "project_skill_duplicate",
+      "project": "projects/clawtrade-pro",
+      "skill": "clawtrade-pro",
+      "suggestion": "Review if consolidation needed"
+    },
+    {
+      "type": "project_skill_duplicate",
+      "project": "projects/fututradingbot",
+      "skill": "Futu",
+      "suggestion": "Review if consolidation needed"
+    }
+  ],
+  "summary": {
+    "suspicious_root_files": 2,
+    "duplicate_names": 0,
+    "project_skill_duplicates": 2
+  }
+}

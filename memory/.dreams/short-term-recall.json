@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-11T12:39:10.386Z",
+  "entries": {
+    "memory:memory/2026-03-29.md:58:132": {
+      "key": "memory:memory/2026-03-29.md:58:132",
+      "path": "memory/2026-03-29.md",
+      "startLine": 58,
+      "endLine": 132,
+      "source": "memory",
+      "snippet": "1. `FutuTradingBot-STATUS.md` - 專案狀態和回測結果 2. `FTB-001-QUICK-START.md` - 快速重啟指南 3. `PROJECT_STATE.md` - 專案狀態系統文檔 4. `FTB-001-方案A-便用手冊.md` - 方案A使用手冊 #### 核心代碼文件（5個） 5. `src/strategies/tqqq_long_short.py` - 策略主檔案 6. `src/strategies/strategy_config.py` - 配置管理器（新增Z-Score配置類） 7. `src/realtime_bridge.py` - 實時數據橋接器 8. `src/dashboard/app.py` - Dashboard 主應用 9. `src/backtest/zscore_backtest_2025_threshold_1.65.py` - 回測腳本（修正版） #### 新建文件（1個） 10. `STRATEGY_PARAMS_FINAL.md` - 策略參數總結文檔 ### 4. 關鍵修正 ✅ **倉位計算邏輯修正**： - ❌ 原問題：使用動態權益導致複利效應過度放大 - ✅ 修正後：使用固定基礎資金 $100,000，無複利 - ✅ 結果：每筆交易倉位固定約 $50,000，避免指數增長 **MA50 趨勢過濾**： - ❌ 原問題：MA50 過濾導致5年回測0筆交易 - ✅ 決定：移除 MA50 趨勢過濾，允許逆勢交易 - ✅ 結果：5年回測產生125筆交易（但後來發現有bug） **RS",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5483071610331535,
+      "maxScore": 0.5483071610331535,
+      "firstRecalledAt": "2026-04-11T09:41:49.061Z",
+      "lastRecalledAt": "2026-04-11T09:41:49.061Z",
+      "queryHashes": [
+        "ca7de4a2079a"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "fututradingbot-status.md",
+        "ftb-001-quick-start.md",
+        "project-state.md",
+        "ftb-001-方案a-便用手冊.md",
+        "新增z-score配置類",
+        "src/realtime-bridge.py",
+        "src/dashboard/app.py",
+        "strategy-params-final.md"
+      ]
+    },
+    "memory:memory/2026-03-26.md:1:99": {
+      "key": "memory:memory/2026-03-26.md:1:99",
+      "path": "memory/2026-03-26.md",
+      "startLine": 1,
+      "endLine": 99,
+      "source": "memory",
+      "snippet": "# 2026-03-26 對話記錄 ## 🌅 早晨對話 (08:00-09:30) ### 08:00 - Daily Briefing 執行 - **觸發**: Cron job 提醒 - **執行**: `unified-dashboard-v2.py` - **結果**: - 系統健康: 100/100 - 發現 14 個 Critical security findings - 4 個 dangerous execution skills - 建議定期審查 ### 08:05 - 記錄系統設定到 MEMORY.md - **指示**: 將當前設定同市場狀況記錄到 MEMORY.md - **執行**: 更新 MEMORY.md，加入: - 系統狀態快照 - 市場狀況與策略調整 - FutuTradingBot 專案暫停決定 ### 08:10 - 市場狀況討論 **主人觀察**: - 美國與伊朗戰爭進行中 - 特朗普政策反覆無常，市場完全被玩弄 - 市場極度動盪，無方向可言 - 需要考慮其他資金來源 **戰略調整**: - 暫緩 FutuTradingBot 專案 - 開拓非相關性資產 - 保持現金流動性 - 等待明確信號 ### 08:30 - 專案狀態持久化系統 **問題**: 有無方法令專案重啟時無需重新開始？ **解決方案**: 1. 建立 `project-states/` 目錄結構 2. 創建專案狀態管理系統 3. 設計人類可讀 + 機器可讀格式 4. 整合到啟動流程 **已建立檔案**: - `project",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5403323978185653,
+      "maxScore": 0.5403323978185653,
+      "firstRecalledAt": "2026-04-11T09:59:10.156Z",
+      "lastRecalledAt": "2026-04-11T09:59:10.156Z",
+      "queryHashes": [
+        "0a31a0081e92"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "00-09",
+        "unified-dashboard-v2.py",
+        "100/100",
+        "memory.md",
+        "project-states",
+        "對話",
+        "記錄",
+        "早晨"
+      ]
+    },
+    "memory:memory/2026-04-08.md:43:85": {
+      "key": "memory:memory/2026-04-08.md:43:85",
+      "path": "memory/2026-04-08.md",
+      "startLine": 43,
+      "endLine": 85,
+      "source": "memory",
+      "snippet": "- SQLite + FTS5 數據庫 (storage/__init__.py) - Context Monitor 核心功能 (core/context_monitor.py) - CLI 工具 (cli/__main__.py) - 主類整合 (__init__.py) **核心功能**: | 組件 | 功能 | 狀態 | |------|------|------| | Context Monitor | 實時監控對話長度，70%/85%/95% 三級閾值 | ✅ 完成 | | Token 估算 | 中英文混合估算（中文 1.5 tokens/字） | ✅ 完成 | | 數據庫 | SQLite + FTS5 全文搜索 | ✅ 完成 | | CLI | ams init/status/context/memory/skill/session | ✅ 完成 | **測試結果**: - ✅ 系統初始化成功 - ✅ Context Monitor 正確檢測 74.5% 使用率並發出警告 - ✅ 數據庫創建成功（0.12 MB） **檔案位置**: ``` ~/openclaw_workspace/alfred_memory_system/ ├── DESIGN.md # 系統設計文檔 ├── README.md # Phase 1 完成報告 ├── __init__.py # 主類 ├── config.py # 配置管理 ├── core/ │ ├─",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5092880457639694,
+      "maxScore": 0.5092880457639694,
+      "firstRecalledAt": "2026-04-11T10:42:03.163Z",
+      "lastRecalledAt": "2026-04-11T10:42:03.163Z",
+      "queryHashes": [
+        "a3adaf02c7de"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "core/context-monitor.py",
+        "1.5",
+        "tokens/字",
+        "74.5",
+        "0.12",
+        "design.md",
+        "readme.md",
+        "config.py"
+      ]
+    },
+    "memory:memory/2026-04-08.md:79:100": {
+      "key": "memory:memory/2026-04-08.md:79:100",
+      "path": "memory/2026-04-08.md",
+      "startLine": 79,
+      "endLine": 100,
+      "source": "memory",
+      "snippet": "**下一步 (Phase 2)**: - [ ] 記憶引擎 - 自動提取對話重要信息 - [ ] 與 OpenClaw 整合 - 每次對話後自動檢查 Context - [ ] MEMORY.md 自動更新 **關鍵學習**: - Hermes Agent 的 Context Compression 策略：50% 正常壓縮 + 85% Gateway 安全網 - Memory Engine 使用 2,200 chars (~800 tokens) 限制保持記憶精煉 - Skill Evolver 在完成複雜任務 (>5 tool calls) 後自動創建 Skill --- ## ✅ 已完成任務 - [x] [11:32] AMS Phase 1 開發完成 - Context Monitor + 數據庫架構 - [x] [11:32] 更新 MEMORY.md - 記錄 AMS 系統設計 - [x] [11:52] 測試驗證 - Context Monitor 正確運作 --- *最後更新: 2026-04-08 11:52*",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5068067848682404,
+      "maxScore": 0.5068067848682404,
+      "firstRecalledAt": "2026-04-11T10:42:03.163Z",
+      "lastRecalledAt": "2026-04-11T10:42:03.163Z",
+      "queryHashes": [
+        "a3adaf02c7de"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "gateway",
+        "memory.md",
+        "下一步",
+        "phase",
+        "記憶",
+        "引擎",
+        "自動",
+        "提取"
+      ]
+    },
+    "memory:memory/2025-03-22.md:66:120": {
+      "key": "memory:memory/2025-03-22.md:66:120",
+      "path": "memory/2025-03-22.md",
+      "startLine": 66,
+      "endLine": 120,
+      "source": "memory",
+      "snippet": "1. **能本地，不雲端** - 減少 API 依賴 2. **能檔名，不 OCR** - 結構化資訊優先 3. **小步測試，再批量** - 避免大規模錯誤 4. **防呆設計** - 預設重覆、格式問題 ### 最佳實踐 - 圖片: pytesseract (本地) - PDF: pdf2image + pytesseract - 去重: 檔案雜湊 + 時間窗口 - 分類: 檔名關鍵字 > 內容分析 --- ## 📁 檔案結構 ``` skills/accounting-bot/ ├── __init__.py # 主入口 v1.2.0 ├── auto_receipt_processor.py # Cron/批次處理 ├── SKILL.md # 技能文件 ├── core/ │ ├── classifier.py # 檔案類型判斷 │ ├── extractor.py # 數據提取 (已修復大額金額) │ ├── sheets_writer.py # Sheets 寫入 (已修復時間格式) │ ├── tracker.py # 去重追蹤 (新增) │ └── __init__.py ├── config/ │ └── pnl_categories.py # 44項 P&L 分類 └── tests/ # 測試腳本 (保留) ``` --- ## 🔮 未來優化方向 1. **",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5569044977426528,
+      "maxScore": 0.5569044977426528,
+      "firstRecalledAt": "2026-04-11T11:06:39.338Z",
+      "lastRecalledAt": "2026-04-11T11:06:39.338Z",
+      "queryHashes": [
+        "aaa02bfea458"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "skills/accounting-bot",
+        "v1.2.0",
+        "auto-receipt-processor.py",
+        "cron/批次處理",
+        "skill.md",
+        "classifier.py",
+        "extractor.py",
+        "sheets-writer.py"
+      ]
+    },
+    "memory:memory/2026-03-27.md:352:383": {
+      "key": "memory:memory/2026-03-27.md:352:383",
+      "path": "memory/2026-03-27.md",
+      "startLine": 352,
+      "endLine": 383,
+      "source": "memory",
+      "snippet": "- ⚠️ 平均虧損 > 平均盈利 - 風險回報比不佳 - ✅ 最大回撤 -2.48% - 風險控制良好 **優化建議**: 1. Entry Z-Score: 2.0 → 2.5（減少假信號） 2. 添加趨勢過濾器（避免強趨勢市場） 3. 動態倉位管理（根據Z-Score調整） --- ### 🎯 下一步行動 1. **立即**: 啟動 Dashboard 和 Realtime Bridge 2. **短期**: 監控系統運行狀態，確認連接正常 3. **中期**: 優化策略參數並重新回測 4. **長期**: 驗證策略有效性後啟動紙上交易 --- ### 📋 監控記錄 | 時間 | 事件 | |------|------| | 22:54 | Cron 監控報告生成 | | 22:54 | 檢測到系統離線狀態 | | 22:54 | 更新記憶檔案 | --- *報告由 FutuTradingBot 自動監控系統生成* *下次監控: 15分鐘後*",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5571036428213119,
+      "maxScore": 0.5571036428213119,
+      "firstRecalledAt": "2026-04-11T11:06:39.369Z",
+      "lastRecalledAt": "2026-04-11T11:06:39.369Z",
+      "queryHashes": [
+        "2ffc933290c8"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "2.48",
+        "z-score",
+        "2.0",
+        "2.5",
+        "根據z-score調整",
+        "平均",
+        "虧損",
+        "盈利"
+      ]
+    },
+    "memory:memory/2026-03-27.md:68:158": {
+      "key": "memory:memory/2026-03-27.md:68:158",
+      "path": "memory/2026-03-27.md",
+      "startLine": 68,
+      "endLine": 158,
+      "source": "memory",
+      "snippet": "- ✅ 勝率 61.54% - 入場時機良好 - ⚠️ 總回報僅 +0.46%（3年）- 回報偏低 - ⚠️ 平均虧損 > 平均盈利 - 風險回報比不佳 - ✅ 最大回撤 -2.48% - 風險控制良好 **優化建議**: 1. Entry Z-Score: 2.0 → 2.5（減少假信號） 2. 添加趨勢過濾器（避免強趨勢市場） 3. 動態倉位管理（根據Z-Score調整） --- ### 🎯 下一步行動 1. **立即**: 啟動 Dashboard 和 Realtime Bridge 2. **短期**: 監控系統運行狀態，確認連接正常 3. **中期**: 優化策略參數並重新回測 4. **長期**: 驗證策略有效性後啟動紙上交易 --- ### 📋 監控記錄 | 時間 | 事件 | |------|------| | 20:50 | Cron 監控報告生成 | | 20:50 | 檢測到系統離線狀態 | | 20:50 | 更新記憶檔案 | --- ## FutuTradingBot 模擬交易監控報告 - 21:52 **報告時間**: 2026-03-27 21:52 (Asia/Hong_Kong) **監控類型**: Cron 自動監控報告 (Job ID: abbf717b-817f-4d2d-bc29-9633231459a5) --- ### 📊 系統運行狀態 #### 1. Dashboard 狀態 (http://127.0.0.1:8080) - **狀態**: ✅ **運行中** - **端口**: 8080 (",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5509884640574455,
+      "maxScore": 0.5509884640574455,
+      "firstRecalledAt": "2026-04-11T11:06:39.369Z",
+      "lastRecalledAt": "2026-04-11T11:06:39.369Z",
+      "queryHashes": [
+        "2ffc933290c8"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "61.54",
+        "0.46",
+        "2.48",
+        "z-score",
+        "2.0",
+        "2.5",
+        "根據z-score調整",
+        "asia/hong-kong"
+      ]
+    },
+    "memory:memory/2026-03-17.md:42:91": {
+      "key": "memory:memory/2026-03-17.md:42:91",
+      "path": "memory/2026-03-17.md",
+      "startLine": 42,
+      "endLine": 91,
+      "source": "memory",
+      "snippet": "使用 **skill-security-auditor** 的 `malicious-patterns.json` 進行手動比對： **Critical Patterns**: - CLAW-001: Fake Prerequisites (openclaw-agent.zip) - CLAW-002: C2 Infrastructure (91.92.242.30) - CLAW-003: Curl Pipe to Shell - CLAW-004: Hardcoded Credentials - CLAW-005: Base64 Encoded Execution **High Risk Patterns**: - CLAW-101-105: Binary downloads, SSH access, crypto wallets, browser credentials, external requests **Medium Risk Patterns**: - CLAW-201-204: Environment variables, file writes, network listeners, child processes --- ## ✅ 結論 **所有54個skill均通過安全檢查，可放心使用。** 已確認的skill類別： - GitHub相關 (12個) - 股票/交易 (6個) - 數據/分析 (6個) - 自動化/工具 (8個) - 安全/監控 (5個) - 其他 (17個) --- ## 📝 行動項目 - [x] 批次檢查54個s",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5304155945777893,
+      "maxScore": 0.5304155945777893,
+      "firstRecalledAt": "2026-04-11T12:39:10.386Z",
+      "lastRecalledAt": "2026-04-11T12:39:10.386Z",
+      "queryHashes": [
+        "059697c38336"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "network",
+        "skill-security-auditor",
+        "malicious-patterns.json",
+        "claw-001",
+        "openclaw-agent.zip",
+        "claw-002",
+        "91.92.242.30",
+        "claw-003"
+      ]
+    }
+  }
+}

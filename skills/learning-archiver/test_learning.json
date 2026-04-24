@@ -1,0 +1,16 @@
+{
+  "session_id": "test-learning-2026-04-19",
+  "messages": [
+    {"role": "user", "content": "幫我建立一個複雜的自動化系統", "timestamp": "2026-04-19T14:00:00"},
+    {"role": "assistant", "content": "我會幫你建立 Learning Archiver Skill", "timestamp": "2026-04-19T14:00:05"},
+    {"role": "user", "content": "做得好，記住以後都要用 OpenCode ACP 執行", "timestamp": "2026-04-19T14:30:00"}
+  ],
+  "tool_calls": [
+    {"tool": "write", "status": "executed"},
+    {"tool": "write", "status": "executed"},
+    {"tool": "write", "status": "executed"},
+    {"tool": "cron.update", "status": "executed"},
+    {"tool": "write", "status": "executed"},
+    {"tool": "exec", "status": "executed"}
+  ]
+}

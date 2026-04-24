@@ -1,0 +1,99 @@
+{
+  "id": "flow7-absolute-calc",
+  "name": "Absolute Score Calculation",
+  "priority": 7,
+  "nodes": [
+    {
+      "id": "inject-absolute",
+      "type": "inject",
+      "name": "Every Minute",
+      "repeat": "60",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "0",
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "x": 100,
+      "y": 100,
+      "wires": [
+        ["query-raw-data"]
+      ]
+    },
+    {
+      "id": "query-raw-data",
+      "type": "postgresql",
+      "z": "flow7-absolute-calc",
+      "postgreSQLdb": "trading_db",
+      "name": "Query raw_market_data",
+      "query": "SELECT * FROM raw_market_data WHERE timestamp > NOW() - INTERVAL '5 minutes' ORDER BY timestamp DESC LIMIT 1",
+      "x": 250,
+      "y": 100,
+      "wires": [
+        ["calculate-absolute"]
+      ]
+    },
+    {
+      "id": "calculate-absolute",
+      "type": "function",
+      "z": "flow7-absolute-calc",
+      "name": "Calculate Absolute Score",
+      "func": "// Absolute Score Calculation\n// Weights: nq200ma(30%), nq50ma(30%), nq20ema50ema(20%), mtf(10%), market_phase(10%)\n\nconst weights = {\n    nq200ma: 0.30,\n    nq50ma: 0.30,\n    nq20ema50ema: 0.20,\n    mtf: 0.10,\n    market_phase: 0.10\n};\n\n// Default scores if no data (neutral = 50)\nlet nq200maScore = 50;\nlet nq50maScore = 50;\nlet nq20ema50emaScore = 50;\nlet mtfScore = 50;\nlet marketPhaseScore = 50;\n\nif (msg.payload && msg.payload.length > 0) {\n    const data = msg.payload[0];\n    \n    // Calculate NQ200MA score (price vs 200MA)\n    // Score = 100 if price > 200MA, 0 if price < 200MA * 0.9, linear between\n    if (data.price && data.ma200) {\n        const ratio = data.price / data.ma200;\n        nq200maScore = Math.min(100, Math.max(0, (ratio - 0.9) * 1000));\n    }\n    \n    // Calculate NQ50MA score\n    if (data.price && data.ma50) {\n        const ratio = data.price / data.ma50;\n        nq50maScore = Math.min(100, Math.max(0, (ratio - 0.9) * 1000));\n    }\n    \n    // Calculate NQ20EMA vs NQ50EMA score\n    if (data.ema20 && data.ema50) {\n        nq20ema50emaScore = data.ema20 > data.ema50 ? 100 : 0;\n    }\n    \n    // MTF score from data\n    if (data.mtf_score !== undefined) {\n        mtfScore = data.mtf_score;\n    }\n    \n    // Market phase score\n    if (data.market_phase !== undefined) {\n        const phaseScores = { accumulation: 100, markup: 80, distribution: 20, markdown: 0 };\n        marketPhaseScore = phaseScores[data.market_phase] || 50;\n    }\n}\n\n// Calculate final weighted score\nconst finalScore = Math.round(\n    nq200maScore * weights.nq200ma +\n    nq50maScore * weights.nq50ma +\n    nq20ema50emaScore * weights.nq20ema50ema +\n    mtfScore * weights.mtf +\n    marketPhaseScore * weights.market_phase\n);\n\n// Determine trend direction\nlet trendDirection = 'sideways';\nif (finalScore >= 80) trendDirection = 'strong_bull';\nelse if (finalScore >= 60) trendDirection = 'bull';\nelse if (finalScore >= 40) trendDirection = 'weak';\nelse if (finalScore >= 20) trendDirection = 'bear';\nelse trendDirection = 'strong_bear';\n\nmsg.payload = {\n    nq200ma_score: Math.round(nq200maScore),\n    nq50ma_score: Math.round(nq50maScore),\n    nq20ema50ema_score: Math.round(nq20ema50emaScore),\n    mtf_score: Math.round(mtfScore),\n    market_phase_score: Math.round(marketPhaseScore),\n    final_absolute_score: finalScore,\n    trend_direction: trendDirection,\n    timestamp: new Date()\n};\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 450,
+      "y": 100,
+      "wires": [
+        ["insert-absolute"]
+      ]
+    },
+    {
+      "id": "insert-absolute",
+      "type": "postgresql",
+      "z": "flow7-absolute-calc",
+      "postgreSQLdb": "trading_db",
+      "name": "Insert to absolute_scores",
+      "query": "INSERT INTO absolute_scores (nq200ma_score, nq50ma_score, nq20ema50ema_score, mtf_score, market_phase_score, final_absolute_score, trend_direction, timestamp) VALUES (${msg.payload.nq200ma_score}, ${msg.payload.nq50ma_score}, ${msg.payload.nq20ema50ema_score}, ${msg.payload.mtf_score}, ${msg.payload.market_phase_score}, ${msg.payload.final_absolute_score}, '${msg.payload.trend_direction}', '${msg.payload.timestamp}')",
+      "x": 700,
+      "y": 100,
+      "wires": [
+        ["debug-absolute"]
+      ]
+    },
+    {
+      "id": "debug-absolute",
+      "type": "debug",
+      "z": "flow7-absolute-calc",
+      "name": "Debug Output",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "payload",
+      "x": 900,
+      "y": 100,
+      "wires": []
+    }
+  ],
+  "config": {
+    "postgreSQL": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "trading_db",
+      "user": "postgres",
+      "password": "PostgresqL"
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2026-04-20",
+    "description": "Flow 7: Absolute Score Calculation - calculates weighted absolute score from market data",
+    "weights": {
+      "nq200ma": 30,
+      "nq50ma": 30,
+      "nq20ema50ema": 20,
+      "mtf": 10,
+      "market_phase": 10
+    }
+  }
+}

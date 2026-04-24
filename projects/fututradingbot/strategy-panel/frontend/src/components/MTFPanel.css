@@ -1,0 +1,36 @@
+.mtf-panel {
+  padding: 20px;
+  background: #252538;
+  border-radius: 12px;
+  border: 1px solid #3d3d5c;
+}
+
+.weight-warning {
+  background: rgba(255, 193, 7, 0.2);
+  border: 1px solid #ffc107;
+  color: #ffc107;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.weight-total {
+  text-align: center;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.weight-total.valid {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid #28a745;
+}
+
+.weight-total.invalid {
+  background: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}

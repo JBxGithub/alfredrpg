@@ -1,0 +1,20 @@
+{
+  "total_skills": 2,
+  "categories": {
+    "uncategorized": [
+      "alfred-ai-toolkit",
+      "alfred-memory-system"
+    ]
+  },
+  "versions": {
+    "unknown": 2
+  },
+  "duplicates": [],
+  "size_stats": {
+    "total_size": 582553,
+    "average_size": 291276.5,
+    "max_size": 561673,
+    "min_size": 20880
+  },
+  "recommendations": []
+}

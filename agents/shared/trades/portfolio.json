@@ -1,0 +1,45 @@
+{
+  "account": {
+    "total_equity": 962124.97,
+    "available_cash": 956890.97,
+    "margin_used": 5234.00,
+    "daily_pnl": 62334.48
+  },
+  "positions": [
+    {
+      "position_id": "POS-20260404-001",
+      "symbol": "TQQQ",
+      "side": "LONG",
+      "qty": 100,
+      "avg_price": 52.34,
+      "current_price": 52.34,
+      "market_value": 5234.00,
+      "unrealized_pnl": 0.00,
+      "unrealized_pnl_percent": 0.00,
+      "entry_time": "2026-04-04T11:51:00+08:00",
+      "exit_conditions": {
+        "take_profit_price": 54.96,
+        "stop_loss_price": 50.77,
+        "time_stop": "2026-04-07T11:51:00+08:00"
+      }
+    }
+  ],
+  "open_orders": [],
+  "trade_history": [
+    {
+      "trade_id": "TRD-20260404-001",
+      "signal_id": "SIG-20260404-001",
+      "timestamp": "2026-04-04T11:51:00+08:00",
+      "symbol": "TQQQ",
+      "action": "BUY",
+      "qty": 100,
+      "price": 52.34,
+      "total_value": 5234.00,
+      "fees": 5.23,
+      "status": "FILLED",
+      "agent": "TradeForge"
+    }
+  ],
+  "mode": "paper",
+  "last_updated": "2026-04-04T11:51:00+08:00"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "session_20260407_234405",
+  "timestamp": "2026-04-07T23:44:05.040297",
+  "session_key": "test_session_002",
+  "content": "開發記憶系統插件，實現自動記憶注入功能",
+  "embedding": null,
+  "metadata": {
+    "topics": [
+      "系統開發",
+      "記憶插件"
+    ],
+    "decisions": [
+      "使用ChromaDB存儲",
+      "實現語義搜索"
+    ],
+    "action_items": [
+      "⏳ 完成injector.py",
+      "⏳ 整合到OpenClaw"
+    ],
+    "emotions": "專注、高效",
+    "next_continue": "",
+    "context_usage": 0.0,
+    "tokens_used": 0
+  },
+  "relevance_score": 0.0
+}

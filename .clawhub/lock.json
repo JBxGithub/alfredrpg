@@ -1,0 +1,401 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1774024959623
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1774024961347
+    },
+    "openclaw-github-assistant": {
+      "version": "2.0.1",
+      "installedAt": 1774024963974
+    },
+    "github-cli": {
+      "version": "1.0.0",
+      "installedAt": 1774024966035
+    },
+    "github-trending-cn": {
+      "version": "1.0.0",
+      "installedAt": 1774024968126
+    },
+    "github-ops": {
+      "version": "1.0.0",
+      "installedAt": 1774024970008
+    },
+    "github-search": {
+      "version": "1.0.0",
+      "installedAt": 1774024972011
+    },
+    "github-issue-resolver": {
+      "version": "1.0.0",
+      "installedAt": 1774024974668
+    },
+    "github-actions-generator": {
+      "version": "1.0.0",
+      "installedAt": 1774024976953
+    },
+    "github-contribution": {
+      "version": "1.1.0",
+      "installedAt": 1774024979932
+    },
+    "github-pages-auto-deploy": {
+      "version": "1.0.0",
+      "installedAt": 1774024984614
+    },
+    "parallel": {
+      "version": "1.2.1",
+      "installedAt": 1774024987415
+    },
+    "last30days-official": {
+      "version": "2.9.3",
+      "installedAt": 1774024993490
+    },
+    "live-task-pulse": {
+      "version": "1.1.0",
+      "installedAt": 1774024995751
+    },
+    "agenthub": {
+      "version": "0.10.0",
+      "installedAt": 1774024998083
+    },
+    "document-skills": {
+      "version": "0.1.2",
+      "installedAt": 1774025000250
+    },
+    "super-search": {
+      "version": "2.0.0",
+      "installedAt": 1774025002610
+    },
+    "capability-evolver": {
+      "version": "1.32.4",
+      "installedAt": 1774025008445
+    },
+    "playwright-scraper": {
+      "version": "1.0.0",
+      "installedAt": 1774025011184
+    },
+    "summarize": {
+      "version": "1.0.0",
+      "installedAt": 1774025012908
+    },
+    "self-improving-agent": {
+      "version": "3.0.5",
+      "installedAt": 1774025015425
+    },
+    "stock-watcher": {
+      "version": "1.0.0",
+      "installedAt": 1774025017770
+    },
+    "trading": {
+      "version": "1.0.1",
+      "installedAt": 1774025020153
+    },
+    "stock-strategy-backtester": {
+      "version": "1.0.4",
+      "installedAt": 1774025022478
+    },
+    "vision-sandbox": {
+      "version": "1.1.0",
+      "installedAt": 1774025025086
+    },
+    "computer-vision-expert": {
+      "version": "1.0.0",
+      "installedAt": 1774025027204
+    },
+    "pdf-ocr": {
+      "version": "1.0.0",
+      "installedAt": 1774025029412
+    },
+    "data-analysis": {
+      "version": "1.0.2",
+      "installedAt": 1774025031817
+    },
+    "microsoft-excel": {
+      "version": "1.0.3",
+      "installedAt": 1774025034031
+    },
+    "excel-xlsx": {
+      "version": "1.0.2",
+      "installedAt": 1774025035782
+    },
+    "spreadsheet": {
+      "version": "1.0.0",
+      "installedAt": 1774025038504
+    },
+    "monitoring": {
+      "version": "1.0.0",
+      "installedAt": 1774025040941
+    },
+    "red-alert": {
+      "version": "1.2.0",
+      "installedAt": 1774025043631
+    },
+    "logging-observability": {
+      "version": "0.1.0",
+      "installedAt": 1774025045770
+    },
+    "dashboard": {
+      "version": "1.0.1",
+      "installedAt": 1774025048030
+    },
+    "reporting": {
+      "version": "1.0.0",
+      "installedAt": 1774025050442
+    },
+    "webhook": {
+      "version": "1.0.0",
+      "installedAt": 1774025052671
+    },
+    "xurl": {
+      "version": "1.0.0",
+      "installedAt": 1774025054515
+    },
+    "tmux": {
+      "version": "1.0.0",
+      "installedAt": 1774025056857
+    },
+    "screenshot": {
+      "version": "1.0.1",
+      "installedAt": 1774025058918
+    },
+    "safe-exec": {
+      "version": "0.3.4",
+      "installedAt": 1774025061885
+    },
+    "safe-exec-0-3-2": {
+      "version": "1.0.0",
+      "installedAt": 1774025066444
+    },
+    "last30days": {
+      "version": "1.0.0",
+      "installedAt": 1774025069930
+    },
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1774025071334
+    },
+    "stock-monitor": {
+      "version": "1.3.0",
+      "installedAt": 1774025073344
+    },
+    "stock-study": {
+      "version": "1.0.0",
+      "installedAt": 1774025075235
+    },
+    "skill-sandbox": {
+      "version": "1.0.0",
+      "installedAt": 1774025077391
+    },
+    "skill-security-auditor": {
+      "version": "1.0.1",
+      "installedAt": 1774025079843
+    },
+    "windows-ui-automation": {
+      "version": "1.0.0",
+      "installedAt": 1774025081468
+    },
+    "desktop-control-win": {
+      "version": "1.0.1",
+      "installedAt": 1774025083540
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1774025085269
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1774025086717
+    },
+    "liang-tavily-search": {
+      "version": "1.0.1",
+      "installedAt": 1774025088310
+    },
+    "skill-vetting": {
+      "version": "1.1.0",
+      "installedAt": 1774025090633
+    },
+    "obsidian-direct": {
+      "version": "1.0.0",
+      "installedAt": 1774025093060
+    },
+    "git-workflows": {
+      "version": "1.0.0",
+      "installedAt": 1774025095213
+    },
+    "agentmail-integration": {
+      "version": "1.1.0",
+      "installedAt": 1774025097865
+    },
+    "memory-setup": {
+      "version": "1.0.0",
+      "installedAt": 1774025099642
+    },
+    "web-content-fetcher": {
+      "version": "1.0.1",
+      "installedAt": 1774025101867
+    },
+    "nano-pdf": {
+      "version": "1.0.0",
+      "installedAt": 1774025103496
+    },
+    "humanizer": {
+      "version": "1.0.0",
+      "installedAt": 1774025105354
+    },
+    "proactive-agent-skill": {
+      "version": "1.0.0",
+      "installedAt": 1774025106970
+    },
+    "session-logs": {
+      "version": "1.0.0",
+      "installedAt": 1774025110899
+    },
+    "model-usage": {
+      "version": "1.0.0",
+      "installedAt": 1774025112769
+    },
+    "claude-code-cli": {
+      "version": "0.2.0",
+      "installedAt": 1774025114971
+    },
+    "opencode-controller": {
+      "version": "1.0.0",
+      "installedAt": 1774025117196
+    },
+    "polymarket-analysis": {
+      "version": "2.1.0",
+      "installedAt": 1774138642397
+    },
+    "pdf": {
+      "version": "0.1.0",
+      "installedAt": 1774138692273
+    },
+    "outlook": {
+      "version": "1.3.0",
+      "installedAt": 1774138917784
+    },
+    "stripe": {
+      "version": "2.9.2",
+      "installedAt": 1774187120244
+    },
+    "pdf-to-markdown": {
+      "version": "3.0.1",
+      "installedAt": 1774139418304
+    },
+    "markdown": {
+      "version": "1.0.1",
+      "installedAt": 1774139441077
+    },
+    "pypdf": {
+      "version": "1.0.0",
+      "installedAt": 1774144727284
+    },
+    "PyMuPDF": {
+      "version": "1.0.0",
+      "installedAt": 1774144770174
+    },
+    "pdf2image": {
+      "version": "1.0.0",
+      "installedAt": 1774144797572
+    },
+    "stripe-analytics": {
+      "version": "1.0.2",
+      "installedAt": 1774187150120
+    },
+    "ffmpeg": {
+      "version": "1.0.0",
+      "installedAt": 1774279431740
+    },
+    "blogwatcher": {
+      "version": "1.0.0",
+      "installedAt": 1774668934507
+    },
+    "multi-agent-coordinator": {
+      "version": "1.0.0",
+      "installedAt": 1775283022562
+    },
+    "multi-agent-roles": {
+      "version": "1.0.0",
+      "installedAt": 1775283035017
+    },
+    "friday-multi-agent-orchestrator": {
+      "version": "1.0.0",
+      "installedAt": 1775283045254
+    },
+    "multi-agent-chat": {
+      "version": "1.0.0",
+      "installedAt": 1775283055022
+    },
+    "auto-trading-strategy": {
+      "version": "1.1.0",
+      "installedAt": 1775283063950
+    },
+    "trading-devbox": {
+      "version": "0.1.0",
+      "installedAt": 1775283074887
+    },
+    "shadow-trading-dashboard": {
+      "version": "1.0.0",
+      "installedAt": 1775283083029
+    },
+    "autonomous-trading-system": {
+      "version": "14.0.1",
+      "installedAt": 1775283097861
+    },
+    "webhook-send": {
+      "version": "1.0.0",
+      "installedAt": 1775283103022
+    },
+    "pushover-notify": {
+      "version": "1.0.0",
+      "installedAt": 1775283109546
+    },
+    "universal-notify": {
+      "version": "1.0.0",
+      "installedAt": 1775283121621
+    },
+    "data-analyst-pro": {
+      "version": "0.1.0",
+      "installedAt": 1775283128455
+    },
+    "data-anomaly-detector": {
+      "version": "2.1.0",
+      "installedAt": 1775283134645
+    },
+    "openclaw-dashboard": {
+      "version": "1.7.3",
+      "installedAt": 1775283142341
+    },
+    "subagent-dashboard": {
+      "version": "1.0.0",
+      "installedAt": 1775283155636
+    },
+    "aic-dashboard": {
+      "version": "1.8.0",
+      "installedAt": 1775283186737
+    },
+    "browser-automation": {
+      "version": "1.0.1",
+      "installedAt": 1775890460225
+    },
+    "agent-browser-clawdbot": {
+      "version": "0.1.0",
+      "installedAt": 1775890536364
+    },
+    "chrome-mcp": {
+      "version": "0.1.0",
+      "installedAt": 1775965183343
+    },
+    "chrome-devtools": {
+      "version": "0.1.1",
+      "installedAt": 1775966043388
+    },
+    "chrome-attach": {
+      "version": "1.0.0",
+      "installedAt": 1775966059299
+    }
+  }
+}

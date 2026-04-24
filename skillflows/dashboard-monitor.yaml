@@ -1,0 +1,117 @@
+name: 每日監控儀表板
+description: 整合 Token 使用、健康檢查、系統狀態的每日監控報告
+version: "1.0.0"
+created: "2026-03-17"
+
+# 觸發條件
+trigger:
+  type: cron
+  schedule: "0 9 * * *"  # 每天早上 09:00
+  timezone: "Asia/Hong_Kong"
+
+# 執行步驟
+steps:
+  # 步驟 1: 執行 Dashboard 監控腳本
+  run-dashboard:
+    action: exec
+    command: "python3 ~/openclaw_workspace/scripts/dashboard-monitor.py"
+    timeout: 60
+    output:
+      register: dashboard_result
+
+  # 步驟 2: 讀取生成的報告
+  read-report:
+    action: exec
+    command: |
+      $date = Get-Date -Format "yyyy-MM-dd"
+      $reportPath = "$env:USERPROFILE\openclaw_workspace\dashboard\$date.md"
+      if (Test-Path $reportPath) {
+        Get-Content $reportPath -Raw
+      } else {
+        "報告未生成"
+      }
+    register: report_content
+
+  # 步驟 3: 讀取 Dashboard 數據
+  read-dashboard-data:
+    action: exec
+    command: |
+      $dataPath = "$env:USERPROFILE\openclaw_workspace\dashboard\monitor-history.json"
+      if (Test-Path $dataPath) {
+        Get-Content $dataPath | ConvertFrom-Json | Select-Object -Last 1 | ConvertTo-Json -Depth 3
+      } else {
+        "{{}}"
+      }
+    register: dashboard_data
+
+  # 步驟 4: 判斷是否需要發送通知
+  # 只在異常時發送，或每天 20:00 發送摘要
+  should-notify:
+    action: condition
+    condition: |
+      {{ 
+        (dashboard_data.health_data.OverallStatus != 'HEALTHY') or 
+        (now.hour == 20) 
+      }}
+    then:
+      - action: message
+        channel: whatsapp
+        to: "+85263931048"
+        template: "dashboard-summary"
+        variables:
+          date: "{{ now | format('yyyy-MM-dd') }}"
+          time: "{{ now | format('HH:mm') }}"
+          health_status: "{{ dashboard_data.health_data.OverallStatus }}"
+          token_count: "{{ dashboard_data.token_data.total_tokens }}"
+          session_count: "{{ dashboard_data.token_data.session_count }}"
+          issues: "{{ dashboard_data.health_data.Issues | join('\n') }}"
+    else:
+      - action: log
+        level: info
+        message: "系統正常，跳過通知"
+
+  # 步驟 5: 記錄執行結果
+  log-execution:
+    action: append
+    file: "memory/health-logs/dashboard-skillflow.log"
+    format: "json"
+    content:
+      timestamp: "{{ now }}"
+      flow: "daily-dashboard"
+      health_status: "{{ dashboard_data.health_data.OverallStatus }}"
+      token_count: "{{ dashboard_data.token_data.total_tokens }}"
+      notification_sent: "{{ should_notify }}"
+
+# 錯誤處理
+on_error:
+  - action: message
+    channel: whatsapp
+    to: "+85263931048"
+    template: "dashboard-error"
+    variables:
+      error: "{{ error.message }}"
+      step: "{{ error.step }}"
+
+# 通知模板
+templates:
+  dashboard-summary: |
+    📊 *每日監控報告* - {{ date }} {{ time }}
+    
+    🩺 系統健康: {{ health_status }}
+    🪙 Token 使用: {{ token_count }} tokens
+    📝 活躍會話: {{ session_count }}
+    
+    {% if issues %}
+    ⚠️ 注意事項:
+    {{ issues }}
+    {% endif %}
+    
+    📄 詳細報告: dashboard/{{ date }}.md
+  
+  dashboard-error: |
+    ❌ *Dashboard 監控失敗*
+    
+    步驟: {{ step }}
+    錯誤: {{ error }}
+    
+    請手動檢查系統。

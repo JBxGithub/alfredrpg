@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw 安全儀表板</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080e;--bg2:#0a0d14;--card:#0d1117;--border:#1a1f2e;
+  --text:#e6edf3;--text2:#8b949e;--accent:#7c5cfc;--accent2:#a78bfa;
+  --green:#2dd4a0;--yellow:#f5a623;--red:#f85149;--blue:#58a6ff;
+  --glass:rgba(13,17,23,0.7);--glow:rgba(124,92,252,0.15);
+  --font:'Outfit',system-ui,sans-serif;--mono:'Space Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;padding:20px}
+.container{max-width:1280px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.logo{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.glass-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-title{font-weight:700;font-size:1.1rem;margin-bottom:12px}
+.card-sub{font-size:.85rem;color:var(--text2);margin-bottom:10px}
+.score-circle{width:120px;height:120px;position:relative}
+.score-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-number{font-size:36px;font-weight:700}
+.score-label{font-size:14px;color:var(--text2)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:.75rem;font-weight:600;margin-right:8px}
+.badge-done{background:rgba(45,212,160,0.15);color:var(--green);border:1px solid rgba(45,212,160,0.25)}
+.badge-in-progress{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.25)}
+.badge-failed{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.25)}
+.warning-item{background:rgba(69,26,3,0.5);border-left:4px solid var(--yellow);padding:14px 16px;margin-bottom:10px;border-radius:0 8px 8px 0;cursor:pointer;transition:all .2s}
+.warning-item:hover{background:rgba(69,26,3,0.7);transform:translateX(4px)}
+.warning-item.expanded{background:rgba(69,26,3,0.8)}
+.fix-suggestion{background:rgba(13,17,23,0.9);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;font-size:.85rem}
+.fix-suggestion-title{color:var(--green);font-weight:600;margin-bottom:6px}
+.fix-suggestion code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:.8rem}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+.refresh-btn{color:var(--accent);text-decoration:none;font-size:.9rem;border:1px solid var(--border);padding:8px 16px;border-radius:999px;transition:all .2s;background:transparent;cursor:pointer;font-family:var(--font)}
+.refresh-btn:hover{background:var(--glow);border-color:var(--accent)}
+.system-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;font-family:var(--mono);font-size:.85rem;color:var(--text2)}
+.system-grid span{color:var(--text)}
+.severity-header{display:flex;align-items:center;gap:8px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.severity-count{font-size:.8rem;color:var(--text2)}
+.expand-icon{float:right;font-size:12px;color:var(--text2);transition:transform .2s}
+.warning-item.expanded .expand-icon{transform:rotate(180deg)}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🔒 OpenClaw 安全儀表板</div>
+    <button class="refresh-btn" onclick="loadSecurityData()">🔄 重新整理</button>
+  </header>
+
+  <!-- 安全評分卡 -->
+  <div class="glass-card">
+    <div style="display:flex;align-items:center;gap:20px;margin-bottom:16px">
+      <div class="score-circle">
+        <svg viewBox="0 0 100 100" style="width:100%;height:100%;transform:rotate(-90deg)">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1f2e" stroke-width="8"/>
+          <circle id="securityScoreCircle" cx="50" cy="50" r="45" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"/>
+        </svg>
+        <div class="score-value">
+          <div id="securityScoreValue" class="score-number" style="color:#22c55e">-</div>
+          <div id="securityScoreLabel" class="score-label">-</div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card-title">安全評分</div>
+        <div class="card-sub">最後更新：<span id="securityLastUpdated">-</span></div>
+        <div>
+          <span class="badge badge-done"><span id="securitySkillsCount">0</span> 個技能</span>
+          <span class="badge badge-in-progress"><span id="securityFilesCount">0</span> 個檔案</span>
+          <span class="badge badge-failed"><span id="securityIssuesCount">0</span> 個問題</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 安全警告 -->
+  <div class="glass-card">
+    <div class="card-title">⚠️ 安全警告</div>
+    <div id="securityWarnings"><div class="empty-state">載入中...</div></div>
+  </div>
+
+  <!-- 組件狀態 -->
+  <div class="glass-card">
+    <div class="card-title">📊 組件狀態</div>
+    <div id="securityComponentStatus"><div class="empty-state">載入中...</div></div>
+  </div>
+
+  <!-- 系統資訊 -->
+  <div class="glass-card">
+    <div class="card-title">🖥️ 系統資訊</div>
+    <div id="securitySystemInfo" class="system-grid">載入中...</div>
+  </div>
+</div>
+
+<script>
+// 修正建議對照表
+const FIX_SUGGESTIONS = {
+  'CRED-001': {
+    title: '🔧 修正建議：移除硬編碼憑證',
+    steps: [
+      '將憑證移至環境變數（process.env.XXX）',
+      '使用 .env 檔案管理敏感資料',
+      '將憑證檔案加入 .gitignore',
+      '考慮使用密鑰管理服務（如 AWS Secrets Manager）'
+    ],
+    example: 'const API_KEY = process.env.API_KEY; // 而非硬編碼'
+  },
+  'EXEC-001': {
+    title: '🔧 修正建議：避免使用 eval()',
+    steps: [
+      '使用 JSON.parse() 替代 eval() 處理 JSON',
+      '使用正則表達式或專用解析器',
+      '如果必須使用，確保輸入已嚴格驗證',
+      '考慮使用沙箱環境執行不受信任代碼'
+    ],
+    example: 'JSON.parse(data) // 而非 eval(data)'
+  },
+  'EXEC-002': {
+    title: '🔧 修正建議：安全執行外部命令',
+    steps: [
+      '使用參數化命令而非字串拼接',
+      '驗證所有用戶輸入',
+      '使用 execFile 而非 exec',
+      '限制命令執行權限'
+    ],
+    example: 'execFile("command", [arg1, arg2]) // 而非 exec("command " + input)'
+  },
+  'EXEC-003': {
+    title: '🔧 修正建議：禁用 shell 執行',
+    steps: [
+      '將 shell: false 加入 child_process 選項',
+      '使用絕對路徑執行命令',
+      '驗證所有傳入的參數',
+      '考慮使用更安全的替代方案'
+    ],
+    example: 'spawn(cmd, args, { shell: false })'
+  },
+  'ENV-001': {
+    title: '⚠️ 注意：環境變數存取',
+    steps: [
+      '確保只存取必要的環境變數',
+      '驗證環境變數是否存在',
+      '避免將敏感變數輸出到日誌',
+      '使用預設值處理缺失的變數'
+    ],
+    example: 'const key = process.env.API_KEY || "default";'
+  },
+  'WEBHOOK-001': {
+    title: '🔧 修正建議：添加 Webhook 驗證',
+    steps: [
+      '實作簽名驗證機制',
+      '使用 HMAC 驗證請求來源',
+      '限制請求來源 IP',
+      '添加請求時間戳驗證防重放攻擊'
+    ],
+    example: 'if (!verifySignature(payload, signature)) throw new Error("Invalid");'
+  },
+  'BROWSER-001': {
+    title: '🔧 修正建議：添加瀏覽器認證',
+    steps: [
+      '實作登入機制',
+      '使用 Cookie 或 Token 驗證',
+      '限制自動化操作權限',
+      '記錄所有自動化操作日誌'
+    ],
+    example: 'await page.authenticate({ username, password });'
+  },
+  'FILE-001': {
+    title: '🔧 修正建議：驗證檔案路徑',
+    steps: [
+      '使用 path.resolve() 解析絕對路徑',
+      '檢查路徑是否在允許範圍內',
+      '避免路徑遍歷攻擊',
+      '使用白名單限制可存取檔案'
+    ],
+    example: 'const realPath = fs.realpathSync(userPath);'
+  },
+  'SQL-001': {
+    title: '🔧 修正建議：使用參數化查詢',
+    steps: [
+      '使用 prepared statement',
+      '絕對不要拼接 SQL 字串',
+      '使用 ORM 框架',
+      '驗證所有用戶輸入'
+    ],
+    example: 'db.query("SELECT * FROM users WHERE id = ?", [userId])'
+  },
+  'CRYPTO-001': {
+    title: '🔧 修正建議：使用強加密演算法',
+    steps: [
+      '避免使用 MD5、SHA1 等弱演算法',
+      '使用 SHA-256 或更高',
+      '密碼使用 bcrypt 或 Argon2',
+      '保持加密函式庫更新'
+    ],
+    example: 'crypto.createHash("sha256") // 而非 md5'
+  },
+  'HTTPS-001': {
+    title: '🔧 修正建議：使用 HTTPS',
+    steps: [
+      '將所有 HTTP 連線改為 HTTPS',
+      '驗證 SSL 憑證',
+      '使用 HSTS 頭部',
+      '禁用不安全的 TLS 版本'
+    ],
+    example: 'https://api.example.com // 而非 http://'
+  }
+};
+
+const SEVERITY_NAMES = {
+  CRITICAL: '🔴 嚴重',
+  HIGH: '🟠 高危',
+  MEDIUM: '🟡 中等',
+  LOW: '🔵 低危',
+  INFO: '⚪ 資訊'
+};
+
+async function loadSecurityData() {
+  console.log('載入安全數據...');
+  
+  try {
+    const res = await fetch('security-data.json?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    
+    // 評分
+    const score = data.securityScore || { value: 0, label: '未知', color: '#6b7280' };
+    const scoreLabels = { 'Excellent': '優秀', 'Good': '良好', 'Fair': '一般', 'Poor': '較差', 'Critical': '危險', 'Unknown': '未知' };
+    
+    document.getElementById('securityScoreValue').textContent = score.value;
+    document.getElementById('securityScoreValue').style.color = score.color;
+    document.getElementById('securityScoreLabel').textContent = scoreLabels[score.label] || score.label;
+    document.getElementById('securityScoreLabel').style.color = score.color;
+    
+    // 圓圈
+    const offset = 283 - (283 * score.value / 100);
+    const circle = document.getElementById('securityScoreCircle');
+    circle.style.strokeDashoffset = offset;
+    circle.style.stroke = score.color;
+    
+    // 元數據
+    document.getElementById('securityLastUpdated').textContent = new Date(data.lastUpdated).toLocaleString('zh-HK');
+    document.getElementById('securitySkillsCount').textContent = data.skillsScanned || 0;
+    document.getElementById('securityFilesCount').textContent = data.filesScanned || 0;
+    document.getElementById('securityIssuesCount').textContent = data.issuesFound || 0;
+    
+    // 警告
+    renderWarnings(data.activeWarnings);
+    
+    // 組件
+    renderComponents(data.componentStatus);
+    
+    // 系統資訊
+    renderSystemInfo(data.systemInfo);
+    
+  } catch (e) {
+    console.error('錯誤:', e);
+    document.getElementById('securityWarnings').innerHTML = '<div class="empty-state" style="color:#f85149">❌ 錯誤：' + e.message + '</div>';
+  }
+}
+
+function renderWarnings(warnings) {
+  const container = document.getElementById('securityWarnings');
+  if (!warnings || Object.keys(warnings).length === 0) {
+    container.innerHTML = '<div class="empty-state">✅ 未發現安全問題</div>';
+    return;
+  }
+  
+  const colors = { CRITICAL: '#dc2626', HIGH: '#f97316', MEDIUM: '#eab308', LOW: '#3b82f6', INFO: '#6b7280' };
+  let html = '';
+  
+  for (const [severity, issues] of Object.entries(warnings)) {
+    if (!issues || issues.length === 0) continue;
+    
+    html += '<div class="severity-header">';
+    html += '<strong style="color:' + colors[severity] + ';font-size:1.1rem">' + (SEVERITY_NAMES[severity] || severity) + '</strong>';
+    html += '<span class="severity-count">' + issues.length + ' 個問題</span>';
+    html += '</div>';
+    
+    for (let i = 0; i < issues.length; i++) {
+      const issue = issues[i];
+      const fix = FIX_SUGGESTIONS[issue.ruleId];
+      
+      html += '<div class="warning-item" id="warning-' + severity + '-' + i + '" onclick="toggleFix(this, \'' + issue.ruleId + '\')" style="border-left-color:' + colors[severity] + '">';
+      html += '<span class="expand-icon">▼</span>';
+      html += '<div style="font-weight:600;font-size:1rem">' + issue.ruleName + '</div>';
+      html += '<div style="font-size:.85rem;color:var(--text2);margin-top:4px">📁 ' + issue.file + '</div>';
+      html += '<div style="font-size:.8rem;color:var(--text2);margin-top:4px">🔍 規則：' + issue.ruleId + ' · ' + issue.matchCount + ' 個匹配</div>';
+      
+      if (fix) {
+        html += '<div class="fix-suggestion" style="display:none">';
+        html += '<div class="fix-suggestion-title">' + fix.title + '</div>';
+        html += '<ol style="margin:8px 0;padding-left:20px">';
+        for (const step of fix.steps) {
+          html += '<li style="margin:4px 0">' + step + '</li>';
+        }
+        html += '</ol>';
+        html += '<div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.3);border-radius:4px"><code>' + fix.example + '</code></div>';
+        html += '</div>';
+      }
+      
+      html += '</div>';
+    }
+  }
+  
+  container.innerHTML = html || '<div class="empty-state">✅ 未發現安全問題</div>';
+}
+
+function toggleFix(element, ruleId) {
+  const fixDiv = element.querySelector('.fix-suggestion');
+  if (fixDiv) {
+    fixDiv.style.display = fixDiv.style.display === 'none' ? 'block' : 'none';
+    element.classList.toggle('expanded');
+  }
+}
+
+function renderComponents(components) {
+  const container = document.getElementById('securityComponentStatus');
+  if (!components) {
+    container.innerHTML = '<div class="empty-state">無數據</div>';
+    return;
+  }
+  
+  const labels = { 'ok': '正常', 'warn': '警告', 'fail': '故障', 'unknown': '未知' };
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">';
+  
+  for (const [name, status] of Object.entries(components)) {
+    const names = { 'Gateway': '網關', 'WhatsApp': 'WhatsApp', 'Hooks': '鉤子', 'Dashboard': '儀表板' };
+    html += '<div class="glass-card" style="padding:14px;display:flex;align-items:center;gap:10px">';
+    html += '<span style="width:12px;height:12px;border-radius:50%;background:' + (status.color || '#6b7280') + ';box-shadow:0 0 10px ' + (status.color || '#6b7280') + '"></span>';
+    html += '<div><div style="font-weight:600">' + (names[name] || name) + '</div><div style="font-size:.8rem;color:var(--text2)">' + (labels[status.value] || status.label) + '</div></div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderSystemInfo(info) {
+  const container = document.getElementById('securitySystemInfo');
+  if (!info) {
+    container.innerHTML = '無數據';
+    return;
+  }
+  
+  let html = '';
+  html += '<div>平台：<span>' + info.platform + ' (' + info.arch + ')</span></div>';
+  html += '<div>Node 版本：<span>' + info.nodeVersion + '</span></div>';
+  html += '<div>OpenClaw：<span>' + (info.openclawVersion || '未知') + '</span></div>';
+  html += '<div>儀表板版本：<span>' + info.dashboardVersion + '</span></div>';
+  html += '<div>工作目錄：<span>' + info.workspace + '</span></div>';
+  html += '<div>運行時間：<span>' + Math.floor(info.uptime / 3600) + ' 小時</span></div>';
+  html += '<div>技能目錄：<span>' + (info.skillsDir === 'found' ? '✅ 已找到' : '❌ 未找到') + '</span></div>';
+  html += '<div>系統技能：<span>' + (info.systemSkillsDir === 'found' ? '✅ 已找到' : '❌ 未找到') + '</span></div>';
+  html += '<div>環境變數：<span>' + info.totalEnvVars + ' 個</span></div>';
+  html += '<div>敏感變數：<span style="color:var(--yellow)">' + info.sensitiveEnvVars + ' 個</span></div>';
+  container.innerHTML = html;
+}
+
+// 頁面載入時自動載入
+loadSecurityData();
+</script>
+</body>
+</html>

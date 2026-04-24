@@ -1,0 +1,96 @@
+# 六循環系統 - 分析標的配置
+# 統一所有系統使用 NQ 100 作為分析標的
+
+---
+# 分析標的 (Analysis Target)
+# 所有技術分析、信號生成、決策邏輯都基於這個標的
+# 注意: Futu 中 NDX 指數不可用，使用 QQQ 作為代理
+analysis_target:
+  name: "NQ 100"
+  description: "Nasdaq 100 Index (via QQQ proxy)"
+  futu_code: "US.QQQ"  # QQQ 追蹤 NQ 100，是最佳代理
+  investing_code: "20"  # investing.com NQ 100 ID
+  tradingview_symbol: "NASDAQ:NDX"
+  proxy_note: "Futu 中無 NDX 指數，使用 QQQ (追蹤 NQ 100) 作為代理"
+  
+# 交易標的 (Trading Target)
+# 實際交易的標的，基於分析標的的信號
+trading_target:
+  name: "TQQQ"
+  description: "ProShares UltraPro QQQ (3x Leveraged)"
+  futu_code: "US.TQQQ"
+  type: "ETF"
+  leverage: 3
+  underlying: "QQQ"  # TQQQ 追蹤 QQQ，QQQ 追蹤 NDX
+
+# 備用/對沖標的
+hedge_target:
+  name: "SQQQ"
+  description: "ProShares UltraPro Short QQQ (3x Inverse)"
+  futu_code: "US.SQQQ"
+  type: "ETF"
+  leverage: -3
+
+# 追蹤標的 (用於驗證)
+tracking_target:
+  name: "QQQ"
+  description: "Invesco QQQ Trust (追蹤 NQ 100)"
+  futu_code: "US.QQQ"
+  type: "ETF"
+  leverage: 1
+  underlying: "NDX"
+
+# 期貨標的 (高級用戶)
+futures_target:
+  name: "MNQ"
+  description: "Micro E-mini Nasdaq-100 Futures"
+  futu_code: "US.MNQ"
+  type: "Futures"
+  contract_size: 2  # USD per point
+  
+# 數據源配置
+data_sources:
+  primary:
+    name: "Futu OpenD"
+    symbol: "US.NDX"
+    frequency: "realtime"
+    priority: 1
+    
+  backup_1:
+    name: "investing.com"
+    symbol: "20"  # NQ 100 ID
+    frequency: "1min"
+    priority: 2
+    
+  backup_2:
+    name: "Yahoo Finance"
+    symbol: "^NDX"
+    frequency: "1min"
+    priority: 3
+    
+  verification:
+    name: "QQQ as proxy"
+    symbol: "US.QQQ"
+    frequency: "realtime"
+    note: "用於驗證 NDX 數據"
+
+# 系統間統一配置
+system_integration:
+  six_loop_system:
+    analysis: "US.NDX"
+    trading: "US.TQQQ"
+    
+  fututradingbot:
+    analysis: "US.NDX"  # 應該統一
+    trading: "US.TQQQ"  # 已正確
+    
+  defi_dashboard:
+    analysis: "US.NDX"  # 需要更新
+    trading: "US.TQQQ"  # 需要更新
+
+# 注意事項
+notes:
+  - "NQ 100 (NDX) 是分析標的，不可直接交易"
+  - "TQQQ 是交易標的，基於 NDX 的信號"
+  - "QQQ 可用於驗證 NDX 數據的準確性"
+  - "MNQ 期貨適合高級用戶直接交易指數"

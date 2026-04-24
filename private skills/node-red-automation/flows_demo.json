@@ -1,0 +1,115 @@
+[
+    {
+        "id": "demo_inject",
+        "type": "inject",
+        "z": "demo_tab",
+        "name": "手動觸發",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"city\":\"Hong Kong\"}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "demo_function"
+            ]
+        ]
+    },
+    {
+        "id": "demo_function",
+        "type": "function",
+        "z": "demo_tab",
+        "name": "準備請求",
+        "func": "// 設置 API 請求\nmsg.url = 'https://wttr.in/Hong+Kong?format=j1';\nmsg.method = 'GET';\nmsg.headers = {\n    'User-Agent': 'Node-RED Demo'\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 100,
+        "wires": [
+            [
+                "demo_http"
+            ]
+        ]
+    },
+    {
+        "id": "demo_http",
+        "type": "http request",
+        "z": "demo_tab",
+        "name": "獲取天氣",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 520,
+        "y": 100,
+        "wires": [
+            [
+                "demo_parse"
+            ]
+        ]
+    },
+    {
+        "id": "demo_parse",
+        "type": "function",
+        "z": "demo_tab",
+        "name": "解析數據",
+        "func": "// 解析天氣數據\ntry {\n    const current = msg.payload.current_condition[0];\n    const temp = current.temp_C;\n    const desc = current.lang_zh[0].value;\n    const humidity = current.humidity;\n    \n    msg.payload = {\n        temperature: temp + '°C',\n        description: desc,\n        humidity: humidity + '%',\n        location: 'Hong Kong',\n        time: new Date().toLocaleString('zh-HK')\n    };\n    \n    msg.topic = '天氣更新';\n    return msg;\n} catch(e) {\n    msg.payload = {error: '獲取天氣失敗: ' + e.message};\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 100,
+        "wires": [
+            [
+                "demo_debug"
+            ]
+        ]
+    },
+    {
+        "id": "demo_debug",
+        "type": "debug",
+        "z": "demo_tab",
+        "name": "輸出結果",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "demo_tab",
+        "type": "tab",
+        "label": "Demo - 天氣查詢",
+        "disabled": false,
+        "info": "這是呀鬼為靚仔創建的 demo workflow"
+    }
+]

@@ -1,0 +1,93 @@
+# 記憶系統插件配置檔案
+# Memory System Plugin Configuration
+
+memory_system:
+  # ============================================
+  # 路徑配置 (Path Configuration)
+  # ============================================
+  base_path: "~/openclaw_workspace/memory"
+  
+  # ============================================
+  # Context 監控配置 (Context Monitor Configuration)
+  # ============================================
+  # 預警閾值：當 Context 使用率達到此值時發送預警通知
+  warning_threshold: 70.0
+  
+  # 危險閾值：當 Context 使用率達到此值時自動觸發 Session 切換流程
+  critical_threshold: 80.0
+  
+  # 檢測間隔：後台監控線程的檢測間隔（秒）
+  check_interval: 300
+  
+  # 最大歷史記錄數：保留的歷史指標數量上限
+  max_history_size: 1000
+  
+  # ============================================
+  # 向量數據庫配置 (Vector Database Configuration)
+  # ============================================
+  # 向量數據庫路徑（相對於 base_path）
+  vector_db_path: "vector_db"
+  
+  # 集合名稱
+  collection_name: "memory_store"
+  
+  # 嵌入模型名稱
+  # 推薦選項：
+  #   - "all-MiniLM-L6-v2" (快速, 384維, 默認)
+  #   - "all-mpnet-base-v2" (更準確, 768維)
+  #   - "paraphrase-multilingual-MiniLM-L12-v2" (多語言支持)
+  embedding_model: "all-MiniLM-L6-v2"
+  
+  # ============================================
+  # 摘要生成配置 (Summarizer Configuration)
+  # ============================================
+  # 是否啟用自動摘要
+  auto_summarize: true
+  
+  # 是否在 Context 使用率達到危險閾值時自動生成摘要
+  summary_on_critical: true
+  
+  # 摘要存儲路徑（相對於 base_path）
+  summary_path: "summaries"
+  
+  # ============================================
+  # 記憶注入配置 (Memory Injector Configuration)
+  # ============================================
+  # 是否啟用自動記憶注入
+  auto_inject: true
+  
+  # 最大注入記憶數：每次注入的最大記憶數量
+  max_inject_memories: 3
+  
+  # 注入記憶的時間範圍（小時）：只注入此時間範圍內的記憶
+  inject_time_range_hours: 168  # 7天
+  
+  # ============================================
+  # 日誌配置 (Logging Configuration)
+  # ============================================
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_file: "memory_system.log"
+  
+  # ============================================
+  # 備份配置 (Backup Configuration)
+  # ============================================
+  # 是否啟用自動備份
+  auto_backup: true
+  
+  # 備份間隔（小時）
+  backup_interval_hours: 24
+  
+  # 備份保留數量
+  backup_keep_count: 7
+  
+  # ============================================
+  # 性能配置 (Performance Configuration)
+  # ============================================
+  # 嵌入生成批處理大小
+  embedding_batch_size: 32
+  
+  # 搜索結果數量限制
+  max_search_results: 10
+  
+  # 內存緩存大小限制
+  memory_cache_limit: 1000

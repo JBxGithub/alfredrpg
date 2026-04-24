@@ -1,0 +1,106 @@
+# ClawTrade Pro - 策略配置
+# 支持多股票、多策略配置
+
+# 策略定義
+strategies:
+  # TQQQ - 均值回歸策略 (優化版)
+  TQQQ:
+    type: tqqq_mean_reversion
+    enabled: true
+    params:
+      z_entry: 1.65
+      z_exit: 0.5
+      z_stop: 3.5
+      lookback: 60
+      rsi_overbought: 70
+      rsi_oversold: 30
+      rsi_period: 14
+      take_profit: 0.05
+      stop_loss: 0.03
+      time_stop_days: 7
+      position_size: 0.5
+      volume_threshold: 0.5
+
+  # AAPL - 動量策略
+  AAPL:
+    type: momentum
+    enabled: true
+    params:
+      rsi_period: 14
+      rsi_overbought: 70
+      rsi_oversold: 30
+      ma_short: 20
+      ma_long: 50
+      target_profit: 0.05
+      stop_loss: 0.03
+
+  # NVDA - 突破策略
+  NVDA:
+    type: breakout
+    enabled: true
+    params:
+      lookback: 20
+      volume_threshold: 1.5
+      confirmation_bars: 2
+      atr_period: 14
+      atr_multiplier_sl: 2.0
+      atr_multiplier_tp: 3.0
+
+  # MSFT - MACD交叉策略
+  MSFT:
+    type: macd_crossover
+    enabled: true
+    params:
+      fast_period: 12
+      slow_period: 26
+      signal_period: 9
+      take_profit: 0.05
+      stop_loss: 0.03
+      use_histogram: true
+      trend_filter: true
+
+  # SPY - 均值回歸策略
+  SPY:
+    type: mean_reversion
+    enabled: true
+    params:
+      lookback: 20
+      z_threshold: 2.0
+      z_exit: 0.5
+      z_stop: 3.0
+      take_profit: 0.04
+      stop_loss: 0.02
+      time_stop_days: 5
+
+  # QQQ - 動量策略 (短線)
+  QQQ:
+    type: momentum
+    enabled: true
+    params:
+      rsi_period: 7
+      rsi_overbought: 75
+      rsi_oversold: 25
+      ma_short: 10
+      ma_long: 30
+      target_profit: 0.03
+      stop_loss: 0.02
+
+# 全局策略設置
+settings:
+  # 默認倉位大小 (%)
+  default_position_size: 0.5
+  
+  # 最大同時持倉數
+  max_positions: 5
+  
+  # 信號最小置信度
+  min_confidence: 0.5
+  
+  # 數據源
+  data_source: "futu"
+  
+  # 回測設置
+  backtest:
+    initial_capital: 100000
+    commission_rate: 0.001
+    slippage: 0.001

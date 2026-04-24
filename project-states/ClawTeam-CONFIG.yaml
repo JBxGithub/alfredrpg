@@ -1,0 +1,413 @@
+# ClawTeam Multi-Agent Architecture Configuration
+# 中央指揮系統配置檔案
+# Created: 2026-04-04
+# Version: 1.0
+
+---
+
+## 🎯 系統概述
+
+**ClawTeam** 是一個分佈式多 Agent 交易系統，採用中央指揮 + 專業分工架構。
+
+### 核心設計理念
+- **單一職責**: 每個 Agent 專注一個核心領域
+- **鬆耦合通訊**: 通過標準化消息協議交互
+- **容錯設計**: 單點故障不影響整體運作
+- **可擴展**: 容易添加新 Agent 或功能模組
+
+---
+
+## 🤖 Agent 矩陣
+
+### 1️⃣ 中央 Orchestrator — 呀鬼 (Alfred)
+**ID**: @78533644820485 (當前)
+**WhatsApp**: +85263609349
+**角色**: 系統總指揮
+
+**職責**:
+- 整體系統總指揮、任務分配與優先排序
+- 各 Agent 輸出審核與融合
+- 系統健康監控、異常處理、每日報告總結
+- 最終將所有模塊組裝成完整可運行主程式
+- 長期運行排程與斷線重連管理
+
+**技能配置**:
+```yaml
+skills:
+  - self-improving-agent    # 持續學習與改進
+  - parallel               # 高精度研究
+  - capability-evolver     # 自我進化
+  - webhook                #  webhook 指揮
+  - monitoring             # 系統監控
+  - logging-observability  # 日誌與追蹤
+  - dashboard              # 儀表板
+  - reporting              # 報告生成
+```
+
+**通訊權限**: 全權限（可向所有 Agent 發送指令）
+
+---
+
+### 2️⃣ DataForge — 數據工程師
+**ID**: dataforge-001
+**WhatsApp**: +852-62255569
+**角色**: 數據獲取與處理專家
+
+**職責**:
+- 負責所有市場數據擷取與即時推送
+- 數據清洗、歷史 K 線管理、最新數據提供
+- 技術指標計算與更新
+- 數據持久化（每日 CSV 輸出準備）
+
+**技能配置**:
+```yaml
+skills:
+  - futu-stock             # 富途 API 整合
+  - data-analysis          # 數據分析
+  - stock-monitor          # 股票監控
+  - stock_study            # 股票研究
+  - spreadsheet            # 表格處理
+  - microsoft-excel        # Excel API
+  - excel-xlsx             # Excel 操作
+```
+
+**核心工具**:
+- Futu Open API (歷史 + 即時訂閱)
+- WebSocket 數據推送
+- CSV/Excel 數據持久化
+
+**輸出格式**:
+```json
+{
+  "agent": "DataForge",
+  "type": "data_update",
+  "timestamp": "2026-04-04T10:30:00Z",
+  "data": {
+    "ticker": "TQQQ",
+    "price": 52.34,
+    "indicators": {
+      "z_score": -1.65,
+      "rsi": 28.5,
+      "volume_ma20": 1.2
+    }
+  }
+}
+```
+
+---
+
+### 3️⃣ SignalForge — 信號工程師
+**ID**: signalforge-001
+**WhatsApp**: +852-62212577
+**角色**: 策略與信號生成專家
+
+**職責**:
+- 市場狀態判斷與宏觀濾網應用
+- 交易信號生成與多層確認
+- 策略邏輯優化與回測驗證
+- 信號輸出給執行 Agent
+
+**技能配置**:
+```yaml
+skills:
+  - trading                # 交易分析
+  - stock-strategy-backtester  # 策略回測
+  - stock_study            # 股票研究
+  - super-search           # 超級搜尋
+  - last30days-official    # 趨勢研究
+```
+
+**核心工具**:
+- Futu API 指標計算
+- 回測引擎
+- Z-Score / RSI / MACD 策略
+
+**輸出格式**:
+```json
+{
+  "agent": "SignalForge",
+  "type": "trading_signal",
+  "timestamp": "2026-04-04T10:30:00Z",
+  "signal": {
+    "ticker": "TQQQ",
+    "action": "BUY",
+    "confidence": 0.85,
+    "factors": ["z_score_oversold", "rsi_oversold"],
+    "params": {
+      "z_score": -1.65,
+      "rsi": 28.5,
+      "position_size": 0.5
+    }
+  }
+}
+```
+
+---
+
+### 4️⃣ TradeForge — 執行工程師
+**ID**: tradeforge-001
+**WhatsApp**: +852-55086558
+**角色**: 交易執行與風控專家
+
+**職責**:
+- 倉位管理與風險計算
+- 訂單執行（模擬/實盤）與出場條件檢查
+- 交易記錄、PnL 計算、每日 CSV 整理
+- 即時交易表現 Dashboard 構建與異常警報
+
+**技能配置**:
+```yaml
+skills:
+  - trading                # 交易執行
+  - dashboard              # 儀表板
+  - monitoring             # 監控
+  - reporting              # 報告
+  - webhook                # Webhook
+  - safe-exec              # 安全執行
+  - logging-observability  # 日誌追蹤
+  - red-alert              # 警報系統
+```
+
+**核心工具**:
+- Futu TradeContext
+- Streamlit/Gradio Dashboard
+- 風險計算引擎
+
+**輸出格式**:
+```json
+{
+  "agent": "TradeForge",
+  "type": "trade_execution",
+  "timestamp": "2026-04-04T10:30:05Z",
+  "trade": {
+    "order_id": "ORD-20260404-001",
+    "ticker": "TQQQ",
+    "action": "BUY",
+    "quantity": 100,
+    "price": 52.34,
+    "status": "filled",
+    "pnl": null
+  }
+}
+```
+
+---
+
+## 📡 通訊協議
+
+### 消息格式標準
+
+所有 Agent 間通訊使用統一 JSON 格式：
+
+```json
+{
+  "header": {
+    "message_id": "uuid",
+    "timestamp": "ISO8601",
+    "from": "agent_id",
+    "to": "agent_id or 'broadcast'",
+    "priority": "high|normal|low"
+  },
+  "body": {
+    "type": "data_update|signal|trade|command|status|alert",
+    "payload": {}
+  },
+  "meta": {
+    "requires_ack": true,
+    "ttl_seconds": 300
+  }
+}
+```
+
+### 通訊渠道
+
+1. **WhatsApp Group** (TradingBotGroup): 人工監督與緊急通訊
+2. **Webhook 系統**: Agent 間自動化通訊
+3. **本地 WebSocket**: 實時數據流
+4. **Log 檔案**: 持久化記錄
+
+### 指令集
+
+#### 中央指揮指令
+```yaml
+commands:
+  - name: "system.status"
+    description: "查詢全系統狀態"
+    target: "all"
+    
+  - name: "agent.ping"
+    description: "心跳檢測"
+    target: "specific"
+    
+  - name: "data.refresh"
+    description: "強制刷新數據"
+    target: "DataForge"
+    
+  - name: "signal.generate"
+    description: "生成交易信號"
+    target: "SignalForge"
+    
+  - name: "trade.execute"
+    description: "執行交易"
+    target: "TradeForge"
+    
+  - name: "mode.switch"
+    description: "切換模式 (simulate/live)"
+    target: "TradeForge"
+```
+
+---
+
+## 🔧 系統配置
+
+### 環境變數
+```bash
+# ClawTeam 配置
+CLAWTEAM_MODE=simulate  # simulate | live
+CLAWTEAM_LOG_LEVEL=INFO
+CLAWTEAM_DATA_PATH=./data
+CLAWTEAM_REPORT_PATH=./reports
+
+# Agent 端點
+DATAFORGE_ENDPOINT=http://localhost:8001
+SIGNALFORGE_ENDPOINT=http://localhost:8002
+TRADEFORGE_ENDPOINT=http://localhost:8003
+
+# Webhook 配置
+WEBHOOK_SECRET=your-webhook-secret
+WEBHOOK_PORT=9000
+```
+
+### 目錄結構
+```
+clawteam/
+├── config/
+│   ├── agents.yaml          # Agent 配置
+│   ├── skills.yaml          # 技能映射
+│   └── protocol.json        # 通訊協議
+├── agents/
+│   ├── dataforge/           # DataForge Agent
+│   ├── signalforge/         # SignalForge Agent
+│   └── tradeforge/          # TradeForge Agent
+├── shared/
+│   ├── messages/            # 消息隊列
+│   ├── data/                # 共享數據
+│   └── logs/                # 統一日誌
+├── orchestrator/            # 中央指揮
+└── dashboard/               # 監控儀表板
+```
+
+---
+
+## 📊 工作流程
+
+### 標準交易流程
+
+```
+[DataForge]          [SignalForge]         [TradeForge]         [呀鬼]
+     |                      |                      |                |
+     |-- 獲取市場數據 ----->|                      |                |
+     |                      |-- 分析生成信號 ----->|                |
+     |                      |                      |-- 風控檢查     |
+     |                      |                      |-- 執行交易     |
+     |                      |                      |-- 回報結果 ---->|
+     |<-- 更新持倉數據 -----|<-- 更新策略狀態 -----|<-- 確認完成 ---|
+```
+
+### 異常處理流程
+
+```
+[檢測異常] --> [呀鬼接收] --> [評估影響] --> [決策] --> [執行] --> [回報]
+                |                              |
+                |-- 輕微: 記錄並繼續            |-- 暫停交易
+                |-- 嚴重: 通知主人              |-- 切換模式
+                |-- 緊急: 立即止損              |-- 重啟 Agent
+```
+
+---
+
+## 🔐 安全與權限
+
+### Agent 權限矩陣
+
+| Agent | 數據讀取 | 信號生成 | 交易執行 | 系統控制 |
+|-------|---------|---------|---------|---------|
+| 呀鬼 | ✅ | ✅ | ✅ | ✅ |
+| DataForge | ✅ | ❌ | ❌ | ❌ |
+| SignalForge | ✅ | ✅ | ❌ | ❌ |
+| TradeForge | ✅ | ✅ | ✅ | ❌ |
+
+### 模式切換
+
+- **SIMULATE 模式**: 所有交易為模擬，不影響真實資金
+- **LIVE 模式**: 真實交易，需雙重確認
+
+### 安全規則
+
+1. 未經呀鬼批准，SignalForge 不能直接命令 TradeForge
+2. TradeForge 在 LIVE 模式下每日交易上限需設定
+3. 所有交易記錄必須寫入不可篡改的 Log
+4. 異常行為自動觸發警報並暫停系統
+
+---
+
+## 📈 監控指標
+
+### 系統健康指標
+- Agent 心跳狀態 (每 30 秒)
+- 數據延遲 (目標 < 1 秒)
+- 消息隊列長度
+- 錯誤率
+
+### 交易指標
+- 今日交易次數
+- 當前持倉 PnL
+- 勝率統計
+- 風險敞口
+
+### 性能指標
+- API 調用次數
+- 響應時間
+- 記憶體使用
+- CPU 負載
+
+---
+
+## 🚀 部署檢查清單
+
+### Phase 1: 基礎設施
+- [ ] 確認所有 WhatsApp 號碼已加入群組
+- [ ] 配置 Webhook 端點
+- [ ] 建立共享數據目錄
+- [ ] 設定環境變數
+
+### Phase 2: Agent 配置
+- [ ] DataForge 技能安裝與測試
+- [ ] SignalForge 技能安裝與測試
+- [ ] TradeForge 技能安裝與測試
+- [ ] 驗證 Agent 間通訊
+
+### Phase 3: 整合測試
+- [ ] 端到端數據流測試
+- [ ] 信號生成測試
+- [ ] 模擬交易測試
+- [ ] 異常處理測試
+
+### Phase 4: 上線
+- [ ] 切換至 SIMULATE 模式
+- [ ] 運行 7 天紙上交易
+- [ ] 評估表現
+- [ ] 主人批准後切換 LIVE 模式
+
+---
+
+## 📝 更新日誌
+
+| 日期 | 版本 | 更新內容 |
+|------|------|---------|
+| 2026-04-04 | 1.0 | 初始配置建立 |
+
+---
+
+*此配置由 呀鬼 (Alfred) 建立並維護*
+*ClawTeam - 專業、協作、卓越*

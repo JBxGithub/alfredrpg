@@ -1,0 +1,11 @@
+{
+  "session_id": "test-2026-04-19",
+  "messages": [
+    {"role": "user", "content": "幫我設定 heartbeat", "timestamp": "2026-04-19T14:00:00"},
+    {"role": "assistant", "content": "好的，我會刪除舊的設定", "timestamp": "2026-04-19T14:00:05"},
+    {"role": "user", "content": "錯了，我說 stop 不是 delete", "timestamp": "2026-04-19T14:00:10"}
+  ],
+  "tool_calls": [
+    {"tool": "cron.remove", "status": "executed"}
+  ]
+}

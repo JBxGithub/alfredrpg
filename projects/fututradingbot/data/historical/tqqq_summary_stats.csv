@@ -1,0 +1,25 @@
+Metric,Value
+Data Start Date,2010-02-11
+Data End Date,2026-04-02
+Total Trading Days,4060
+Total Return (%),20928.34
+CAGR (%),39.37
+Annualized Volatility (%),61.01
+Sharpe Ratio,0.853
+Sortino Ratio,1.097
+Calmar Ratio,0.482
+Max Drawdown (%),-81.66
+Average Leverage (vs QQQ),2.969
+Tracking Error (%),2.97
+Skewness,-0.220
+Kurtosis,6.961
+Hurst Exponent,-0.001
+OU Half-life (days),1479.0
+GARCH Persistence,0.9727
+VaR 95% (%),-6.18
+VaR 99% (%),-11.02
+CVaR 95% (%),-9.22
+Win Rate (%),55.8
+Avg Gain (%),2.58
+Avg Loss (%),-2.80
+Gain/Loss Ratio,0.92

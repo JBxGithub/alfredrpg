@@ -1,0 +1,91 @@
+# ClawTrade Pro 配置文件
+
+# 交易參數
+trading:
+  # 主要交易標的
+  primary_symbol: "TQQQ"
+  
+  # 策略參數
+  strategy:
+    name: "TQQQ_Momentum"
+    z_entry: 1.65
+    z_exit: 0.5
+    z_stop: 3.5
+    lookback: 60
+    rsi_overbought: 70
+    rsi_oversold: 30
+    rsi_period: 14
+    take_profit: 0.05
+    stop_loss: 0.03
+    time_stop_days: 7
+    position_size: 0.5
+    volume_threshold: 0.5
+  
+  # 交易時間 (US Eastern Time)
+  market_hours:
+    open: "09:30"
+    close: "16:00"
+    pre_market: "04:00"
+    after_hours: "20:00"
+
+# Futu API 配置
+futu:
+  host: "127.0.0.1"
+  port: 11111
+  market: "US"
+  env: "SIMULATE"  # SIMULATE 或 REAL
+
+# 風險管理
+risk:
+  max_single_position: 0.50
+  max_total_position: 1.00
+  max_single_symbol: 0.50
+  max_daily_loss: 0.03
+  max_consecutive_losses: 3
+  cooldown_minutes: 30
+
+# 數據庫配置
+database:
+  path: "clawtrade.db"
+  backup_enabled: true
+  backup_interval_hours: 24
+
+# 通知配置
+notifications:
+  whatsapp:
+    enabled: true
+    # 電話號碼在 secrets.yaml 中配置
+  
+  # 信號通知
+  on_signal: true
+  on_trade: true
+  on_risk_alert: true
+  
+  # 日報
+  daily_report: true
+  report_time: "16:30"
+
+# 心跳監控
+heartbeat:
+  enabled: true
+  interval_seconds: 300  # 5分鐘
+  price_timeout: 60
+  
+  # 告警閾值
+  alerts:
+    cpu_percent: 80
+    memory_percent: 85
+    disk_percent: 90
+
+# 日誌配置
+logging:
+  level: "INFO"
+  file: "logs/clawtrade.log"
+  max_size_mb: 100
+  backup_count: 10
+
+# 回測配置
+backtest:
+  initial_capital: 100000
+  commission_rate: 0.001
+  slippage: 0.001

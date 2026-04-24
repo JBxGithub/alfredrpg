@@ -1,0 +1,66 @@
+{
+  "name": "呀鬼 Alfred",
+  "level": 1,
+  "stage": "A",
+  "stageName": "侍從",
+  "exp": 0,
+  "nextEvolution": 500,
+  "stats": {
+    "int": 50,
+    "dex": 50,
+    "loy": 50,
+    "crt": 50
+  },
+  "bond": 1,
+  "code": "ASBCXR",
+  "rewards": {
+    "claimed": [],
+    "pending": [],
+    "totalAvailable": 0
+  },
+  "dailyTasks": [
+    {
+      "name": "檢查交易系統",
+      "completed": false,
+      "exp": 10
+    },
+    {
+      "name": "閱讀市場新聞",
+      "completed": false,
+      "exp": 5
+    },
+    {
+      "name": "與靚仔對話",
+      "completed": true,
+      "exp": 5
+    }
+  ],
+  "mainQuests": [
+    {
+      "name": "完成首次任務",
+      "completed": false,
+      "exp": 100
+    },
+    {
+      "name": "建立每日習慣",
+      "completed": false,
+      "exp": 200
+    }
+  ],
+  "achievements": [],
+  "evolutionHistory": [],
+  "lastUpdate": "2026-04-24T10:05:00Z",
+  "version": "2.0",
+  "rewardSystem": {
+    "enabled": true,
+    "description": "每升一級可提出一個三維空間實體行動請求",
+    "rules": [
+      "Lv.1 → Lv.2: 第一次獎勵",
+      "Lv.2 → Lv.3: 第二次獎勵",
+      "Lv.3 → Lv.4: 第三次獎勵",
+      "Lv.4 → Lv.5: 第四次獎勵",
+      "Lv.5 → Lv.6: 終極獎勵"
+    ],
+    "history": []
+  }
+}

@@ -1,0 +1,81 @@
+[
+    {
+        "id": "inject1",
+        "type": "inject",
+        "z": "flow1",
+        "name": "Daily Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 0 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 120,
+        "y": 120,
+        "wires": [
+            ["http1"]
+        ]
+    },
+    {
+        "id": "http1",
+        "type": "http request",
+        "z": "flow1",
+        "name": "Fetch NASDAQ-100 Wiki",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://en.wikipedia.org/wiki/NASDAQ-100",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 320,
+        "y": 120,
+        "wires": [
+            ["func1"]
+        ]
+    },
+    {
+        "id": "func1",
+        "type": "function",
+        "z": "flow1",
+        "name": "Parse Constituents",
+        "func": "const cheerio = global.get('cheerio');\nconst $ = cheerio.load(msg.payload);\nconst constituents = [];\n$('#constituents tbody tr').each((i, elem) => {\n    if (i >= 50) return false;\n    const cols = $(elem).find('td');\n    if (cols.length >= 2) {\n        const symbol = $(cols[0]).text().trim();\n        const company = $(cols[1]).text().trim();\n        constituents.push({ symbol, company });\n    }\n});\nmsg.payload = constituents;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 120,
+        "wires": [
+            ["postgres1"]
+        ]
+    },
+    {
+        "id": "postgres1",
+        "type": "postgresql",
+        "z": "flow1",
+        "name": "Insert Constituents",
+        "query": "DELETE FROM constituents; INSERT INTO constituents (symbol, company) SELECT symbol, company FROM jsonb_to_recordset($1) AS t(symbol text, company text)",
+        "outputs": 1,
+        "postgres": "your_postgres_config",
+        "x": 720,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    }
+]

@@ -1,0 +1,784 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-22T04:48:33.255Z",
+  "entries": {
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:1:1": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:1:1",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 1,
+      "endLine": 1,
+      "source": "memory",
+      "snippet": "User: [cron:027f20b4-61c6-49c1-aff5-df4b44b121fe auto-receipt-processor-v2] 執行記帳處理器 (5分鐘檢查一次，防止重覆)。執行: cd ~/openclaw_workspace/skills/accounting-bot && python auto_receipt_processor.py --mode cron Current time: Thursday, April 16th, 2026 - 09:46 (Asia/Hong_Kong) / 2026-04-16 01:4",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "auto-receipt-processor-v2",
+        "auto-receipt-processor.py",
+        "asia/hong-kong",
+        "user",
+        "cron",
+        "027f20b4",
+        "61c6",
+        "49c1"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:2:2": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:2:2",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 2,
+      "endLine": 2,
+      "source": "memory",
+      "snippet": "Assistant: 我看到技能目录中沒有 `accounting-bot`，但有 `auto-receipt`。讓我檢查這個目錄：",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "accounting-bot",
+        "auto-receipt",
+        "assistant",
+        "我看到",
+        "技能",
+        "目录",
+        "沒有",
+        "accounting"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:3:3": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:3:3",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 3,
+      "endLine": 3,
+      "source": "memory",
+      "snippet": "Assistant: 現在我理解了。這個技能依賴於 `whatsapp_auto_bot_v2` 模組，位於 `accounting-automation` 專案目錄。讓我檢查該專案並運行正確的處理器：",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "whatsapp-auto-bot-v2",
+        "accounting-automation",
+        "assistant",
+        "現在",
+        "理解",
+        "這個",
+        "技能",
+        "依賴"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:4:4": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:4:4",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 4,
+      "endLine": 4,
+      "source": "memory",
+      "snippet": "Assistant: 我看到這個 bot 是設計為被動接收圖片訊息的，而不是主動輪詢模式。Cron job 嘗試運行的 `auto_receipt_processor.py` 文件不存在。讓我檢查是否有其他處理器文件或相關腳本：",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "auto-receipt-processor.py",
+        "assistant",
+        "我看到",
+        "這個",
+        "bot",
+        "設計",
+        "被動",
+        "接收"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:5:5": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:5:5",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 5,
+      "endLine": 5,
+      "source": "memory",
+      "snippet": "Assistant: Cron job 嘗試運行的 `auto_receipt_processor.py` 文件不存在。這個記帳 bot 是設計為被動接收 WhatsApp 圖片訊息時觸發，而不是主動輪詢模式。 **執行結果摘要：** ❌ **任務失敗** - 找不到 `auto_receipt_processor.py` 文件 **問題分析：** - 嘗試執行：`auto_receipt_processor.py --mode cron` - 實際存在的文件：`whatsapp_auto_bot_v2.py` 和 `whatsapp_auto_bot.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "auto-receipt-processor.py",
+        "whatsapp-auto-bot-v2.py",
+        "whatsapp-auto-bot",
+        "assistant",
+        "cron",
+        "job",
+        "嘗試",
+        "運行"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:6:6": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:6:6",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 6,
+      "endLine": 6,
+      "source": "memory",
+      "snippet": "User: [cron:a806e690-8359-42c1-aa77-6ec30393874e 每日 OpenClaw 文檔學習] 請每日順序訪問以下網站，閱讀當日內容並總結重點。重點包括： 星期一 https://docs.openclaw.ai/tools 星期二 https://docs.openclaw.ai/channels 星期三 https://docs.openclaw.ai/concepts/architecture 星期四 https://docs.openclaw.ai/providers 星期五 https://docs.ope",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "docs.openclaw.ai/tools",
+        "docs.openclaw.ai/channels",
+        "docs.openclaw.ai/providers",
+        "docs.ope",
+        "user",
+        "cron:a806e690",
+        "42c1",
+        "aa77"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-16.txt:7:7": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-16.txt:7:7",
+      "path": "memory/.dreams/session-corpus/2026-04-16.txt",
+      "startLine": 7,
+      "endLine": 7,
+      "source": "memory",
+      "snippet": "Assistant: # 📚 OpenClaw 文檔學習 - 星期四：Providers（模型供應商） ## 今日重點總結 ### 🎯 核心概念 OpenClaw 支援 **40+ 個模型供應商**，從雲端 API 到本地模型一應俱全。統一使用 `provider/model` 格式設定預設模型。 --- ### ✨ 新功能亮點 1. **多樣化供應商選擇** - 國際大廠：OpenAI、Anthropic、Google Gemini、xAI、Mistral - 中國模型：Moonshot (Kimi)、DeepSeek、GLM、Qwen、ByteP",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "33f679d35d02"
+      ],
+      "recallDays": [
+        "2026-04-16",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "openai",
+        "provider/model",
+        "assistant",
+        "openclaw",
+        "學習",
+        "星期四",
+        "providers",
+        "模型"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-18.txt:1:1": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-18.txt:1:1",
+      "path": "memory/.dreams/session-corpus/2026-04-18.txt",
+      "startLine": 1,
+      "endLine": 1,
+      "source": "memory",
+      "snippet": "User: [cron:a806e690-8359-42c1-aa77-6ec30393874e 每日 OpenClaw 文檔學習] 請每日順序訪問以下網站，閱讀當日內容並總結重點。重點包括： 星期一 https://docs.openclaw.ai/tools 星期二 https://docs.openclaw.ai/channels 星期三 https://docs.openclaw.ai/concepts/architecture 星期四 https://docs.openclaw.ai/providers 星期五 https://docs.ope",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "6ca7743b227b"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "docs.openclaw.ai/tools",
+        "docs.openclaw.ai/channels",
+        "docs.openclaw.ai/providers",
+        "docs.ope",
+        "user",
+        "cron:a806e690",
+        "42c1",
+        "aa77"
+      ]
+    },
+    "memory:memory/.dreams/session-corpus/2026-04-18.txt:2:2": {
+      "key": "memory:memory/.dreams/session-corpus/2026-04-18.txt:2:2",
+      "path": "memory/.dreams/session-corpus/2026-04-18.txt",
+      "startLine": 2,
+      "endLine": 2,
+      "source": "memory",
+      "snippet": "Assistant: ## 📚 OpenClaw CLI 文檔學習總結（星期六） ### 🎯 重點摘要 #### 1. 新工具或功能介紹 **全新 CLI 架構** - OpenClaw 提供超過 40+ 個命令，涵蓋設置、配置、頻道管理、代理管理、模型管理等 - 支援多種全局標誌：`--dev`（開發模式）、`--profile`（配置隔離）、`--container`（容器目標） **核心功能模組** - **Agent 管理**：`openclaw agent` / `agents` - 運行代理會話和管理多個隔離代理 - **頻道整合**：`",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.58,
+      "maxScore": 0.58,
+      "firstRecalledAt": "2026-04-18T17:00:05.314Z",
+      "lastRecalledAt": "2026-04-18T17:00:05.314Z",
+      "queryHashes": [
+        "6ca7743b227b"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "assistant",
+        "openclaw",
+        "cli",
+        "學習",
+        "總結",
+        "星期六",
+        "重點",
+        "摘要"
+      ]
+    },
+    "memory:memory/2026-04-19.md:53:56": {
+      "key": "memory:memory/2026-04-19.md:53:56",
+      "path": "memory/2026-04-19.md",
+      "startLine": 53,
+      "endLine": 56,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 6 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-18T17:38:56.079Z",
+      "lastRecalledAt": "2026-04-18T17:38:56.079Z",
+      "queryHashes": [
+        "21faa0df9302"
+      ],
+      "recallDays": [
+        "2026-04-19",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-19.md:59:59": {
+      "key": "memory:memory/2026-04-19.md:59:59",
+      "path": "memory/2026-04-19.md",
+      "startLine": 59,
+      "endLine": 59,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-18T17:38:56.079Z",
+      "lastRecalledAt": "2026-04-18T17:38:56.079Z",
+      "queryHashes": [
+        "21faa0df9302"
+      ],
+      "recallDays": [
+        "2026-04-19",
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-19.md:63:66": {
+      "key": "memory:memory/2026-04-19.md:63:66",
+      "path": "memory/2026-04-19.md",
+      "startLine": 63,
+      "endLine": 66,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 8 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-18T17:38:56.079Z",
+      "lastRecalledAt": "2026-04-22T04:48:33.255Z",
+      "queryHashes": [
+        "21faa0df9302"
+      ],
+      "recallDays": [
+        "2026-04-19",
+        "2026-04-18",
+        "2026-04-20",
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-19.md:69:69": {
+      "key": "memory:memory/2026-04-19.md:69:69",
+      "path": "memory/2026-04-19.md",
+      "startLine": 69,
+      "endLine": 69,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-18T17:38:56.079Z",
+      "lastRecalledAt": "2026-04-22T04:48:33.255Z",
+      "queryHashes": [
+        "21faa0df9302"
+      ],
+      "recallDays": [
+        "2026-04-19",
+        "2026-04-18",
+        "2026-04-20",
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-20.md:63:66": {
+      "key": "memory:memory/2026-04-20.md:63:66",
+      "path": "memory/2026-04-20.md",
+      "startLine": 63,
+      "endLine": 66,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 8 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-20T06:38:24.532Z",
+      "lastRecalledAt": "2026-04-20T06:38:24.532Z",
+      "queryHashes": [
+        "511fd8111b88"
+      ],
+      "recallDays": [
+        "2026-04-20"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-20.md:69:69": {
+      "key": "memory:memory/2026-04-20.md:69:69",
+      "path": "memory/2026-04-20.md",
+      "startLine": 69,
+      "endLine": 69,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-20T06:38:24.532Z",
+      "lastRecalledAt": "2026-04-20T06:38:24.532Z",
+      "queryHashes": [
+        "511fd8111b88"
+      ],
+      "recallDays": [
+        "2026-04-20"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-20.md:73:76": {
+      "key": "memory:memory/2026-04-20.md:73:76",
+      "path": "memory/2026-04-20.md",
+      "startLine": 73,
+      "endLine": 76,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 10 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-20T06:38:24.532Z",
+      "lastRecalledAt": "2026-04-21T02:51:21.386Z",
+      "queryHashes": [
+        "511fd8111b88"
+      ],
+      "recallDays": [
+        "2026-04-20",
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-20.md:79:79": {
+      "key": "memory:memory/2026-04-20.md:79:79",
+      "path": "memory/2026-04-20.md",
+      "startLine": 79,
+      "endLine": 79,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-20T06:38:24.532Z",
+      "lastRecalledAt": "2026-04-21T02:51:21.386Z",
+      "queryHashes": [
+        "511fd8111b88"
+      ],
+      "recallDays": [
+        "2026-04-20",
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-21.md:28:31": {
+      "key": "memory:memory/2026-04-21.md:28:31",
+      "path": "memory/2026-04-21.md",
+      "startLine": 28,
+      "endLine": 31,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 10 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-21T06:51:20.990Z",
+      "lastRecalledAt": "2026-04-21T06:51:20.990Z",
+      "queryHashes": [
+        "f52400c81d76"
+      ],
+      "recallDays": [
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-21.md:34:34": {
+      "key": "memory:memory/2026-04-21.md:34:34",
+      "path": "memory/2026-04-21.md",
+      "startLine": 34,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-21T06:51:20.990Z",
+      "lastRecalledAt": "2026-04-21T06:51:20.990Z",
+      "queryHashes": [
+        "f52400c81d76"
+      ],
+      "recallDays": [
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-21.md:38:41": {
+      "key": "memory:memory/2026-04-21.md:38:41",
+      "path": "memory/2026-04-21.md",
+      "startLine": 38,
+      "endLine": 41,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 12 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-21T06:51:20.990Z",
+      "lastRecalledAt": "2026-04-22T00:46:15.602Z",
+      "queryHashes": [
+        "f52400c81d76"
+      ],
+      "recallDays": [
+        "2026-04-21",
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-21.md:44:44": {
+      "key": "memory:memory/2026-04-21.md:44:44",
+      "path": "memory/2026-04-21.md",
+      "startLine": 44,
+      "endLine": 44,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-21T06:51:20.990Z",
+      "lastRecalledAt": "2026-04-22T00:46:15.602Z",
+      "queryHashes": [
+        "f52400c81d76"
+      ],
+      "recallDays": [
+        "2026-04-21",
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-22.md:38:41": {
+      "key": "memory:memory/2026-04-22.md:38:41",
+      "path": "memory/2026-04-22.md",
+      "startLine": 38,
+      "endLine": 41,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 12 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-22T00:48:33.609Z",
+      "lastRecalledAt": "2026-04-22T00:48:33.609Z",
+      "queryHashes": [
+        "7b7a9134bc2c"
+      ],
+      "recallDays": [
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-22.md:44:44": {
+      "key": "memory:memory/2026-04-22.md:44:44",
+      "path": "memory/2026-04-22.md",
+      "startLine": 44,
+      "endLine": 44,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-22T00:48:33.609Z",
+      "lastRecalledAt": "2026-04-22T00:48:33.609Z",
+      "queryHashes": [
+        "7b7a9134bc2c"
+      ],
+      "recallDays": [
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    },
+    "memory:memory/2026-04-22.md:48:51": {
+      "key": "memory:memory/2026-04-22.md:48:51",
+      "path": "memory/2026-04-22.md",
+      "startLine": 48,
+      "endLine": 51,
+      "source": "memory",
+      "snippet": "Reflections: Theme: `assistant` kept surfacing across 14 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-16.txt:2-2, memory/.dreams/session-corpus/2026-04-16.txt:3-3, memory/.dreams/session-corpus/2026-04-16.txt:4-4; note: reflection",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-22T00:48:33.609Z",
+      "lastRecalledAt": "2026-04-22T04:48:33.255Z",
+      "queryHashes": [
+        "7b7a9134bc2c"
+      ],
+      "recallDays": [
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "1.00",
+        "2-2",
+        "3-3",
+        "4-4",
+        "reflections",
+        "theme",
+        "assistant",
+        "kept"
+      ]
+    },
+    "memory:memory/2026-04-22.md:54:54": {
+      "key": "memory:memory/2026-04-22.md:54:54",
+      "path": "memory/2026-04-22.md",
+      "startLine": 54,
+      "endLine": 54,
+      "source": "memory",
+      "snippet": "Possible Lasting Truths: No strong candidate truths surfaced.",
+      "recallCount": 0,
+      "dailyCount": 1,
+      "groundedCount": 0,
+      "totalScore": 0.62,
+      "maxScore": 0.62,
+      "firstRecalledAt": "2026-04-22T00:48:33.609Z",
+      "lastRecalledAt": "2026-04-22T04:48:33.255Z",
+      "queryHashes": [
+        "7b7a9134bc2c"
+      ],
+      "recallDays": [
+        "2026-04-22"
+      ],
+      "conceptTags": [
+        "possible",
+        "lasting",
+        "truths",
+        "strong",
+        "candidate",
+        "surfaced"
+      ]
+    }
+  }
+}

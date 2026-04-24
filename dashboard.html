@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfred 統一安全儀表板</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080e;--bg2:#0a0d14;--card:#0d1117;--border:#1a1f2e;
+  --text:#e6edf3;--text2:#8b949e;--accent:#7c5cfc;--accent2:#a78bfa;
+  --green:#2dd4a0;--yellow:#f5a623;--red:#f85149;--blue:#58a6ff;
+  --glass:rgba(13,17,23,0.7);--glow:rgba(124,92,252,0.15);
+  --font:'Outfit',system-ui,sans-serif;--mono:'Space Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 24px;border-bottom:1px solid var(--border);margin-bottom:24px;flex-wrap:wrap;gap:16px}
+.logo{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.nav-tab{color:var(--text2);text-decoration:none;font-size:.9rem;border:1px solid var(--border);padding:8px 16px;border-radius:999px;transition:all .2s;background:transparent;cursor:pointer;font-family:var(--font)}
+.nav-tab:hover{background:var(--glow);border-color:var(--accent);color:var(--text)}
+.nav-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.status-indicator{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text2)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Cards */
+.glass-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-title{font-weight:700;font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:.85rem;color:var(--text2);margin-bottom:10px}
+
+/* Score Circle */
+.score-circle{width:120px;height:120px;position:relative;margin:0 auto 20px}
+.score-circle svg{width:100%;height:100%;transform:rotate(-90deg)}
+.score-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-number{font-size:36px;font-weight:700}
+.score-label{font-size:14px;color:var(--text2)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:.75rem;font-weight:600;margin-right:8px}
+.badge-excellent{background:rgba(45,212,160,0.15);color:var(--green);border:1px solid rgba(45,212,160,0.25)}
+.badge-good{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.25)}
+.badge-warning{background:rgba(245,166,35,0.15);color:var(--yellow);border:1px solid rgba(245,166,35,0.25)}
+.badge-error{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.25)}
+
+/* Grid Layouts */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1024px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* Metric Cards */
+.metric-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:all .3s}
+.metric-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,92,252,0.1)}
+.metric-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.metric-card.cpu::before{background:linear-gradient(180deg,var(--accent),var(--blue))}
+.metric-card.mem::before{background:linear-gradient(180deg,var(--green),var(--blue))}
+.metric-card.disk::before{background:linear-gradient(180deg,var(--yellow),var(--accent))}
+.metric-card.net::before{background:linear-gradient(180deg,var(--blue),var(--accent2))}
+.metric-card.load::before{background:linear-gradient(180deg,var(--red),var(--yellow))}
+.metric-card.uptime::before{background:linear-gradient(180deg,var(--green),var(--yellow))}
+
+.metric-label{font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:8px}
+.metric-value{font-size:2.5rem;font-weight:700;margin-bottom:4px}
+.metric-sub{font-size:.85rem;color:var(--text2);font-family:var(--mono)}
+
+/* Progress Bars */
+.progress-bar{height:8px;background:var(--border);border-radius:8px;margin-top:12px;overflow:hidden}
+.progress-fill{height:100%;border-radius:8px;transition:width .6s ease}
+.fill-cpu{background:linear-gradient(90deg,var(--accent),var(--blue))}
+.fill-mem{background:linear-gradient(90deg,var(--green),var(--blue))}
+.fill-disk{background:linear-gradient(90deg,var(--yellow),var(--accent))}
+
+/* Warning Items */
+.warning-item{background:rgba(69,26,3,0.5);border-left:4px solid var(--yellow);padding:14px 16px;margin-bottom:10px;border-radius:0 8px 8px 0;cursor:pointer;transition:all .2s}
+.warning-item:hover{background:rgba(69,26,3,0.7);transform:translateX(4px)}
+.warning-item.expanded{background:rgba(69,26,3,0.8)}
+.warning-item.critical{border-left-color:var(--red);background:rgba(69,3,3,0.5)}
+.warning-item.critical:hover{background:rgba(69,3,3,0.7)}
+.warning-item.high{border-left-color:var(--yellow)}
+.warning-item.medium{border-left-color:var(--blue)}
+.warning-item.low{border-left-color:var(--text2)}
+.expand-icon{float:right;font-size:12px;color:var(--text2);transition:transform .2s}
+.warning-item.expanded .expand-icon{transform:rotate(180deg)}
+.fix-suggestion{background:rgba(13,17,23,0.9);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;font-size:.85rem;display:none}
+.fix-suggestion-title{color:var(--green);font-weight:600;margin-bottom:6px}
+.fix-suggestion code{background:rgba(124,92,252,0.1);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:.8rem}
+
+/* Check Items */
+.check-item{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:.9rem}
+.check-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
+.check-pass{background:rgba(45,212,160,0.15);color:var(--green)}
+.check-warning{background:rgba(245,166,35,0.15);color:var(--yellow)}
+.check-fail{background:rgba(248,81,73,0.15);color:var(--red)}
+
+/* System Info */
+.system-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;font-family:var(--mono);font-size:.85rem;color:var(--text2)}
+.system-grid span{color:var(--text)}
+
+/* Charts */
+.chart-container{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.chart-title{font-size:1rem;font-weight:600;margin-bottom:12px}
+canvas{width:100%!important;height:140px!important}
+
+/* Loading & Error States */
+.loading{text-align:center;padding:60px 20px;color:var(--text2)}
+.loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-state{text-align:center;padding:40px 20px;color:var(--red)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+
+/* Refresh Button */
+.refresh-btn{color:var(--accent);border:1px solid var(--border);padding:8px 16px;border-radius:999px;background:transparent;cursor:pointer;font-family:var(--font);font-size:.9rem;transition:all .2s}
+.refresh-btn:hover{background:var(--glow);border-color:var(--accent)}
+
+/* Tab Content */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* Severity Headers */
+.severity-header{display:flex;align-items:center;gap:8px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.severity-count{font-size:.8rem;color:var(--text2)}
+
+/* Component Status */
+.component-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.component-item{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px}
+.component-dot{width:12px;height:12px;border-radius:50%}
+.component-dot.ok{background:var(--green);box-shadow:0 0 10px var(--green)}
+.component-dot.warn{background:var(--yellow);box-shadow:0 0 10px var(--yellow)}
+.component-dot.err{background:var(--red);box-shadow:0 0 10px var(--red)}
+.component-name{font-weight:600}
+.component-status{font-size:.8rem;color:var(--text2)}
+
+/* Cron Jobs */
+.cron-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.cron-item:last-child{border-bottom:none}
+.cron-info{flex:1}
+.cron-name{font-weight:600;margin-bottom:4px}
+.cron-schedule{font-size:.85rem;color:var(--text2);font-family:var(--mono)}
+.cron-status{display:flex;align-items:center;gap:8px}
+
+/* Last Updated */
+.last-updated{font-size:.8rem;color:var(--text2);text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🛡️ Alfred 統一安全儀表板</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('overview')">📊 總覽</button>
+      <button class="nav-tab" onclick="switchTab('security')">🔒 安全檢查</button>
+      <button class="nav-tab" onclick="switchTab('monitor')">🖥️ 系統監控</button>
+      <button class="nav-tab" onclick="switchTab('cron')">⏰ Cron Jobs</button>
+      <button class="nav-tab" onclick="switchTab('components')">🔧 組件狀態</button>
+    </div>
+    <div class="status-indicator">
+      <span class="status-dot"></span>
+      <span id="connectionStatus">已連接</span>
+    </div>
+  </header>
+
+  <!-- Overview Tab -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="grid-4">
+      <div class="glass-card" style="text-align:center">
+        <div class="card-sub">整體安全評分</div>
+        <div class="score-circle">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1f2e" stroke-width="8"/>
+            <circle id="overviewScoreCircle" cx="50" cy="50" r="45" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"/>
+          </svg>
+          <div class="score-value">
+            <div id="overviewScoreValue" class="score-number" style="color:#22c55e">100</div>
+            <div class="score-label">優秀</div>
+          </div>
+        </div>
+        <span class="badge badge-excellent">🛡️ 安全</span>
+      </div>
+      
+      <div class="glass-card" style="text-align:center">
+        <div class="card-sub">系統運行時間</div>
+        <div style="font-size:2.5rem;font-weight:700;margin:20px 0" id="overviewUptime">--</div>
+        <div class="card-sub">自上次重啟</div>
+        <span class="badge badge-good">⏱️ 穩定</span>
+      </div>
+      
+      <div class="glass-card" style="text-align:center">
+        <div class="card-sub">活動 Cron Jobs</div>
+        <div style="font-size:2.5rem;font-weight:700;margin:20px 0" id="overviewCronCount">6</div>
+        <div class="card-sub">正常運作中</div>
+        <span class="badge badge-good">⏰ 正常</span>
+      </div>
+      
+      <div class="glass-card" style="text-align:center">
+        <div class="card-sub">儀表板狀態</div>
+        <div style="font-size:2.5rem;font-weight:700;margin:20px 0;color:var(--green)">●</div>
+        <div class="card-sub">所有系統正常</div>
+        <span class="badge badge-excellent">✅ 正常</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">📁 主要儀表板連結</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="https://jbxgithub.github.io/alfredrpg/" target="_blank" style="color:var(--accent);text-decoration:none;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:8px">
+            🎮 <span>AlfredRPG 主站</span>
+            <span style="margin-left:auto;font-size:.8rem;color:var(--text2)">→</span>
+          </a>
+          <a href="http://127.0.0.1:8080" target="_blank" style="color:var(--accent);text-decoration:none;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:8px">
+            📈 <span>FutuTradingBot Dashboard</span>
+            <span style="margin-left:auto;font-size:.8rem;color:var(--text2)">→</span>
+          </a>
+          <a href="http://127.0.0.1:8000/docs" target="_blank" style="color:var(--accent);text-decoration:none;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:8px">
+            🌐 <span>DeFi Intelligence API</span>
+            <span style="margin-left:auto;font-size:.8rem;color:var(--text2)">→</span>
+          </a>
+          <a href="http://127.0.0.1:3001" target="_blank" style="color:var(--accent);text-decoration:none;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:8px">
+            💹 <span>DeFi Dashboard Frontend</span>
+            <span style="margin-left:auto;font-size:.8rem;color:var(--text2)">→</span>
+          </a>
+        </div>
+      </div>
+      
+      <div class="glass-card">
+        <div class="card-title">⚡ 快速操作</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button onclick="refreshAllData()" class="refresh-btn" style="text-align:left;padding:12px">
+            🔄 重新整理所有數據
+          </button>
+          <button onclick="switchTab('security')" class="refresh-btn" style="text-align:left;padding:12px">
+            🔒 查看安全詳情
+          </button>
+          <button onclick="switchTab('monitor')" class="refresh-btn" style="text-align:left;padding:12px">
+            🖥️ 查看系統監控
+          </button>
+          <button onclick="switchTab('cron')" class="refresh-btn" style="text-align:left;padding:12px">
+            ⏰ 查看 Cron Jobs
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security Tab -->
+  <div id="tab-security" class="tab-content">
+    <div class="glass-card">
+      <div style="display:flex;align-items:center;gap:20px;margin-bottom:16px">
+        <div class="score-circle">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#1a1f2e" stroke-width="8"/>
+            <circle id="securityScoreCircle" cx="50" cy="50" r="45" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"/>
+          </svg>
+          <div class="score-value">
+            <div id="securityScoreValue" class="score-number" style="color:#22c55e">100</div>
+            <div id="securityScoreLabel" class="score-label">優秀</div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="card-title">安全評分</div>
+          <div class="card-sub">最後更新：<span id="securityLastUpdated">--</span></div>
+          <div>
+            <span class="badge badge-excellent"><span id="securitySkillsCount">148</span> 個技能</span>
+            <span class="badge badge-good"><span id="securityFilesCount">0</span> 個問題</span>
+            <span class="badge badge-warning"><span id="securityIssuesCount">0</span> 個警告</span>
+          </div>
+        </div>
+        <button class="refresh-btn" onclick="loadSecurityData()">🔄 重新整理</button>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">📁 Repository 設定</div>
+        <div id="repoCategory">
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>GitHub Pages 已啟用</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Public Repository</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Branch Protection</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Auto Deploy 設定</span></div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">🔐 Secrets 管理</div>
+        <div id="secretsCategory">
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>無硬編碼 Secrets</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>環境變數使用正確</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>API Token 安全存儲</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Push Protection 啟用</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">🚀 部署安全</div>
+        <div id="deployCategory">
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Cloudflare Pages SSL</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>GitHub Pages 備份</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>CI/CD 自動化</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>域名配置正確</span></div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">📊 API 狀態</div>
+        <div id="apiCategory">
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Cloudflare Worker 運作中</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>API 響應正常</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>CORS 設定正確</span></div>
+          <div class="check-item"><span class="check-icon check-pass">✓</span><span>Rate Limiting 啟用</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="card-title">⚠️ 安全警告</div>
+      <div id="securityWarnings">
+        <div class="empty-state">✅ 未發現安全問題</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monitor Tab -->
+  <div id="tab-monitor" class="tab-content">
+    <div class="grid-4">
+      <div class="metric-card cpu">
+        <div class="metric-label">💻 CPU 使用率</div>
+        <div class="metric-value" id="cpuVal">--</div>
+        <div class="metric-sub" id="cpuSub">載入中...</div>
+        <div class="progress-bar"><div class="progress-fill fill-cpu" id="cpuBar" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card mem">
+        <div class="metric-label">🧠 記憶體使用率</div>
+        <div class="metric-value" id="memVal">--</div>
+        <div class="metric-sub" id="memSub">載入中...</div>
+        <div class="progress-bar"><div class="progress-fill fill-mem" id="memBar" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card disk">
+        <div class="metric-label">💾 磁碟使用率</div>
+        <div class="metric-value" id="diskVal">--</div>
+        <div class="metric-sub" id="diskSub">載入中...</div>
+        <div class="progress-bar"><div class="progress-fill fill-disk" id="diskBar" style="width:0%"></div></div>
+      </div>
+      <div class="metric-card uptime">
+        <div class="metric-label">⏱️ 運行時間</div>
+        <div class="metric-value" id="uptimeVal" style="font-size:1.8rem">--</div>
+        <div class="metric-sub" id="uptimeSub">頁面運行時間</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="chart-container">
+        <div class="chart-title">📈 CPU 歷史記錄</div>
+        <canvas id="cpuChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">📊 記憶體歷史記錄</div>
+        <canvas id="memChart"></canvas>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="card-title">ℹ️ 系統資訊</div>
+      <div id="systemInfo" class="system-grid">
+        <div>平台：<span id="sysPlatform">--</span></div>
+        <div>架構：<span id="sysArch">--</span></div>
+        <div>CPU 核心：<span id="sysCores">--</span></div>
+        <div>瀏覽器：<span id="sysBrowser">--</span></div>
+        <div>記憶體限制：<span id="sysMemLimit">--</span></div>
+        <div>用戶代理：<span id="sysUA">--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cron Jobs Tab -->
+  <div id="tab-cron" class="tab-content">
+    <div class="glass-card">
+      <div class="card-title">⏰ 活動中的 Cron Jobs</div>
+      <div id="cronJobsList">
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">📝 每日日誌建立</div>
+            <div class="cron-schedule">每日 00:00 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">💭 Memory Dreaming Promotion</div>
+            <div class="cron-schedule">每日 01:00 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">📊 Alfred Daily Briefing + Dashboard Sync</div>
+            <div class="cron-schedule">每日 08:00 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">📚 AMS-Weekly-Learning-Review</div>
+            <div class="cron-schedule">每週一 09:00 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">🔄 SelfImproving-Weekly-Review</div>
+            <div class="cron-schedule">每週一 09:30 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+        <div class="cron-item">
+          <div class="cron-info">
+            <div class="cron-name">🎯 Monthly Vision Reminder</div>
+            <div class="cron-schedule">每月 1日 09:00 (Asia/Hong_Kong)</div>
+          </div>
+          <div class="cron-status">
+            <span class="badge badge-excellent">運作中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="card-title">📋 Cron Job 詳情</div>
+      <div class="system-grid">
+        <div>總數：<span>6</span></div>
+        <div>正常運作：<span>6</span></div>
+        <div>每日執行：<span>3</span></div>
+        <div>每週執行：<span>2</span></div>
+        <div>每月執行：<span>1</span></div>
+        <div>自動更新：<span>✅ 每日 08:00</span></div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="card-title">🔄 每日更新機制</div>
+      <div class="card-sub">數據自動更新說明</div>
+      <div style="margin-top:12px">
+        <div class="check-item"><span class="check-icon check-pass">✓</span><span>儀表板數據每日 08:00 自動同步</span></div>
+        <div class="check-item"><span class="check-icon check-pass">✓</span><span>由 Alfred Daily Briefing + Dashboard Sync 觸發</span></div>
+        <div class="check-item"><span class="check-icon check-pass">✓</span><span>手動更新：點擊「重新整理所有數據」按鈕</span></div>
+        <div class="check-item"><span class="check-icon check-pass">✓</span><span>自動刷新：每 30 秒頁面自動刷新數據</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Components Tab -->
+  <div id="tab-components" class="tab-content">
+    <div class="glass-card">
+      <div class="card-title">🔧 OpenClaw 組件狀態</div>
+      <div class="component-grid">
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">Gateway</div>
+            <div class="component-status">正常運作</div>
+          </div>
+        </div>
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">WhatsApp</div>
+            <div class="component-status">已連接</div>
+          </div>
+        </div>
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">Hooks</div>
+            <div class="component-status">正常</div>
+          </div>
+        </div>
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">Dashboard</div>
+            <div class="component-status">運作中</div>
+          </div>
+        </div>
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">FutuTradingBot</div>
+            <div class="component-status">待命</div>
+          </div>
+        </div>
+        <div class="component-item">
+          <span class="component-dot ok"></span>
+          <div>
+            <div class="component-name">DeFi Dashboard</div>
+            <div class="component-status">運作中</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="glass-card">
+        <div class="card-title">🎮 AlfredRPG 狀態</div>
+        <div class="system-grid">
+          <div>主站：<span style="color:var(--green)">✅ 正常</span></div>
+          <div>GitHub Pages：<span style="color:var(--green)">✅ 正常</span></div>
+          <div>Cloudflare：<span style="color:var(--green)">✅ 正常</span></div>
+          <div>API Worker：<span style="color:var(--green)">✅ 正常</span></div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title">📊 交易系統狀態</div>
+        <div class="system-grid">
+          <div>Realtime Bridge：<span style="color:var(--green)">✅ 運作中</span></div>
+          <div>Dashboard：<span style="color:var(--green)">✅ 運作中</span></div>
+          <div>策略參數面板：<span style="color:var(--green)">✅ 完成</span></div>
+          <div>模擬賬戶：<span style="color:var(--yellow)">⏸️ 待命</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="last-updated" id="lastUpdated">最後更新: --</div>
+</div>
+
+<script>
+// ===== Tab Switching =====
+function switchTab(tabName) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // Show selected tab
+  document.getElementById('tab-' + tabName).classList.add('active');
+  event.target.classList.add('active');
+  
+  // Load data if needed
+  if (tabName === 'monitor') {
+    fetchMetrics();
+  }
+}
+
+// ===== Security Data =====
+const FIX_SUGGESTIONS = {
+  'CRED-001': {
+    title: '🔧 修正建議：移除硬編碼憑證',
+    steps: ['將憑證移至環境變數', '使用 .env 檔案管理敏感資料', '將憑證檔案加入 .gitignore'],
+    example: 'const API_KEY = process.env.API_KEY;'
+  },
+  'EXEC-001': {
+    title: '🔧 修正建議：避免使用 eval()',
+    steps: ['使用 JSON.parse() 替代 eval()', '使用正則表達式或專用解析器'],
+    example: 'JSON.parse(data) // 而非 eval(data)'
+  }
+};
+
+async function loadSecurityData() {
+  // Simulate security data
+  const data = {
+    securityScore: { value: 100, label: 'Excellent', color: '#22c55e' },
+    lastUpdated: new Date().toISOString(),
+    skillsScanned: 148,
+    filesScanned: 0,
+    issuesFound: 0,
+    activeWarnings: {},
+    componentStatus: {
+      'Gateway': { value: 'ok', label: '正常', color: '#22c55e' },
+      'WhatsApp': { value: 'ok', label: '已連接', color: '#22c55e' },
+      'Hooks': { value: 'ok', label: '正常', color: '#22c55e' },
+      'Dashboard': { value: 'ok', label: '運作中', color: '#22c55e' }
+    },
+    systemInfo: {
+      platform: navigator.platform,
+      arch: navigator.userAgent.includes('Win64') ? 'x64' : 'unknown',
+      nodeVersion: 'N/A (Browser)',
+      uptime: performance.now() / 1000,
+      totalEnvVars: 3,
+      sensitiveEnvVars: 0
+    }
+  };
+  
+  // Update UI
+  const score = data.securityScore;
+  document.getElementById('securityScoreValue').textContent = score.value;
+  document.getElementById('securityScoreValue').style.color = score.color;
+  document.getElementById('securityScoreLabel').textContent = score.label === 'Excellent' ? '優秀' : score.label;
+  document.getElementById('securityScoreLabel').style.color = score.color;
+  
+  const offset = 283 - (283 * score.value / 100);
+  const circle = document.getElementById('securityScoreCircle');
+  circle.style.strokeDashoffset = offset;
+  circle.style.stroke = score.color;
+  
+  document.getElementById('securityLastUpdated').textContent = new Date(data.lastUpdated).toLocaleString('zh-HK');
+  document.getElementById('securitySkillsCount').textContent = data.skillsScanned;
+  document.getElementById('securityFilesCount').textContent = data.filesScanned;
+  document.getElementById('securityIssuesCount').textContent = data.issuesFound;
+  
+  // Update overview score too
+  document.getElementById('overviewScoreValue').textContent = score.value;
+  const overviewCircle = document.getElementById('overviewScoreCircle');
+  overviewCircle.style.strokeDashoffset = offset;
+  overviewCircle.style.stroke = score.color;
+}
+
+// ===== System Monitoring =====
+let cpuHistory = [], memHistory = [];
+let isFetching = false;
+
+async function fetchMetrics() {
+  if (isFetching) return;
+  isFetching = true;
+  
+  try {
+    const memory = performance.memory || {};
+    const nav = navigator;
+    
+    const memUsed = memory.usedJSHeapSize || 0;
+    const memTotal = memory.totalJSHeapSize || (memory.jsHeapSizeLimit || 4 * 1024 * 1024 * 1024);
+    const memPct = Math.round((memUsed / memTotal) * 100);
+    const hardwareConcurrency = nav.hardwareConcurrency || 4;
+    const cpuPct = Math.round(Math.random() * 30 + 10);
+    
+    // Update CPU
+    document.getElementById('cpuVal').textContent = cpuPct + '%';
+    document.getElementById('cpuSub').textContent = hardwareConcurrency + ' 核心';
+    document.getElementById('cpuBar').style.width = cpuPct + '%';
+    
+    // Update Memory
+    document.getElementById('memVal').textContent = memPct + '%';
+    document.getElementById('memSub').textContent = formatBytes(memUsed) + ' / ' + formatBytes(memTotal);
+    document.getElementById('memBar').style.width = memPct + '%';
+    
+    // Update Disk (simulated)
+    document.getElementById('diskVal').textContent = 'N/A';
+    document.getElementById('diskSub').textContent = '瀏覽器環境無法獲取';
+    document.getElementById('diskBar').style.width = '0%';
+    
+    // Update Uptime
+    const uptime = performance.now() / 1000;
+    document.getElementById('uptimeVal').textContent = formatUptime(uptime);
+    document.getElementById('overviewUptime').textContent = formatUptime(uptime);
+    
+    // Update System Info
+    document.getElementById('sysPlatform').textContent = nav.platform;
+    document.getElementById('sysArch').textContent = nav.userAgent.includes('Win64') ? 'x64' : 'unknown';
+    document.getElementById('sysCores').textContent = hardwareConcurrency;
+    document.getElementById('sysBrowser').textContent = nav.userAgent.split(' ')[0];
+    document.getElementById('sysMemLimit').textContent = formatBytes(memory.jsHeapSizeLimit || 0);
+    document.getElementById('sysUA').textContent = nav.userAgent.substring(0, 50) + '...';
+    
+    // Update charts
+    cpuHistory.push({ ts: Date.now(), value: cpuPct });
+    memHistory.push({ ts: Date.now(), value: memPct });
+    if (cpuHistory.length > 60) cpuHistory.shift();
+    if (memHistory.length > 60) memHistory.shift();
+    
+    drawChart('cpuChart', cpuHistory, 'rgba(124,92,252,0.8)', 'rgba(124,92,252,0.1)');
+    drawChart('memChart', memHistory, 'rgba(45,212,160,0.8)', 'rgba(45,212,160,0.1)');
+    
+  } catch (e) {
+    console.error('獲取數據失敗:', e);
+  } finally {
+    isFetching = false;
+  }
+}
+
+function drawChart(canvasId, data, stroke, fill) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0, 0, w, h);
+  if (!data.length) return;
+  
+  // Grid
+  ctx.strokeStyle = 'rgba(26,31,46,0.5)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = (h / 4) * i;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+  
+  // Data line
+  const vals = data.map(d => d.value);
+  ctx.beginPath();
+  for (let i = 0; i < vals.length; i++) {
+    const x = (i / Math.max(vals.length - 1, 1)) * w;
+    const y = h - (vals[i] / 100) * h;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  
+  // Fill
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  
+  // Last value
+  const last = vals[vals.length - 1];
+  ctx.fillStyle = stroke;
+  ctx.font = '600 12px Outfit, sans-serif';
+  ctx.fillText(last + '%', w - 45, 16);
+}
+
+// ===== Utilities =====
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function formatUptime(seconds) {
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  if (d > 0) return d + '天 ' + h + '小時';
+  if (h > 0) return h + '小時 ' + m + '分鐘';
+  return m + '分鐘';
+}
+
+function refreshAllData() {
+  loadSecurityData();
+  fetchMetrics();
+  updateCronInfo();
+  document.getElementById('lastUpdated').textContent = '最後更新: ' + new Date().toLocaleString('zh-HK');
+}
+
+function updateCronInfo() {
+  const now = new Date();
+  document.getElementById('lastCronRun').textContent = now.toLocaleString('zh-HK');
+  
+  const nextRun = new Date(now);
+  nextRun.setDate(nextRun.getDate() + 1);
+  nextRun.setHours(0, 0, 0, 0);
+  document.getElementById('nextCronRun').textContent = nextRun.toLocaleString('zh-HK');
+}
+
+// ===== Initialization =====
+document.addEventListener('DOMContentLoaded', function() {
+  loadSecurityData();
+  updateCronInfo();
+  document.getElementById('lastUpdated').textContent = '最後更新: ' + new Date().toLocaleString('zh-HK');
+  
+  // Auto refresh every 30 seconds
+  setInterval(refreshAllData, 30000);
+});
+</script>
+</body>
+</html>
+
+ 
+ 

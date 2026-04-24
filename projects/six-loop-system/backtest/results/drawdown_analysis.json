@@ -1,0 +1,11 @@
+{
+  "max_drawdown_date": "2023-03-10 05:00:00+00:00",
+  "max_drawdown_pct": -73.21587559688177,
+  "peak_date": "2021-09-07 04:00:00+00:00",
+  "peak_value": 618296.0639886856,
+  "drawdown_duration_days": 549,
+  "qqq_decline_pct": -23.746978174462253,
+  "tqqq_decline_pct": -72.39643520786917,
+  "holding_days": 84,
+  "cash_days": 296
+}

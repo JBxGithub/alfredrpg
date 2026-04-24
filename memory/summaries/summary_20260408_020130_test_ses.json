@@ -1,0 +1,58 @@
+{
+  "id": "summary_20260408_020130_test_ses",
+  "session_id": "test_session_main_001",
+  "timestamp": "2026-04-08T02:01:30.883792",
+  "summary_type": "session",
+  "title": "記憶系統開發討論",
+  "overview": "本次對話主要涉及：數據分析, 系統開發。 共做出 1 項決策。 行動項目：1 項已完成，2 項待完成。",
+  "topics": [
+    "數據分析",
+    "系統開發"
+  ],
+  "decisions": [
+    {
+      "content": "ChromaDB 作為向量數據庫，sentence-transformers 作為嵌入模型",
+      "reason": "",
+      "timestamp": "2026-04-08T02:01:30.882812",
+      "impact": "",
+      "alternatives": []
+    }
+  ],
+  "action_items": [
+    {
+      "content": "  summarizer.py",
+      "status": "pending",
+      "priority": "medium",
+      "deadline": null,
+      "assignee": ""
+    },
+    {
+      "content": "  main.py",
+      "status": "pending",
+      "priority": "medium",
+      "deadline": null,
+      "assignee": ""
+    },
+    {
+      "content": " 已 monitor.py",
+      "status": "completed",
+      "priority": "medium",
+      "deadline": null,
+      "assignee": ""
+    }
+  ],
+  "thinking_processes": [],
+  "emotional_context": {
+    "primary_emotion": "積極",
+    "intensity": 2,
+    "triggers": [],
+    "trend": ""
+  },
+  "key_data": {},
+  "next_continue": "跟進決策：ChromaDB 作為向量數據庫，sentence-transformers 作為嵌入模型...",
+  "metadata": {
+    "text_length": 146,
+    "decision_count": 1,
+    "action_count": 3
+  }
+}

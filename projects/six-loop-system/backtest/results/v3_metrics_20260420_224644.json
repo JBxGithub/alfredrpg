@@ -1,0 +1,20 @@
+{
+  "version": "V3_\u975a\u4ed4\u512a\u5316\u7248",
+  "initial_capital": 100000,
+  "final_value": 629219.4650702477,
+  "total_return_pct": 529.2194650702476,
+  "annualized_return_pct": 35.92074304802377,
+  "volatility_pct": 426.9332960444681,
+  "max_drawdown_pct": -77.14455757118053,
+  "sharpe_ratio": 1.824445761135333,
+  "total_trades": 96,
+  "win_rate": 51.041666666666664,
+  "avg_win_pct": 11.870892940165323,
+  "avg_loss_pct": -8.628176191509244,
+  "avg_holding_days": 9.260416666666666,
+  "qqq_stops": 44,
+  "profit_stops": 49,
+  "reeval_stops": 3,
+  "buy_hold_return_pct": 797.5102900599578,
+  "outperformance": -268.29082498971025
+}

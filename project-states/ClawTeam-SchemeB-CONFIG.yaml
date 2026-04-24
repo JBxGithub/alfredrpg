@@ -1,0 +1,453 @@
+# ClawTeam Multi-Agent System Configuration
+# 方案 B: 獨立 WhatsApp 身份 + 單機運行
+# 生成時間: 2026-04-04
+
+---
+
+## 🎯 系統架構
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         ClawTeam 交易系統                            │
+│                        (單機多 Agent 架構)                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                    中央指揮層 (Orchestrator)                  │   │
+│  │                      呀鬼 (Alfred)                           │   │
+│  │                   WhatsApp: +85263609349                     │   │
+│  │              職責: 任務分配、監控、異常處理、報告              │   │
+│  └──────────────────────┬──────────────────────────────────────┘   │
+│                         │ Webhook / HTTP API                        │
+│         ┌───────────────┼───────────────┐                          │
+│         ▼               ▼               ▼                          │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐                  │
+│  │  DataForge  │ │ SignalForge │ │  TradeForge │                  │
+│  │  +852-      │ │  +852-      │ │  +852-      │                  │
+│  │  62255569   │ │  62212577   │ │  55086558   │                  │
+│  ├─────────────┤ ├─────────────┤ ├─────────────┤                  │
+│  │ 數據獲取    │ │ 信號生成    │ │ 交易執行    │                  │
+│  │ 技術指標    │ │ 策略回測    │ │ 風控管理    │                  │
+│  │ 歷史數據    │ │ 市場分析    │ │ PnL 計算    │                  │
+│  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘                  │
+│         │               │               │                          │
+│         └───────────────┼───────────────┘                          │
+│                         ▼                                          │
+│              ┌─────────────────────┐                               │
+│              │   Futu Open API     │                               │
+│              │   (OpenD 127.0.0.1:11111)  │                       │
+│              └─────────────────────┘                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🤖 Agent 詳細配置
+
+### 1️⃣ 中央 Orchestrator — 呀鬼
+**WhatsApp**: +85263609349 (現有)
+**本地端口**: 9000
+**配置文件**: `~/.openclaw/agents/orchestrator/`
+
+**OpenClaw 配置**:
+```json
+{
+  "agent_id": "orchestrator",
+  "name": "Alfred",
+  "role": "central_command",
+  "whatsapp": "+85263609349",
+  "skills": [
+    "self-improvement",
+    "parallel",
+    "capability-evolver",
+    "webhook",
+    "monitoring",
+    "logging-observability",
+    "dashboard",
+    "reporting",
+    "futuapi"
+  ],
+  "peers": [
+    {"id": "dataforge", "endpoint": "http://localhost:8001", "whatsapp": "+85262255569"},
+    {"id": "signalforge", "endpoint": "http://localhost:8002", "whatsapp": "+85262212577"},
+    {"id": "tradeforge", "endpoint": "http://localhost:8003", "whatsapp": "+85255086558"}
+  ],
+  "commands": [
+    "system.status",
+    "agent.ping",
+    "mode.switch",
+    "emergency.stop"
+  ]
+}
+```
+
+---
+
+### 2️⃣ DataForge — 數據工程師
+**WhatsApp**: +852-62255569
+**本地端口**: 8001
+**配置文件**: `~/.openclaw/agents/dataforge/`
+
+**OpenClaw 配置**:
+```json
+{
+  "agent_id": "dataforge",
+  "name": "DataForge",
+  "role": "data_engineer",
+  "whatsapp": "+85262255569",
+  "skills": [
+    "futuapi",
+    "data-analysis",
+    "stock-monitor",
+    "stock_study",
+    "spreadsheet",
+    "microsoft-excel",
+    "excel-xlsx"
+  ],
+  "responsibilities": [
+    "market_data_fetch",
+    "technical_indicators",
+    "historical_data",
+    "data_persistence"
+  ],
+  "data_outputs": [
+    "realtime_price",
+    "kline_data",
+    "orderbook",
+    "technical_indicators"
+  ]
+}
+```
+
+**啟動命令**:
+```bash
+# 啟動 DataForge Agent
+openclaw agent start dataforge --config ~/.openclaw/agents/dataforge/config.json
+```
+
+---
+
+### 3️⃣ SignalForge — 信號工程師
+**WhatsApp**: +852-62212577
+**本地端口**: 8002
+**配置文件**: `~/.openclaw/agents/signalforge/`
+
+**OpenClaw 配置**:
+```json
+{
+  "agent_id": "signalforge",
+  "name": "SignalForge",
+  "role": "signal_engineer",
+  "whatsapp": "+85262212577",
+  "skills": [
+    "trading",
+    "stock-strategy-backtester",
+    "stock_study",
+    "super-search",
+    "last30days-official",
+    "futuapi"
+  ],
+  "responsibilities": [
+    "market_analysis",
+    "signal_generation",
+    "strategy_backtest",
+    "multi_factor_confirmation"
+  ],
+  "strategies": [
+    "z_score_mean_reversion",
+    "rsi_momentum",
+    "macd_crossover"
+  ]
+}
+```
+
+**啟動命令**:
+```bash
+# 啟動 SignalForge Agent
+openclaw agent start signalforge --config ~/.openclaw/agents/signalforge/config.json
+```
+
+---
+
+### 4️⃣ TradeForge — 執行工程師
+**WhatsApp**: +852-55086558
+**本地端口**: 8003
+**配置文件**: `~/.openclaw/agents/tradeforge/`
+
+**OpenClaw 配置**:
+```json
+{
+  "agent_id": "tradeforge",
+  "name": "TradeForge",
+  "role": "execution_engineer",
+  "whatsapp": "+85255086558",
+  "skills": [
+    "trading",
+    "dashboard",
+    "monitoring",
+    "reporting",
+    "webhook",
+    "safe-exec",
+    "logging-observability",
+    "red-alert",
+    "futuapi"
+  ],
+  "responsibilities": [
+    "position_management",
+    "order_execution",
+    "risk_control",
+    "pnl_calculation",
+    "trade_logging"
+  ],
+  "modes": ["simulate", "live"],
+  "risk_limits": {
+    "max_position_size": 0.5,
+    "daily_loss_limit": -0.05,
+    "max_trades_per_day": 10
+  }
+}
+```
+
+**啟動命令**:
+```bash
+# 啟動 TradeForge Agent
+openclaw agent start tradeforge --config ~/.openclaw/agents/tradeforge/config.json
+```
+
+---
+
+## 📡 通訊協議
+
+### Agent 間通訊
+
+**方式 1: HTTP API (主要)**
+```python
+# Agent 間直接調用
+POST http://localhost:8001/api/v1/data/snapshot
+POST http://localhost:8002/api/v1/signal/generate
+POST http://localhost:8003/api/v1/trade/execute
+```
+
+**方式 2: Webhook (備份)**
+```python
+# 通過中央指揮轉發
+POST http://localhost:9000/webhook/forward
+{
+  "from": "dataforge",
+  "to": "signalforge",
+  "message": {...}
+}
+```
+
+**方式 3: WhatsApp (人工監督)**
+- 僅用於重要通知和緊急情況
+- 格式: `[Agent名稱] 消息內容`
+
+### 消息格式
+
+```json
+{
+  "header": {
+    "message_id": "uuid",
+    "timestamp": "2026-04-04T10:30:00Z",
+    "from": "agent_id",
+    "to": "agent_id",
+    "priority": "high|normal|low"
+  },
+  "body": {
+    "type": "data_update|signal|trade|command|status|alert",
+    "payload": {}
+  }
+}
+```
+
+---
+
+## 🔧 實施步驟
+
+### Step 1: 準備 WhatsApp 號碼
+
+需要為以下號碼配置 OpenClaw:
+- ✅ +85263609349 (呀鬼 - 已配置)
+- ⏳ +85262255569 (DataForge)
+- ⏳ +85262212577 (SignalForge)
+- ⏳ +85255086558 (TradeForge)
+
+**配置方法**:
+```bash
+# 為每個號碼運行配對流程
+openclaw channel add whatsapp --phone +85262255569 --name DataForge
+openclaw channel add whatsapp --phone +85262212577 --name SignalForge
+openclaw channel add whatsapp --phone +85255086558 --name TradeForge
+```
+
+### Step 2: 建立 Agent 目錄結構
+
+```bash
+# 建立 Agent 配置目錄
+mkdir -p ~/.openclaw/agents/{orchestrator,dataforge,signalforge,tradeforge}
+
+# 複製配置文件
+cp clawteam/orchestrator-config.json ~/.openclaw/agents/orchestrator/config.json
+cp clawteam/dataforge-config.json ~/.openclaw/agents/dataforge/config.json
+cp clawteam/signalforge-config.json ~/.openclaw/agents/signalforge/config.json
+cp clawteam/tradeforge-config.json ~/.openclaw/agents/tradeforge/config.json
+```
+
+### Step 3: 啟動系統
+
+```bash
+# 使用 PowerShell 腳本一鍵啟動
+.\start-clawteam-schemeB.ps1 -Mode simulate
+```
+
+---
+
+## 📊 工作流程
+
+### 標準交易流程
+
+```
+1. DataForge 獲取市場數據
+   ↓ (HTTP POST to SignalForge)
+2. SignalForge 分析並生成信號
+   ↓ (HTTP POST to TradeForge)
+3. TradeForge 風控檢查
+   ↓ (條件滿足)
+4. TradeForge 執行交易
+   ↓ (Webhook to Orchestrator)
+5. 呀鬼記錄並監控
+   ↓ (WhatsApp 通知主人 - 如需要)
+6. 完成
+```
+
+### 異常處理流程
+
+```
+異常檢測
+   ↓
+TradeForge 無法處理
+   ↓
+發送警報給 呀鬼 (Orchestrator)
+   ↓
+呀鬼評估影響
+   ├── 輕微: 記錄日誌，繼續運行
+   ├── 嚴重: 暫停交易，通知主人
+   └── 緊急: 立即平倉，停止系統
+```
+
+---
+
+## 🔐 安全與權限
+
+### Agent 權限矩陣
+
+| 操作 | 呀鬼 | DataForge | SignalForge | TradeForge |
+|------|------|-----------|-------------|------------|
+| 讀取市場數據 | ✅ | ✅ | ✅ | ✅ |
+| 生成交易信號 | ✅ | ❌ | ✅ | ❌ |
+| 執行交易 | ✅ | ❌ | ❌ | ✅ |
+| 修改策略參數 | ✅ | ❌ | ✅ | ❌ |
+| 系統控制 | ✅ | ❌ | ❌ | ❌ |
+| 查看持倉 | ✅ | ✅ | ✅ | ✅ |
+
+### 模式切換
+
+**SIMULATE 模式** (默認):
+- 所有交易為模擬
+- 無資金風險
+- 用於測試和驗證
+
+**LIVE 模式** (需明確切換):
+- 真實資金交易
+- 需要雙重確認
+- 每日交易次數限制
+
+---
+
+## 📈 監控與報告
+
+### 每日報告 (由 呀鬼 生成)
+
+```
+📊 ClawTeam 每日報告 (2026-04-04)
+
+系統狀態:
+- DataForge: 🟢 正常 (延遲: 0.3s)
+- SignalForge: 🟢 正常 (最後信號: 10:30)
+- TradeForge: 🟢 正常 (持倉: TQQQ 100股)
+
+交易摘要:
+- 今日交易: 5筆
+- 勝率: 60%
+- 實現盈虧: +$234.50
+- 未實現盈虧: +$120.30
+
+風險指標:
+- 當前敞口: 45%
+- 最大回撤: -2.1%
+- 風險狀態: 正常
+
+明日預警:
+- 無異常信號
+```
+
+---
+
+## 🚀 快速啟動
+
+### 啟動整個系統
+```powershell
+.\start-clawteam-schemeB.ps1 -Agent all -Mode simulate
+```
+
+### 啟動單個 Agent
+```powershell
+.\start-clawteam-schemeB.ps1 -Agent dataforge
+.\start-clawteam-schemeB.ps1 -Agent signalforge
+.\start-clawteam-schemeB.ps1 -Agent tradeforge
+```
+
+### 查看狀態
+```powershell
+.\start-clawteam-schemeB.ps1 -Status
+```
+
+### 停止系統
+```powershell
+.\start-clawteam-schemeB.ps1 -Stop
+```
+
+---
+
+## 📝 待完成項目
+
+### Phase 1: WhatsApp 配置 (進行中)
+- [ ] 為 DataForge 配置 WhatsApp (+85262255569)
+- [ ] 為 SignalForge 配置 WhatsApp (+85262212577)
+- [ ] 為 TradeForge 配置 WhatsApp (+85255086558)
+- [ ] 測試各 Agent 消息收發
+
+### Phase 2: Agent 啟動
+- [ ] 建立 Agent 配置目錄
+- [ ] 啟動 DataForge
+- [ ] 啟動 SignalForge
+- [ ] 啟動 TradeForge
+- [ ] 驗證 Agent 間通訊
+
+### Phase 3: 整合測試
+- [ ] 端到端數據流測試
+- [ ] 信號生成測試
+- [ ] 模擬交易測試
+- [ ] 異常處理測試
+
+### Phase 4: 上線
+- [ ] SIMULATE 模式運行 7 天
+- [ ] 性能評估
+- [ ] 切換 LIVE 模式 (主人批准後)
+
+---
+
+*此配置由 呀鬼 (Alfred) 為 ClawTeam 建立*
+*版本: 1.0 | 日期: 2026-04-04*

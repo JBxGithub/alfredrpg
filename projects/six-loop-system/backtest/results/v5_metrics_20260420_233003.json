@@ -1,0 +1,18 @@
+{
+  "version": "V5_\u6700\u7d42\u5b8c\u6574\u7248",
+  "total_return_pct": 103.31082224194424,
+  "annualized_return_pct": 12.568982305053034,
+  "max_drawdown_pct": -72.07552157546512,
+  "sharpe_ratio": 2.0140446786648583,
+  "total_commission": 86137.23013661485,
+  "total_trades": 122,
+  "win_rate": 45.90163934426229,
+  "avg_holding_days": 3.877049180327869,
+  "qqq_stops": 39,
+  "trailing_stops": 34,
+  "profit_stops": 48,
+  "reeval_stops": 1,
+  "bull_continue_count": 50,
+  "buy_hold_return_pct": 797.5104810177861,
+  "outperformance": -694.1996587758418
+}

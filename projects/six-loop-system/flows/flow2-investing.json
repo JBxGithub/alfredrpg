@@ -1,0 +1,188 @@
+{
+  "id": "investing-scraper",
+  "type": "tab",
+  "label": "Flow 2: investing.com Scraper",
+  "disabled": false,
+  "info": "Scrapes NQ 100 data from investing.com every minute for backup verification",
+  "nodes": [
+    {
+      "id": "inject-1min",
+      "type": "inject",
+      "z": "investing-scraper",
+      "name": "1 Minute Interval",
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "repeat": "60",
+      "crontab": "",
+      "once": true,
+      "onceDelay": "2",
+      "x": 100,
+      "y": 100,
+      "wires": [
+        ["fetch-nq100"]
+      ]
+    },
+    {
+      "id": "fetch-nq100",
+      "type": "http request",
+      "z": "investing-scraper",
+      "name": "Fetch NQ 100",
+      "method": "GET",
+      "ret": "obj",
+      "paytoqs": "ignore",
+      "url": "https://api.investing.com/api/marketdata/v1/data/index/20",
+      "tls": "",
+      "persist": false,
+      "proxy": "",
+      "insecureHttps": false,
+      "x": 280,
+      "y": 100,
+      "wires": [
+        ["parse-investing-data"],
+        ["handle-http-error"]
+      ]
+    },
+    {
+      "id": "parse-investing-data",
+      "type": "function",
+      "z": "investing-scraper",
+      "name": "Parse Data",
+      "func": "const response = msg.payload;\n\nif (!response || !response.data) {\n    node.warn('No data received from investing.com');\n    return null;\n}\n\nconst data = response.data;\nconst now = new Date();\n\nconst parsed = {\n    symbol: 'NQ100',\n    price: parseFloat(data.last) || parseFloat(data.price),\n    change_value: parseFloat(data.change) || 0,\n    change_percent: parseFloat(data.change_percent) || parseFloat(data.changePercent) || 0,\n    volume: parseInt(data.volume) || 0,\n    open_price: parseFloat(data.open) || 0,\n    high_price: parseFloat(data.high) || 0,\n    low_price: parseFloat(data.low) || 0,\n    close_price: parseFloat(data.close) || 0,\n    timestamp: now.toISOString(),\n    source: 'investing_com'\n};\n\nnode.status({ text: `Price: ${parsed.price}, Change: ${parsed.change_percent}%` });\n\nreturn { payload: parsed };",
+      "outputs": 1,
+      "x": 480,
+      "y": 100,
+      "wires": [
+        ["write-backup-table"]
+      ]
+    },
+    {
+      "id": "handle-http-error",
+      "type": "function",
+      "z": "investing-scraper",
+      "name": "Handle HTTP Errors",
+      "func": "if (msg.payload.statusCode && msg.payload.statusCode !== 200) {\n    node.error('HTTP Error: ' + msg.payload.statusCode + ' - ' + msg.payload.statusMessage);\n    // Log failed attempt\n    const errorLog = {\n        timestamp: new Date().toISOString(),\n        source: 'investing_scraper',\n        error: msg.payload.statusCode,\n        url: msg.url\n    };\n    node.warn(JSON.stringify(errorLog));\n}\nreturn null;",
+      "outputs": 1,
+      "x": 480,
+      "y": 180,
+      "wires": []
+    },
+    {
+      "id": "write-backup-table",
+      "type": "postgresql",
+      "z": "investing-scraper",
+      "name": "Write Backup Table",
+      "postgresdb": "trading_db",
+      "postgresdbtype": "postgresdb",
+      "query": "INSERT INTO raw_market_data_backup (symbol, price, change_value, change_percent, volume, open_price, high_price, low_price, close_price, timestamp, source) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+      "params": [
+        "payload.symbol",
+        "payload.price",
+        "payload.change_value",
+        "payload.change_percent",
+        "payload.volume",
+        "payload.open_price",
+        "payload.high_price",
+        "payload.low_price",
+        "payload.close_price",
+        "payload.timestamp",
+        "payload.source"
+      ],
+      "x": 700,
+      "y": 100,
+      "wires": [
+        ["debug-success"]
+      ]
+    },
+    {
+      "id": "debug-success",
+      "type": "debug",
+      "z": "investing-scraper",
+      "name": "Success Log",
+      "active": false,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "false",
+      "targetType": "msg",
+      "x": 900,
+      "y": 100,
+      "wires": []
+    },
+    {
+      "id": "market-hours-filter",
+      "type": "function",
+      "z": "investing-scraper",
+      "name": "US Market Hours Only",
+      "func": "const now = new Date();\nconst hour = now.getUTCHours();\n\n// US market hours: 14:30 - 21:00 UTC (9:30 AM - 4:00 PM EST)\nconst isMarketHours = (hour >= 14 && hour < 21);\n\nif (!isMarketHours) {\n    node.status({ text: 'Outside market hours - skipping', fill: 'grey', shape: 'ring' });\n    return null;\n}\n\nreturn msg;",
+      "outputs": 1,
+      "x": 280,
+      "y": 180,
+      "wires": [
+        ["fetch-nq100"]
+      ]
+    },
+    {
+      "id": "daily-summary",
+      "type": "inject",
+      "z": "investing-scraper",
+      "name": "Daily Summary",
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "repeat": "",
+      "crontab": "0 21:05 * * 1-5",
+      "once": false,
+      "onceDelay": "",
+      "x": 100,
+      "y": 260,
+      "wires": [
+        ["summary-query"]
+      ]
+    },
+    {
+      "id": "summary-query",
+      "type": "postgresql",
+      "z": "investing-scraper",
+      "name": "Query Daily Summary",
+      "postgresdb": "trading_db",
+      "postgresdbtype": "postgresdb",
+      "query": "SELECT \n    symbol,\n    MAX(price) as high,\n    MIN(price) as low,\n    FIRST(price) as open,\n    LAST(price) as close,\n    MAX(volume) as volume\nFROM raw_market_data_backup\nWHERE source = 'investing_com'\n    AND timestamp >= CURRENT_DATE\n    AND timestamp < CURRENT_DATE + INTERVAL '1 day'\nGROUP BY symbol",
+      "params": [],
+      "x": 300,
+      "y": 260,
+      "wires": [
+        ["debug-summary"]
+      ]
+    },
+    {
+      "id": "debug-summary",
+      "type": "debug",
+      "z": "investing-scraper",
+      "name": "Summary Output",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "payload",
+      "targetType": "full",
+      "x": 520,
+      "y": 260,
+      "wires": []
+    }
+  ],
+  "config": {
+    "postgresdb-trading_db": {
+      "host": "localhost",
+      "port": "5432",
+      "db": "trading_db",
+      "user": "postgres",
+      "password": "PostgresqL"
+    }
+  },
+  "settings": {
+    "pause": false,
+    "exportNodeComments": true
+  },
+  "notes": "Flow 2: investing.com Scraper\n- Fetches NQ 100 data every minute\n- Only runs during US market hours (14:30 - 21:00 UTC)\n- Writes to backup table for verification\n- Generates daily summary at market close"
+}

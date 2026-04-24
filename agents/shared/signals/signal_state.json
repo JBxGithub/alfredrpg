@@ -1,0 +1,38 @@
+{
+  "latest_signal": {
+    "signal_id": "SIG-20260404-001",
+    "timestamp": "2026-04-04T11:50:30+08:00",
+    "symbol": "TQQQ",
+    "signal_type": "LONG",
+    "strength": "STRONG",
+    "entry_price": 52.34,
+    "zscore": -1.85,
+    "rsi": 28.5,
+    "confirmation": {
+      "trend_filter": "PASS",
+      "volatility": "NORMAL",
+      "volume": "ADEQUATE"
+    },
+    "agent": "SignalForge"
+  },
+  "signal_history": [
+    {
+      "signal_id": "SIG-20260404-001",
+      "timestamp": "2026-04-04T11:50:30+08:00",
+      "symbol": "TQQQ",
+      "signal_type": "LONG",
+      "strength": "STRONG"
+    }
+  ],
+  "strategy": "ZScore Mean Reversion",
+  "parameters": {
+    "zscore_threshold": 1.6,
+    "rsi_overbought": 70,
+    "rsi_oversold": 30
+  },
+  "performance": {
+    "total_signals": 1,
+    "win_rate": null,
+    "avg_profit": null
+  }
+}

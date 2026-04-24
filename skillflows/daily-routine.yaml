@@ -1,0 +1,112 @@
+name: 每日例行任務
+description: 整合所有每日需要執行的任務
+version: "1.0.0"
+created: "2026-03-17"
+
+# 觸發條件
+trigger:
+  type: cron
+  schedule: "0 9 * * *"  # 每天 09:00
+  timezone: "Asia/Hong_Kong"
+
+# 執行步驟
+steps:
+  # 步驟 1: 執行健康檢查
+  health-check:
+    action: skillflow
+    flow: health-check
+    async: false  # 等待完成
+
+  # 步驟 2: 檢查記憶系統
+  check-memory:
+    action: exec
+    command: |
+      $summaryCount = (Get-ChildItem summary/*.md).Count
+      $memoryCount = (Get-ChildItem memory/*.md).Count
+      @{ 
+        summary_count = $summaryCount
+        memory_count = $memoryCount
+        status = if ($summaryCount -gt 0 -and $memoryCount -gt 0) { "OK" } else { "WARNING" }
+      } | ConvertTo-Json
+    register: memory_status
+
+  # 步驟 3: 更新 context
+  update-context:
+    action: exec
+    command: |
+      $context = Get-Content memory/context.md -Raw
+      $updated = $context -replace "最後更新:.*", "最後更新: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+      $updated | Set-Content memory/context.md
+    condition: "memory_status.status == 'OK'"
+
+  # 步驟 4: 檢查待處理事項
+  check-todos:
+    action: exec
+    command: |
+      $context = Get-Content memory/context.md -Raw
+      $todos = [regex]::Matches($context, "- \[ \] (.+)") | ForEach-Object { $_.Groups[1].Value }
+      @{ 
+        pending_count = $todos.Count
+        todos = $todos
+      } | ConvertTo-Json
+    register: todo_list
+
+  # 步驟 5: 發送每日摘要
+  send-summary:
+    action: condition
+    condition: "todo_list.pending_count > 0"
+    then:
+      - action: message
+        channel: whatsapp
+        to: "+85263931048"
+        template: "daily-summary"
+        variables:
+          date: "{{ now | format('yyyy-MM-dd') }}"
+          health_status: "{{ health_check.status }}"
+          pending_count: "{{ todo_list.pending_count }}"
+          todos: "{{ todo_list.todos | join('\n') }}"
+    else:
+      - action: log
+        level: info
+        message: "今日無待處理事項"
+
+  # 步驟 6: 記錄執行結果
+  log-execution:
+    action: append
+    file: "memory/health-logs/skillflow.log"
+    format: "json"
+    content:
+      timestamp: "{{ now }}"
+      flow: "daily-routine"
+      health_status: "{{ health_check.status }}"
+      pending_todos: "{{ todo_list.pending_count }}"
+      execution_time: "{{ execution_time }}"
+
+# 錯誤處理
+on_error:
+  - action: message
+    channel: whatsapp
+    to: "+85263931048"
+    template: "skillflow-error"
+    variables:
+      flow: "daily-routine"
+      error: "{{ error.message }}"
+
+# 通知模板
+templates:
+  daily-summary: |
+    📅 *每日例行摘要* - {{ date }}
+    
+    🩺 系統健康: {{ health_status }}
+    
+    📋 待處理事項 ({{ pending_count }} 項):
+    {{ todos }}
+    
+    可使用 `/context` 查看詳情。
+  
+  skillflow-error: |
+    ⚠️ *每日例行任務失敗*
+    
+    錯誤: {{ error }}
+    
+    請檢查系統狀態。

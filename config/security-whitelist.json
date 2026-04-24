@@ -1,0 +1,114 @@
+{
+  "_meta": {
+    "created": "2026-03-28",
+    "description": "已審查安全白名單 - 經主人確認無風險",
+    "last_updated": "2026-03-28"
+  },
+  "whitelisted_skills": {
+    "agentmail-integration": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "github-cli": {
+      "codes": ["CLAW-004", "CLAW-102"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "硬編碼憑證為示例/文檔用途，SSH access 係用於合法 git 操作，已確認安全",
+      "risk_level": "acceptable"
+    },
+    "github-ops": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "github-search": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "liang-tavily-search": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "microsoft-excel": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "openclaw-github-assistant": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "parallel": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "pdf": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "硬編碼憑證為示例/文檔用途，已確認安全",
+      "risk_level": "acceptable"
+    },
+    "skill-security-auditor": {
+      "codes": ["CLAW-001", "CLAW-002", "CLAW-003", "CLAW-004", "CLAW-101"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "此 skill 本身係安全檢查工具，內含危險模式係為示範檢測用，已確認安全",
+      "risk_level": "acceptable"
+    },
+    "stripe": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "super-search": {
+      "codes": ["CLAW-004"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "API key 係主人提供，skill 本身只係引用，已深入檢查確認安全",
+      "risk_level": "acceptable"
+    },
+    "polymarket-analysis": {
+      "codes": ["CLAW-105"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "HTTP requests 係用於合法 API 調用，已確認安全",
+      "risk_level": "acceptable"
+    },
+    "skill-sandbox": {
+      "codes": ["CLAW-105"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "HTTP requests 係用於合法功能，已確認安全",
+      "risk_level": "acceptable"
+    },
+    "web-content-fetcher": {
+      "codes": ["CLAW-105"],
+      "checked_date": "2026-03-28",
+      "checked_by": "Burt",
+      "reason": "HTTP requests 係用於網頁內容抓取，已確認安全",
+      "risk_level": "acceptable"
+    }
+  }
+}

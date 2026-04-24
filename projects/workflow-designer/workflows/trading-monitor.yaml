@@ -1,0 +1,83 @@
+name: "交易監控"
+description: "監控 FutuTradingBot 狀態並發送報告"
+trigger:
+  type: cron
+  schedule: "*/30 * * * *"
+  timezone: "America/New_York"
+
+steps:
+  - name: check_bot_status
+    action: skill_call
+    skill: fututradingbot
+    params:
+      action: "status"
+    timeout: 60
+    retry:
+      max_attempts: 3
+      delay: 10
+    
+  - name: check_positions
+    action: skill_call
+    skill: fututradingbot
+    params:
+      action: "positions"
+    timeout: 60
+    
+  - name: check_alerts
+    action: skill_call
+    skill: fututradingbot
+    params:
+      action: "alerts"
+    timeout: 30
+    
+  - name: analyze_performance
+    action: condition
+    expression: "{{steps.check_bot_status.result.status}} == 'running'"
+    then:
+      - name: calculate_pnl
+        action: skill_call
+        skill: trading-analyzer
+        params:
+          action: "daily_pnl"
+    
+  - name: generate_report
+    action: script
+    script: |
+      status = steps.check_bot_status.result
+      positions = steps.check_positions.result
+      alerts = steps.check_alerts.result
+      
+      report = f"""📊 交易監控報告
+
+🤖 系統狀態: {'✅ 運行中' if status['status'] == 'running' else '❌ 離線'}
+⏱️ 運行時間: {status.get('uptime', 'N/A')}
+
+💼 持倉 ({len(positions)} 項):
+{chr(10).join([f"  • {p['symbol']}: {p['quantity']} @ ${p['avg_price']}" for p in positions[:5]])}
+
+🔔 活躍警報 ({len(alerts)} 項):
+{chr(10).join([f"  • {a['level']}: {a['message']}" for a in alerts[:3]])}
+"""
+      return report
+    
+  - name: send_if_issues
+    action: condition
+    expression: "{{steps.check_alerts.result|length}} > 0 or {{steps.check_bot_status.result.status}} != 'running'"
+    then:
+      - name: send_alert
+        action: notification
+        channel: pushover
+        priority: high
+        message: "{{steps.generate_report.result}}"
+    else:
+      - name: log_normal
+        action: script
+        script: |
+          import logging
+          logging.info("Trading monitor: All systems normal")
+
+on_error:
+  action: notification
+  channel: pushover
+  priority: emergency
+  message: "🚨 交易監控系統錯誤: {{error.message}}"

@@ -1,0 +1,16 @@
+﻿🚨 系統健康警報
+
+時間: 2026-03-21 10:31:34
+
+發現以下問題:
+
+⚠️ Gateway 未運行
+
+建議:
+
+• 執行: openclaw gateway restart
+
+
+
+
+詳細報告: C:\Users\BurtClaw\openclaw_workspace\memory\health-logs\

@@ -1,0 +1,15 @@
+{
+  "version": "V9_Asymmetric",
+  "total_return_pct": 1416.4108752510713,
+  "annualized_return_pct": 57.408281825573184,
+  "max_drawdown_pct": -76.02925545829397,
+  "sharpe_ratio": 2.0699701837113578,
+  "total_commission": 211265.497432044,
+  "total_trades": 121,
+  "long_trades": 80,
+  "short_trades": 41,
+  "win_rate": 52.892561983471076,
+  "avg_holding_days": 3.603305785123967,
+  "buy_hold_tqqq": 797.5101945810744,
+  "outperformance": 618.9006806699969
+}

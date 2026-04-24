@@ -1,0 +1,21 @@
+name: test-workflow
+description: 測試工作流
+version: "1.0"
+author: Alfred
+
+triggers:
+  - type: manual
+    description: 手動觸發
+
+steps:
+  - name: check_status
+    action: check_status
+    description: 檢查系統狀態
+    
+  - name: send_notification
+    action: send_notification
+    description: 發送通知
+    
+  - name: collect_metrics
+    action: collect_metrics
+    description: 收集指標數據

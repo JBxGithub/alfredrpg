@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Security Dashboard Test</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #e2e8f0; padding: 20px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .score { font-size: 48px; font-weight: bold; }
+        .error { color: #f87171; }
+        .success { color: #4ade80; }
+    </style>
+</head>
+<body>
+    <h1>Security Dashboard Test</h1>
+    <div id="status">Loading...</div>
+    <div id="content"></div>
+
+    <script>
+        async function loadData() {
+            const status = document.getElementById('status');
+            const content = document.getElementById('content');
+            
+            try {
+                console.log('Fetching security-data.json...');
+                const res = await fetch('security-data.json?t=' + Date.now());
+                console.log('Response status:', res.status);
+                
+                if (!res.ok) {
+                    throw new Error('HTTP ' + res.status + ': ' + res.statusText);
+                }
+                
+                const data = await res.json();
+                console.log('Data loaded:', data);
+                
+                status.innerHTML = '<span class="success">✅ Data loaded successfully!</span>';
+                
+                let html = '<div class="card">';
+                html += '<div class="score" style="color:' + data.securityScore.color + '">' + data.securityScore.value + '</div>';
+                html += '<div>' + data.securityScore.label + '</div>';
+                html += '<div style="margin-top:10px;color:#94a3b8">';
+                html += 'Skills: ' + data.skillsScanned + ' | ';
+                html += 'Files: ' + data.filesScanned + ' | ';
+                html += 'Issues: ' + data.issuesFound;
+                html += '</div>';
+                html += '</div>';
+                
+                html += '<div class="card">';
+                html += '<h3>Warnings</h3>';
+                for (const [severity, issues] of Object.entries(data.activeWarnings)) {
+                    if (issues.length > 0) {
+                        html += '<div style="margin:10px 0;">';
+                        html += '<strong style="color:#f59e0b">' + severity + '</strong>: ' + issues.length + ' issues';
+                        html += '</div>';
+                    }
+                }
+                html += '</div>';
+                
+                content.innerHTML = html;
+                
+            } catch (e) {
+                console.error('Error:', e);
+                status.innerHTML = '<span class="error">❌ Error: ' + e.message + '</span>';
+                content.innerHTML = '<div class="card error"><pre>' + e.stack + '</pre></div>';
+            }
+        }
+        
+        loadData();
+    </script>
+</body>
+</html>

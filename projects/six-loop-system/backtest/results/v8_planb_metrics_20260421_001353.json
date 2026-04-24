@@ -1,0 +1,17 @@
+{
+  "version": "V8_PlanB_Bidirectional",
+  "total_return_pct": 977.1690297564394,
+  "annualized_return_pct": 48.67700381530344,
+  "max_drawdown_pct": -85.04545236899423,
+  "sharpe_ratio": 1.9717008486727279,
+  "total_commission": 174762.73297827435,
+  "total_trades": 109,
+  "long_trades": 80,
+  "short_trades": 29,
+  "win_rate": 50.45871559633027,
+  "avg_holding_days": 4.128440366972477,
+  "buy_hold_tqqq": 797.5103751655171,
+  "buy_hold_sqqq": -99.56624375544114,
+  "outperformance_vs_tqqq": 179.6586545909223,
+  "outperformance_vs_sqqq": 1076.7352735118805
+}

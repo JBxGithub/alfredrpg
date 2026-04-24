@@ -1,0 +1,26 @@
+{
+  "id": "session_20260407_234258",
+  "timestamp": "2026-04-07T23:42:58.827176",
+  "session_key": "test_session_001",
+  "content": "測試交易策略優化，決定保留3個核心策略",
+  "embedding": null,
+  "metadata": {
+    "topics": [
+      "交易策略",
+      "MTF整合"
+    ],
+    "decisions": [
+      "保留3個策略",
+      "清理2個策略"
+    ],
+    "action_items": [
+      "⏳ 等待實盤部署",
+      "✅ 完成策略參數調整"
+    ],
+    "emotions": "積極、專注",
+    "next_continue": "",
+    "context_usage": 0.0,
+    "tokens_used": 0
+  },
+  "relevance_score": 0.0
+}

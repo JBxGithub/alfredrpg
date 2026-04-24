@@ -1,0 +1,107 @@
+{
+  "id": "decision-engine-flow",
+  "label": "Decision Engine Flow",
+  "nodes": [
+    {
+      "id": "inject-trigger",
+      "type": "inject",
+      "z": "decision-engine-flow",
+      "name": "Trigger Decision Engine",
+      "props": [
+        {
+          "p": "payload"
+        },
+        {
+          "p": "topic",
+          "vt": "str"
+        }
+      ],
+      "repeat": "300",
+      "crontab": "",
+      "once": false,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "x": 120,
+      "y": 80,
+      "wires": [
+        ["postgres-query-scores"]
+      ]
+    },
+    {
+      "id": "postgres-query-scores",
+      "type": "postgres",
+      "z": "decision-engine-flow",
+      "name": "Query Latest Scores",
+      "query": "SELECT absolute_score, reference_score FROM scores ORDER BY timestamp DESC LIMIT 1;",
+      "postgresdb": "six-loop-db",
+      "output": true,
+      "x": 320,
+      "y": 80,
+      "wires": [
+        ["function-calculate-signal"]
+      ]
+    },
+    {
+      "id": "function-calculate-signal",
+      "type": "function",
+      "z": "decision-engine-flow",
+      "name": "Calculate Final Score & Signal",
+      "func": "const absolute = msg.payload[0].absolute_score;\nconst reference = msg.payload[0].reference_score;\nconst finalScore = absolute * 0.6 + reference * 0.4;\nlet signal;\nif (finalScore > 0.5) {\n    signal = 'BUY';\n} else if (finalScore < -0.5) {\n    signal = 'SELL';\n} else {\n    signal = 'HOLD';\n}\n// Check risk limits (example: assume no risk check needed or add logic)\nmsg.payload = { finalScore, signal, timestamp: new Date() };\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 520,
+      "y": 80,
+      "wires": [
+        ["postgres-insert-decision"]
+      ]
+    },
+    {
+      "id": "postgres-insert-decision",
+      "type": "postgres",
+      "z": "decision-engine-flow",
+      "name": "Insert Decision",
+      "query": "INSERT INTO decisions (final_score, signal, timestamp) VALUES ($1, $2, $3);",
+      "postgresdb": "six-loop-db",
+      "params": [
+        {
+          "param": "finalScore"
+        },
+        {
+          "param": "signal"
+        },
+        {
+          "param": "timestamp"
+        }
+      ],
+      "output": true,
+      "x": 720,
+      "y": 80,
+      "wires": [
+        ["debug-output"]
+      ]
+    },
+    {
+      "id": "debug-output",
+      "type": "debug",
+      "z": "decision-engine-flow",
+      "name": "Debug Output",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "payload",
+      "targetType": "msg",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 920,
+      "y": 80,
+      "wires": []
+    }
+  ],
+  "config": []
+}

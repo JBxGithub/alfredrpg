@@ -1,0 +1,99 @@
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "xai": {
+        "baseUrl": "https://api.x.ai/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "grok-code-fast",
+            "name": "Grok Code Fast",
+            "contextWindow": 256000,
+            "maxTokens": 256000,
+            "cost": {
+              "input": 0.00002,
+              "output": 0.000075
+            }
+          }
+        ]
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "xai:default": {
+        "provider": "xai",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "C:\\Users\\BurtClaw\\openclaw_workspace",
+      "models": {
+        "moonshot/kimi-k2.5": {
+          "alias": "Kimi"
+        }
+      },
+      "model": {
+        "primary": "moonshot/kimi-k2.5"
+      },
+      "subagents": {
+        "model": "xai/grok-code-fast"
+      },
+      "heartbeat": {
+        "every": "240m",
+        "activeHours": {
+          "start": "08:00",
+          "end": "20:00",
+          "timezone": "Asia/Hong_Kong"
+        },
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply exactly: HEARTBEAT_OK.\nIf you receive a heartbeat poll (a user message matching the heartbeat prompt above), and there is nothing that needs attention, reply exactly:\nHEARTBEAT_OK\nOpenClaw treats a leading/trailing \"HEARTBEAT_OK\" as a heartbeat ack (and may discard it).\nIf something needs attention, do NOT include \"HEARTBEAT_OK\"; reply with the alert text instead.",
+        "includeSystemPromptSection": true,
+        "target": "none"
+      }
+    },
+    "list": [
+      {
+        "id": "opencode",
+        "model": "xai/grok-code-fast",
+        "tools": {
+          "profile": "coding",
+          "alsoAllow": [
+            "browser",
+            "message",
+            "agents_list",
+            "nodes",
+            "gateway",
+            "tavily_search",
+            "tavily_extract",
+            "canvas"
+          ],
+          "deny": [
+            "tts"
+          ]
+        }
+      },
+      {
+        "id": "main",
+        "tools": {
+          "profile": "coding",
+          "alsoAllow": [
+            "browser",
+            "message",
+            "gateway",
+            "nodes",
+            "agents_list",
+            "tts",
+            "tavily_extract",
+            "tavily_search"
+          ],
+          "deny": [
+            "canvas"
+          ]
+        }
+      }
+    ]
+  }
+}

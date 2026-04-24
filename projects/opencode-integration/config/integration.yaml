@@ -1,0 +1,163 @@
+# OpenClaw Oh-My-Opencode 整合配置
+
+version: "1.0.0"
+
+# IntentGate 配置
+intentgate:
+  enabled: true
+  
+  # 置信度閾值
+  high_confidence: 0.85
+  medium_confidence: 0.70
+  
+  # 啟用的意圖分類
+  enabled_categories:
+    - critical
+    - finance
+    - technology
+    - lifestyle
+    - monitoring
+    - research
+    - meta
+  
+  # 代理映射
+  agent_mapping:
+    critical: ["隊長", "監控員"]
+    finance: ["財務官", "分析師"]
+    technology: ["技術官", "執行員"]
+    lifestyle: ["執行員", "研究員"]
+    monitoring: ["監控員", "分析師"]
+    research: ["研究員", "分析師"]
+    meta: ["隊長", "技術官"]
+
+# Hash-Anchored Edit 配置
+hash_anchored_edit:
+  enabled: true
+  
+  # 嚴格模式（哈希不匹配時拒絕編輯）
+  strict_mode: true
+  
+  # 哈希長度（2-4 字符）
+  hash_length: 3
+  
+  # 啟用的編輯操作
+  enabled_operations:
+    - edit_line
+    - insert_line
+    - delete_line
+    - replace_range
+  
+  # 最大文件大小（MB）
+  max_file_size: 10
+
+# Todo Enforcer 配置
+todo_enforcer:
+  enabled: true
+  
+  # 檢查間隔（秒）
+  check_interval: 30
+  
+  # 停滯檢測
+  stagnation:
+    max_count: 3
+    check_interval: 30
+  
+  # 超時提醒
+  timeout:
+    default_threshold: 30  # 分鐘
+    reminder_interval: 10  # 分鐘
+  
+  # 任務恢復
+  recovery:
+    auto_resume: true
+    max_retry: 3
+    save_state_on_timeout: true
+  
+  # 通知設置
+  notification:
+    on_timeout: true
+    on_stagnation: true
+    on_completion: true
+    on_reminder: true
+
+# Plan 文件驅動配置
+plan_driven:
+  enabled: true
+  
+  # 計劃文件存儲目錄
+  plans_dir: "~/openclaw_workspace/plans"
+  
+  # 狀態文件目錄
+  state_dir: "~/.openclaw/state"
+  
+  # 筆記目錄
+  notepad_dir: "~/.openclaw/notepads"
+  
+  # 自動保存間隔（分鐘）
+  auto_save_interval: 5
+  
+  # 啟用的計劃模板
+  templates:
+    - feature_development
+    - bug_fix
+    - refactoring
+    - research
+
+# AMS 整合配置
+ams_integration:
+  enabled: true
+  
+  # Context Monitor 整合
+  context_monitor:
+    enabled: true
+    warning_threshold: 70
+    compress_threshold: 85
+    critical_threshold: 95
+  
+  # 記憶同步
+  memory_sync:
+    enabled: true
+    sync_interval: 60  # 秒
+    max_memory_entries: 1000
+
+# ClawTeam 整合配置
+clawteam_integration:
+  enabled: true
+  
+  # 啟用的角色
+  enabled_agents:
+    - 隊長
+    - 財務官
+    - 技術官
+    - 分析師
+    - 監控員
+    - 研究員
+    - 執行員
+  
+  # 自動組隊模式
+  auto_team_mode: true
+  
+  # 任務委派策略
+  delegation_strategy: "intent_based"  # intent_based | round_robin | load_balanced
+
+# 日誌配置
+logging:
+  level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+  file: "logs/integration.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# 儀表板配置
+dashboard:
+  enabled: true
+  
+  # 更新間隔（秒）
+  update_interval: 30
+  
+  # 啟用的面板
+  enabled_panels:
+    - intentgate_decisions
+    - task_progress
+    - plan_status
+    - hash_anchored_stats
+    - system_health

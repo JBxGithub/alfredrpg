@@ -1,0 +1,39 @@
+# OpenClaw System (do not commit)
+.openclaw/
+.openclaw-backup/
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+logs/
+
+# Voice files (temporary)
+*.wav
+*.mp3
+*.ogg
+voice_*
+temp_*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large models
+*.pt
+*.bin
+*.pth
+
+# Cache
+.cache/

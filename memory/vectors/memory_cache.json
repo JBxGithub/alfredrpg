@@ -1,0 +1,83 @@
+{
+  "last_updated": "2026-04-07T23:44:05.040764",
+  "memories": [
+    {
+      "id": "session_20260407_234255",
+      "timestamp": "2026-04-07T23:42:55.530111",
+      "session_key": "test_session_001",
+      "content": "測試交易策略優化，決定保留3個核心策略",
+      "embedding": null,
+      "metadata": {
+        "topics": [
+          "交易策略",
+          "MTF整合"
+        ],
+        "decisions": [
+          "保留3個策略",
+          "清理2個策略"
+        ],
+        "action_items": [
+          "⏳ 等待實盤部署",
+          "✅ 完成策略參數調整"
+        ],
+        "emotions": "積極、專注",
+        "next_continue": "",
+        "context_usage": 0.0,
+        "tokens_used": 0
+      },
+      "relevance_score": 0.0
+    },
+    {
+      "id": "session_20260407_234258",
+      "timestamp": "2026-04-07T23:42:58.827176",
+      "session_key": "test_session_001",
+      "content": "測試交易策略優化，決定保留3個核心策略",
+      "embedding": null,
+      "metadata": {
+        "topics": [
+          "交易策略",
+          "MTF整合"
+        ],
+        "decisions": [
+          "保留3個策略",
+          "清理2個策略"
+        ],
+        "action_items": [
+          "⏳ 等待實盤部署",
+          "✅ 完成策略參數調整"
+        ],
+        "emotions": "積極、專注",
+        "next_continue": "",
+        "context_usage": 0.0,
+        "tokens_used": 0
+      },
+      "relevance_score": 0.0
+    },
+    {
+      "id": "session_20260407_234405",
+      "timestamp": "2026-04-07T23:44:05.040297",
+      "session_key": "test_session_002",
+      "content": "開發記憶系統插件，實現自動記憶注入功能",
+      "embedding": null,
+      "metadata": {
+        "topics": [
+          "系統開發",
+          "記憶插件"
+        ],
+        "decisions": [
+          "使用ChromaDB存儲",
+          "實現語義搜索"
+        ],
+        "action_items": [
+          "⏳ 完成injector.py",
+          "⏳ 整合到OpenClaw"
+        ],
+        "emotions": "專注、高效",
+        "next_continue": "",
+        "context_usage": 0.0,
+        "tokens_used": 0
+      },
+      "relevance_score": 0.0
+    }
+  ]
+}

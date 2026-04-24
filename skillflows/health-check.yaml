@@ -1,0 +1,99 @@
+name: 每日健康檢查
+description: 自動檢查系統狀態並在異常時通知主人
+version: "1.0.0"
+created: "2026-03-17"
+
+# 觸發條件
+trigger:
+  type: cron
+  schedule: "0 8 * * *"  # 每天 08:00
+  timezone: "Asia/Hong_Kong"
+
+# 執行步驟
+steps:
+  # 步驟 1: 檢查 Gateway 狀態
+  check-gateway:
+    action: exec
+    command: "openclaw status"
+    timeout: 30
+    check:
+      type: regex
+      pattern: "WhatsApp.*OK.*linked"
+      fail_message: "WhatsApp Gateway 異常"
+
+  # 步驟 2: 執行健康檢查腳本
+  check-resources:
+    action: exec
+    command: "& $env:USERPROFILE\openclaw_workspace\scripts\health-monitor.ps1"
+    timeout: 60
+    output:
+      file: "memory/health-check-latest.json"
+      format: json
+
+  # 步驟 3: 讀取檢查結果
+  read-result:
+    action: exec
+    command: "Get-Content memory/health-check-latest.json | ConvertFrom-Json"
+    register: health_status
+
+  # 步驟 4: 判斷是否需要通知
+  notify-if-needed:
+    action: condition
+    condition: "health_status.status != 'HEALTHY'"
+    then:
+      - action: message
+        channel: whatsapp
+        to: "+85263931048"
+        template: "health-alert"
+        variables:
+          status: "{{ health_status.status }}"
+          issues: "{{ health_status.alerts | join('\n') }}"
+          time: "{{ now }}"
+    else:
+      - action: log
+        level: info
+        message: "健康檢查通過，無需通知"
+
+  # 步驟 5: 記錄到日誌
+  log-result:
+    action: append
+    file: "memory/health-logs/skillflow.log"
+    format: "json"
+    content:
+      timestamp: "{{ now }}"
+      flow: "health-check"
+      status: "{{ health_status.status }}"
+      issues_count: "{{ health_status.alerts | length }}"
+
+# 錯誤處理
+on_error:
+  - action: message
+    channel: whatsapp
+    to: "+85263931048"
+    template: "skillflow-error"
+    variables:
+      flow: "health-check"
+      error: "{{ error.message }}"
+      step: "{{ error.step }}"
+
+# 通知模板
+templates:
+  health-alert: |
+    🩺 *健康檢查警報*
+    
+    時間: {{ time }}
+    狀態: *{{ status }}*
+    
+    發現問題:
+    {{ issues }}
+    
+    請檢查系統。
+  
+  skillflow-error: |
+    ⚠️ *Skillflow 執行錯誤*
+    
+    流程: {{ flow }}
+    步驟: {{ step }}
+    錯誤: {{ error }}
+    
+    請手動檢查。

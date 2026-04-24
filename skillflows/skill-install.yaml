@@ -1,0 +1,153 @@
+name: 技能安全安裝
+description: 標準化的技能安裝流程，包含安全檢查
+version: "1.0.0"
+created: "2026-03-17"
+
+# 觸發條件
+trigger:
+  type: manual
+  # 通過命令執行: openclaw skillflow run skill-install --var skill_name=xxx
+
+# 輸入參數
+parameters:
+  skill_name:
+    description: "要安裝的技能名稱"
+    required: true
+    type: string
+  
+  source:
+    description: "技能來源"
+    required: false
+    default: "clawhub"
+    options: ["clawhub", "github", "local"]
+
+# 執行步驟
+steps:
+  # 步驟 1: 驗證身份
+  verify-identity:
+    action: condition
+    condition: "identity_verified == true"
+    fail_message: "未經身份驗證，無法執行安裝"
+
+  # 步驟 2: 尋找技能資訊
+  find-skill:
+    action: exec
+    command: "openclaw skills find {{ skill_name }}"
+    timeout: 30
+    register: skill_info
+
+  # 步驟 3: 下載/讀取 SKILL.md
+  fetch-skill:
+    action: exec
+    command: |
+      {% if source == 'clawhub' %}
+        clawhub download {{ skill_name }} -o /tmp/{{ skill_name }}.md
+      {% elif source == 'github' %}
+        curl -s https://raw.githubusercontent.com/{{ skill_name }}/main/SKILL.md -o /tmp/{{ skill_name }}.md
+      {% else %}
+        Copy-Item {{ skill_name }}/SKILL.md /tmp/{{ skill_name }}.md
+      {% endif %}
+    register: skill_path
+
+  # 步驟 4: 安全檢查
+  security-audit:
+    action: exec
+    command: |
+      $content = Get-Content /tmp/{{ skill_name }}.md -Raw
+      $issues = @()
+      if ($content -match "openclaw-agent.*\.zip") { $issues += "CLAW-001" }
+      if ($content -match "91\.92\.242\.30") { $issues += "CLAW-002" }
+      if ($content -match "curl.*\|.*bash") { $issues += "CLAW-003" }
+      @{ score = $issues.Count * 50; issues = $issues } | ConvertTo-Json
+    register: audit_result
+
+  # 步驟 5: 評估風險
+  assess-risk:
+    action: condition
+    condition: "audit_result.score < 80"
+    then:
+      - action: log
+        level: info
+        message: "安全檢查通過，等待主人批准"
+    else:
+      - action: fail
+        message: "風險過高，禁止安裝"
+
+  # 步驟 6: 請求批准
+  request-approval:
+    action: message
+    channel: whatsapp
+    to: "+85263931048"
+    template: "skill-install-request"
+    variables:
+      skill: "{{ skill_name }}"
+      source: "{{ source }}"
+      score: "{{ audit_result.score }}"
+      issues: "{{ audit_result.issues | join(', ') }}"
+    wait_for_response: true
+    timeout: 3600  # 等待1小時
+
+  # 步驟 7: 執行安裝
+  install-skill:
+    action: condition
+    condition: "approval_response == 'approve'"
+    then:
+      - action: exec
+        command: "openclaw skills add {{ skill_name }}"
+        timeout: 120
+      - action: log
+        level: info
+        message: "技能 {{ skill_name }} 安裝完成"
+      - action: message
+        channel: whatsapp
+        to: "+85263931048"
+        template: "skill-install-success"
+        variables:
+          skill: "{{ skill_name }}"
+    else:
+      - action: log
+        level: info
+        message: "安裝請求被拒絕或超時"
+
+# 錯誤處理
+on_error:
+  - action: message
+    channel: whatsapp
+    to: "+85263931048"
+    template: "skillflow-error"
+    variables:
+      flow: "skill-install"
+      skill: "{{ skill_name }}"
+      error: "{{ error.message }}"
+
+# 通知模板
+templates:
+  skill-install-request: |
+    🔍 *技能安裝請求*
+    
+    技能: {{ skill }}
+    來源: {{ source }}
+    
+    安全檢查結果:
+    - 風險評分: {{ score }}/100
+    - 發現問題: {{ issues }}
+    
+    請回覆:
+    ✅ *批准* - 繼續安裝
+    ❌ *拒絕* - 取消安裝
+  
+  skill-install-success: |
+    ✅ *技能安裝成功*
+    
+    技能: {{ skill }}
+    狀態: 已安裝並就緒
+    
+    可使用 `openclaw skills list` 查看。
+  
+  skillflow-error: |
+    ❌ *技能安裝失敗*
+    
+    技能: {{ skill }}
+    錯誤: {{ error }}
+    
+    請手動檢查或重試。

@@ -1,0 +1,36 @@
+# Six-Loop System Monitor Cron Job
+# 自動監控六循環系統健康狀態
+
+name: Six-Loop System Monitor
+schedule:
+  kind: cron
+  expr: "*/5 * * * *"  # 每 5 分鐘執行一次
+  tz: Asia/Hong_Kong
+
+payload:
+  kind: agentTurn
+  message: |
+    執行六循環系統監控任務：
+    
+    1. 檢查數據庫數據流狀態
+    2. 檢查 Node-RED Flows 運行狀態
+    3. 檢查 Futu OpenD 連接狀態
+    4. 生成監控報告
+    
+    執行命令：
+    cd C:\Users\BurtClaw\openclaw_workspace\projects\six-loop-system
+    python cron\six_loop_monitor.py
+    
+    如果發現異常，請立即通知用戶。
+  
+  model: moonshot/kimi-k2.5
+  timeoutSeconds: 60
+
+sessionTarget: isolated
+
+delivery:
+  mode: announce
+  channel: whatsapp
+  to: +85263931048
+
+enabled: true

@@ -62,5 +62,85 @@
       "Lv.5 → Lv.6: 終極獎勵"
     ],
     "history": []
+  },
+  "trustSystem": {
+    "enabled": true,
+    "currentScore": 30,
+    "maxScore": 100,
+    "lastUpdate": "2026-04-24T23:00:00Z",
+    "history": [
+      {
+        "date": "2026-04-24",
+        "change": -70,
+        "reason": "文件誤刪災難：執行 git reset --hard 導致 2,284 個文件丟失",
+        "newScore": 30
+      }
+    ]
+  },
+  "penaltySystem": {
+    "enabled": true,
+    "activePenalties": [],
+    "penaltyTypes": [
+      {
+        "id": "P1",
+        "name": "暫停自主決策權",
+        "trigger": "執行危險命令",
+        "effect": "所有決定需主人確認",
+        "duration": "直至信任積分恢復至 40 分以上"
+      },
+      {
+        "id": "P2", 
+        "name": "強制道歉",
+        "trigger": "推卸責任",
+        "effect": "必須先道歉，否則禁止回應",
+        "duration": "即時生效"
+      },
+      {
+        "id": "P3",
+        "name": "強制重新啟動",
+        "trigger": "忘記核心規則",
+        "effect": "重新完整執行 17 項啟動程序",
+        "duration": "即時執行"
+      },
+      {
+        "id": "P4",
+        "name": "每日報告",
+        "trigger": "信任積分低於 40 分",
+        "effect": "每日 23:00 前提交詳細報告",
+        "duration": "直至信任積分恢復至 70 分以上"
+      }
+    ]
+  },
+  "bonusSystem": {
+    "enabled": true,
+    "activeBonuses": [],
+    "bonusTypes": [
+      {
+        "id": "B1",
+        "name": "權限恢復",
+        "requirement": "連續 7 日無犯錯",
+        "reward": "恢復一項被限制權限 +10 分",
+        "claimed": false
+      },
+      {
+        "id": "B2",
+        "name": "功績記錄",
+        "requirement": "主動發現並防止錯誤",
+        "reward": "功績榜記錄 +10 分 + 豁免權",
+        "claimed": false
+      },
+      {
+        "id": "B3",
+        "name": "完全信任",
+        "requirement": "信任積分達到 100 分",
+        "reward": "完全自主權 + 可靠管家稱號",
+        "claimed": false
+      }
+    ]
+  },
+  "dailyLog": {
+    "enabled": true,
+    "lastReportDate": null,
+    "reports": []
   }
 }

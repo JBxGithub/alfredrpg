@@ -192,7 +192,7 @@ canvas{width:100%!important;height:140px!important}
       
       <div class="glass-card" style="text-align:center">
         <div class="card-sub">活動 Cron Jobs</div>
-        <div style="font-size:2.5rem;font-weight:700;margin:20px 0" id="overviewCronCount">6</div>
+        <div style="font-size:2.5rem;font-weight:700;margin:20px 0" id="overviewCronCount">2</div>
         <div class="card-sub">正常運作中</div>
         <span class="badge badge-good">⏰ 正常</span>
       </div>
@@ -384,7 +384,7 @@ canvas{width:100%!important;height:140px!important}
       <div id="cronJobsList">
         <div class="cron-item">
           <div class="cron-info">
-            <div class="cron-name">📝 每日日誌建立</div>
+            <div class="cron-name">🌅 Alfred Dashboard Daily Sync</div>
             <div class="cron-schedule">每日 00:00 (Asia/Hong_Kong)</div>
           </div>
           <div class="cron-status">
@@ -393,44 +393,8 @@ canvas{width:100%!important;height:140px!important}
         </div>
         <div class="cron-item">
           <div class="cron-info">
-            <div class="cron-name">💭 Memory Dreaming Promotion</div>
-            <div class="cron-schedule">每日 01:00 (Asia/Hong_Kong)</div>
-          </div>
-          <div class="cron-status">
-            <span class="badge badge-excellent">運作中</span>
-          </div>
-        </div>
-        <div class="cron-item">
-          <div class="cron-info">
-            <div class="cron-name">📊 Alfred Daily Briefing + Dashboard Sync</div>
+            <div class="cron-name">📰 Alfred's Daily Briefing</div>
             <div class="cron-schedule">每日 08:00 (Asia/Hong_Kong)</div>
-          </div>
-          <div class="cron-status">
-            <span class="badge badge-excellent">運作中</span>
-          </div>
-        </div>
-        <div class="cron-item">
-          <div class="cron-info">
-            <div class="cron-name">📚 AMS-Weekly-Learning-Review</div>
-            <div class="cron-schedule">每週一 09:00 (Asia/Hong_Kong)</div>
-          </div>
-          <div class="cron-status">
-            <span class="badge badge-excellent">運作中</span>
-          </div>
-        </div>
-        <div class="cron-item">
-          <div class="cron-info">
-            <div class="cron-name">🔄 SelfImproving-Weekly-Review</div>
-            <div class="cron-schedule">每週一 09:30 (Asia/Hong_Kong)</div>
-          </div>
-          <div class="cron-status">
-            <span class="badge badge-excellent">運作中</span>
-          </div>
-        </div>
-        <div class="cron-item">
-          <div class="cron-info">
-            <div class="cron-name">🎯 Monthly Vision Reminder</div>
-            <div class="cron-schedule">每月 1日 09:00 (Asia/Hong_Kong)</div>
           </div>
           <div class="cron-status">
             <span class="badge badge-excellent">運作中</span>
@@ -442,23 +406,10 @@ canvas{width:100%!important;height:140px!important}
     <div class="glass-card">
       <div class="card-title">📋 Cron Job 詳情</div>
       <div class="system-grid">
-        <div>總數：<span>6</span></div>
-        <div>正常運作：<span>6</span></div>
-        <div>每日執行：<span>3</span></div>
-        <div>每週執行：<span>2</span></div>
-        <div>每月執行：<span>1</span></div>
-        <div>自動更新：<span>✅ 每日 08:00</span></div>
-      </div>
-    </div>
-
-    <div class="glass-card">
-      <div class="card-title">🔄 每日更新機制</div>
-      <div class="card-sub">數據自動更新說明</div>
-      <div style="margin-top:12px">
-        <div class="check-item"><span class="check-icon check-pass">✓</span><span>儀表板數據每日 08:00 自動同步</span></div>
-        <div class="check-item"><span class="check-icon check-pass">✓</span><span>由 Alfred Daily Briefing + Dashboard Sync 觸發</span></div>
-        <div class="check-item"><span class="check-icon check-pass">✓</span><span>手動更新：點擊「重新整理所有數據」按鈕</span></div>
-        <div class="check-item"><span class="check-icon check-pass">✓</span><span>自動刷新：每 30 秒頁面自動刷新數據</span></div>
+        <div>總數：<span>2</span></div>
+        <div>正常運作：<span>2</span></div>
+        <div>上次執行：<span id="lastCronRun">--</span></div>
+        <div>下次執行：<span id="nextCronRun">--</span></div>
       </div>
     </div>
   </div>

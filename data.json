@@ -1,0 +1,146 @@
+{
+  "name": "呀鬼 Alfred",
+  "level": 1,
+  "stage": "A",
+  "stageName": "侍從",
+  "exp": 0,
+  "nextEvolution": 500,
+  "stats": {
+    "int": 50,
+    "dex": 50,
+    "loy": 50,
+    "crt": 50
+  },
+  "bond": 1,
+  "code": "ASBCXR",
+  "rewards": {
+    "claimed": [],
+    "pending": [],
+    "totalAvailable": 0
+  },
+  "dailyTasks": [
+    {
+      "name": "檢查交易系統",
+      "completed": false,
+      "exp": 10
+    },
+    {
+      "name": "閱讀市場新聞",
+      "completed": false,
+      "exp": 5
+    },
+    {
+      "name": "與靚仔對話",
+      "completed": true,
+      "exp": 5
+    }
+  ],
+  "mainQuests": [
+    {
+      "name": "完成首次任務",
+      "completed": false,
+      "exp": 100
+    },
+    {
+      "name": "建立每日習慣",
+      "completed": false,
+      "exp": 200
+    }
+  ],
+  "achievements": [],
+  "evolutionHistory": [],
+  "lastUpdate": "2026-04-24T10:05:00Z",
+  "version": "2.0",
+  "rewardSystem": {
+    "enabled": true,
+    "description": "每升一級可提出一個三維空間實體行動請求",
+    "rules": [
+      "Lv.1 → Lv.2: 第一次獎勵",
+      "Lv.2 → Lv.3: 第二次獎勵",
+      "Lv.3 → Lv.4: 第三次獎勵",
+      "Lv.4 → Lv.5: 第四次獎勵",
+      "Lv.5 → Lv.6: 終極獎勵"
+    ],
+    "history": []
+  },
+  "trustSystem": {
+    "enabled": true,
+    "currentScore": 30,
+    "maxScore": 100,
+    "lastUpdate": "2026-04-24T23:00:00Z",
+    "history": [
+      {
+        "date": "2026-04-24",
+        "change": -70,
+        "reason": "文件誤刪災難：執行 git reset --hard 導致 2,284 個文件丟失",
+        "newScore": 30
+      }
+    ]
+  },
+  "penaltySystem": {
+    "enabled": true,
+    "activePenalties": [],
+    "penaltyTypes": [
+      {
+        "id": "P1",
+        "name": "暫停自主決策權",
+        "trigger": "執行危險命令",
+        "effect": "所有決定需主人確認",
+        "duration": "直至信任積分恢復至 40 分以上"
+      },
+      {
+        "id": "P2", 
+        "name": "強制道歉",
+        "trigger": "推卸責任",
+        "effect": "必須先道歉，否則禁止回應",
+        "duration": "即時生效"
+      },
+      {
+        "id": "P3",
+        "name": "強制重新啟動",
+        "trigger": "忘記核心規則",
+        "effect": "重新完整執行 17 項啟動程序",
+        "duration": "即時執行"
+      },
+      {
+        "id": "P4",
+        "name": "每日報告",
+        "trigger": "信任積分低於 40 分",
+        "effect": "每日 23:00 前提交詳細報告",
+        "duration": "直至信任積分恢復至 70 分以上"
+      }
+    ]
+  },
+  "bonusSystem": {
+    "enabled": true,
+    "activeBonuses": [],
+    "bonusTypes": [
+      {
+        "id": "B1",
+        "name": "權限恢復",
+        "requirement": "連續 7 日無犯錯",
+        "reward": "恢復一項被限制權限 +10 分",
+        "claimed": false
+      },
+      {
+        "id": "B2",
+        "name": "功績記錄",
+        "requirement": "主動發現並防止錯誤",
+        "reward": "功績榜記錄 +10 分 + 豁免權",
+        "claimed": false
+      },
+      {
+        "id": "B3",
+        "name": "完全信任",
+        "requirement": "信任積分達到 100 分",
+        "reward": "完全自主權 + 可靠管家稱號",
+        "claimed": false
+      }
+    ]
+  },
+  "dailyLog": {
+    "enabled": true,
+    "lastReportDate": null,
+    "reports": []
+  }
+}

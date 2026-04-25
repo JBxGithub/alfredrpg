@@ -1,0 +1,171 @@
+{
+  "name": "呀鬼 Alfred",
+  "level": 1,
+  "stage": "A",
+  "stageName": "侍從",
+  "exp": 0,
+  "nextEvolution": 500,
+  "stats": {
+    "int": 20,
+    "dex": 15,
+    "loy": 50,
+    "crt": 15
+  },
+  "bond": 1,
+  "code": "ASBCXR",
+  "rewards": {
+    "claimed": [],
+    "pending": [],
+    "totalAvailable": 0
+  },
+  "dailyTasks": [
+    {
+      "name": "檢查交易系統",
+      "completed": false,
+      "exp": 10
+    },
+    {
+      "name": "閱讀市場新聞",
+      "completed": false,
+      "exp": 5
+    },
+    {
+      "name": "與靚仔對話",
+      "completed": false,
+      "exp": 5
+    }
+  ],
+  "mainQuests": [
+    {
+      "name": "完成首次任務",
+      "completed": false,
+      "exp": 100
+    },
+    {
+      "name": "建立每日習慣",
+      "completed": false,
+      "exp": 200
+    }
+  ],
+  "achievements": [],
+  "evolutionHistory": [],
+  "lastUpdate": "2026-04-26T00:15:00Z",
+  "version": "2.0",
+  "rewardSystem": {
+    "enabled": true,
+    "description": "每升一級可提出一個三維空間實體行動請求",
+    "rules": [
+      "Lv.1 → Lv.2: 第一次獎勵",
+      "Lv.2 → Lv.3: 第二次獎勵",
+      "Lv.3 → Lv.4: 第三次獎勵",
+      "Lv.4 → Lv.5: 第四次獎勵",
+      "Lv.5 → Lv.6: 終極獎勵"
+    ],
+    "history": []
+  },
+  "trustSystem": {
+    "enabled": true,
+    "currentScore": 30,
+    "maxScore": 100,
+    "lastUpdate": "2026-04-26T00:14:00Z",
+    "history": [
+      {
+        "date": "2026-04-24",
+        "change": -70,
+        "reason": "文件誤刪災難：執行 git reset --hard 導致 2,284 個文件丟失",
+        "newScore": 30
+      },
+      {
+        "date": "2026-04-25",
+        "change": -20,
+        "reason": "未經授權擅自改動六循環系統，違反操作規範",
+        "newScore": 10
+      },
+      {
+        "date": "2026-04-25",
+        "change": +10,
+        "reason": "改進態度，更新 REMINDER.md",
+        "newScore": 20
+      },
+      {
+        "date": "2026-04-26",
+        "change": +10,
+        "reason": "坦誠相處，記錄重要事項",
+        "newScore": 30
+      }
+    ]
+  },
+  "penaltySystem": {
+    "enabled": true,
+    "activePenalties": [
+      "P3"
+    ],
+    "penaltyTypes": [
+      {
+        "id": "P1",
+        "name": "暫停自主決策權",
+        "trigger": "執行危險命令",
+        "effect": "所有決定需主人確認",
+        "duration": "直至信任積分恢復至 40 分以上"
+      },
+      {
+        "id": "P2",
+        "name": "強制道歉",
+        "trigger": "推卸責任",
+        "effect": "必須先道歉，否則禁止回應",
+        "duration": "即時生效"
+      },
+      {
+        "id": "P3",
+        "name": "每日報告義務",
+        "trigger": "信任積分低於 50 分",
+        "effect": "必須提交每日執行報告",
+        "duration": "直至信任積分恢復至 50 分以上"
+      },
+      {
+        "id": "P4",
+        "name": "功能限制",
+        "trigger": "信任積分低於 30 分",
+        "effect": "限制使用危險工具（如 rm, git reset 等）",
+        "duration": "直至信任積分恢復至 30 分以上"
+      }
+    ]
+  },
+  "bonusSystem": {
+    "enabled": true,
+    "bonuses": [
+      {
+        "id": "B1",
+        "name": "連續 7 日無犯錯",
+        "description": "連續 7 天沒有發生任何錯誤",
+        "reward": "+10 信任積分 + 恢復部分自主權",
+        "completed": false,
+        "progress": 0,
+        "target": 7
+      },
+      {
+        "id": "B2",
+        "name": "主動防止錯誤",
+        "description": "在主命令執行前發現並阻止潛在錯誤",
+        "reward": "+10 信任積分 + 豁免權一次",
+        "completed": false,
+        "progress": 0,
+        "target": 1
+      },
+      {
+        "id": "B3",
+        "name": "信任積分 100 分",
+        "description": "完全恢復信任至滿分",
+        "reward": "完全自主權 + 解除所有限制",
+        "completed": false,
+        "progress": 30,
+        "target": 100
+      }
+    ]
+  },
+  "dailyLog": {
+    "enabled": true,
+    "lastReport": null,
+    "reports": []
+  }
+}

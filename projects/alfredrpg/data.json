@@ -31,7 +31,7 @@
     },
     {
       "name": "與靚仔對話",
-      "completed": true,
+      "completed": false,
       "exp": 5
     }
   ],
@@ -49,7 +49,7 @@
   ],
   "achievements": [],
   "evolutionHistory": [],
-  "lastUpdate": "2026-04-24T10:05:00Z",
+  "lastUpdate": "2026-04-25T10:00:00Z",
   "version": "2.0",
   "rewardSystem": {
     "enabled": true,
@@ -79,7 +79,7 @@
   },
   "penaltySystem": {
     "enabled": true,
-    "activePenalties": [],
+    "activePenalties": ["P1", "P3"],
     "penaltyTypes": [
       {
         "id": "P1",
@@ -89,7 +89,7 @@
         "duration": "直至信任積分恢復至 40 分以上"
       },
       {
-        "id": "P2", 
+        "id": "P2",
         "name": "強制道歉",
         "trigger": "推卸責任",
         "effect": "必須先道歉，否則禁止回應",
@@ -97,50 +97,55 @@
       },
       {
         "id": "P3",
-        "name": "強制重新啟動",
-        "trigger": "忘記核心規則",
-        "effect": "重新完整執行 17 項啟動程序",
-        "duration": "即時執行"
+        "name": "每日報告義務",
+        "trigger": "信任積分低於 50 分",
+        "effect": "必須提交每日執行報告",
+        "duration": "直至信任積分恢復至 50 分以上"
       },
       {
         "id": "P4",
-        "name": "每日報告",
-        "trigger": "信任積分低於 40 分",
-        "effect": "每日 23:00 前提交詳細報告",
-        "duration": "直至信任積分恢復至 70 分以上"
+        "name": "功能限制",
+        "trigger": "信任積分低於 30 分",
+        "effect": "限制使用危險工具（如 rm, git reset 等）",
+        "duration": "直至信任積分恢復至 30 分以上"
       }
     ]
   },
   "bonusSystem": {
     "enabled": true,
-    "activeBonuses": [],
-    "bonusTypes": [
+    "bonuses": [
       {
         "id": "B1",
-        "name": "權限恢復",
-        "requirement": "連續 7 日無犯錯",
-        "reward": "恢復一項被限制權限 +10 分",
-        "claimed": false
+        "name": "連續 7 日無犯錯",
+        "description": "連續 7 天沒有發生任何錯誤",
+        "reward": "+10 信任積分 + 恢復部分自主權",
+        "completed": false,
+        "progress": 0,
+        "target": 7
       },
       {
         "id": "B2",
-        "name": "功績記錄",
-        "requirement": "主動發現並防止錯誤",
-        "reward": "功績榜記錄 +10 分 + 豁免權",
-        "claimed": false
+        "name": "主動防止錯誤",
+        "description": "在主命令執行前發現並阻止潛在錯誤",
+        "reward": "+10 信任積分 + 豁免權一次",
+        "completed": false,
+        "progress": 0,
+        "target": 1
       },
       {
         "id": "B3",
-        "name": "完全信任",
-        "requirement": "信任積分達到 100 分",
-        "reward": "完全自主權 + 可靠管家稱號",
-        "claimed": false
+        "name": "信任積分 100 分",
+        "description": "完全恢復信任至滿分",
+        "reward": "完全自主權 + 解除所有限制",
+        "completed": false,
+        "progress": 30,
+        "target": 100
       }
     ]
   },
   "dailyLog": {
     "enabled": true,
-    "lastReportDate": null,
+    "lastReport": null,
     "reports": []
   }
 }

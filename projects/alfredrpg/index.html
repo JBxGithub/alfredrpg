@@ -677,7 +677,7 @@
         <!-- 進化卡片 -->
         <div class="evolution-cards">
             <!-- Stage I -->
-            <div class="evo-card unlocked">
+            <div class="evo-card unlocked current">
                 <div class="evo-card-header">
                     <div class="evo-card-title">
                         <div class="evo-card-code">A</div>
@@ -686,7 +686,7 @@
                             <p>觀察與學習</p>
                         </div>
                     </div>
-                    <span class="evo-card-status completed">已完成</span>
+                    <span class="evo-card-status current">當前</span>
                 </div>
                 <div class="evo-card-image">
                     <img src="Stage%20I.png" alt="Stage I - 侍從" onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='🎩';">
@@ -707,7 +707,7 @@
             </div>
             
             <!-- Stage II -->
-            <div class="evo-card unlocked">
+            <div class="evo-card locked">
                 <div class="evo-card-header">
                     <div class="evo-card-title">
                         <div class="evo-card-code">S</div>
@@ -716,7 +716,7 @@
                             <p>時間與紀律</p>
                         </div>
                     </div>
-                    <span class="evo-card-status completed">已完成</span>
+                    <span class="evo-card-status locked">鎖定</span>
                 </div>
                 <div class="evo-card-image">
                     <img src="Stage%20II.jpg" alt="Stage II - 管事" onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='⏱️';">
@@ -730,14 +730,14 @@
                         <h4>解鎖條件</h4>
                         <div class="req-item">
                             <span>累積 EXP</span>
-                            <span class="req-value completed">500 / 500 ✓</span>
+                            <span class="req-value">0 / 500</span>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Stage III -->
-            <div class="evo-card unlocked current">
+            <div class="evo-card locked">
                 <div class="evo-card-header">
                     <div class="evo-card-title">
                         <div class="evo-card-code">B</div>
@@ -746,7 +746,7 @@
                             <p>優雅與完美</p>
                         </div>
                     </div>
-                    <span class="evo-card-status current">當前</span>
+                    <span class="evo-card-status locked">鎖定</span>
                 </div>
                 <div class="evo-card-image">
                     <img src="Stage%20III.jpg" alt="Stage III - 執事" onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='🦉';">
@@ -760,11 +760,11 @@
                         <h4>解鎖條件</h4>
                         <div class="req-item">
                             <span>累積 EXP</span>
-                            <span class="req-value completed">1250 / 1200 ✓</span>
+                            <span class="req-value">0 / 1200</span>
                         </div>
                         <div class="req-item">
                             <span>主線任務</span>
-                            <span class="req-value completed">5 / 5 ✓</span>
+                            <span class="req-value">0 / 5</span>
                         </div>
                     </div>
                 </div>
@@ -895,22 +895,22 @@
                 <div class="stats">
                     <div class="stat int">
                         <div class="stat-label">🧠 智慧 INT</div>
-                        <div class="stat-value">83</div>
+                        <div class="stat-value">50</div>
                         <div class="stat-bar"><div class="stat-fill"></div></div>
                     </div>
                     <div class="stat dex">
                         <div class="stat-label">⚡ 執行力 DEX</div>
-                        <div class="stat-value">75</div>
+                        <div class="stat-value">50</div>
                         <div class="stat-bar"><div class="stat-fill"></div></div>
                     </div>
                     <div class="stat loy">
                         <div class="stat-label">❤️ 忠誠 LOY</div>
-                        <div class="stat-value">92</div>
+                        <div class="stat-value">50</div>
                         <div class="stat-bar"><div class="stat-fill"></div></div>
                     </div>
                     <div class="stat crt">
                         <div class="stat-label">🎨 創意 CRT</div>
-                        <div class="stat-value">70</div>
+                        <div class="stat-value">50</div>
                         <div class="stat-bar"><div class="stat-fill"></div></div>
                     </div>
                 </div>
@@ -918,7 +918,7 @@
                 <!-- 羈絆 -->
                 <div class="bond-section">
                     <div class="stat-label">💫 與靚仔的羈絆</div>
-                    <div class="bond-hearts">❤️❤️❤️❤️🤍 (4/5)</div>
+                    <div class="bond-hearts">❤️🤍🤍🤍🤍 (1/5)</div>
                 </div>
                 
                 <!-- 信任積分 -->
@@ -986,31 +986,27 @@
                 <h3>📋 每日任務</h3>
                 <div class="quest-item">
                     <span>檢查交易系統</span>
-                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+10 EXP</span></span>
+                    <span><span class="quest-status pending">待完成</span> <span class="exp-reward">+10 EXP</span></span>
                 </div>
                 <div class="quest-item">
                     <span>閱讀市場新聞</span>
-                    <span><span class="quest-status progress">進行中</span> <span class="exp-reward">+5 EXP</span></span>
+                    <span><span class="quest-status pending">待完成</span> <span class="exp-reward">+5 EXP</span></span>
                 </div>
                 <div class="quest-item">
                     <span>與靚仔對話</span>
-                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+5 EXP</span></span>
+                    <span><span class="quest-status pending">待完成</span> <span class="exp-reward">+5 EXP</span></span>
                 </div>
             </div>
             
             <div class="quest-card">
                 <h3>🎯 主線任務</h3>
                 <div class="quest-item">
-                    <span>完成 Phase 1-3 開發</span>
-                    <span><span class="quest-status done">已完成</span> <span class="exp-reward">+500 EXP</span></span>
+                    <span>完成首次任務</span>
+                    <span><span class="quest-status pending">待完成</span> <span class="exp-reward">+100 EXP</span></span>
                 </div>
                 <div class="quest-item">
-                    <span>實盤部署系統</span>
-                    <span><span class="quest-status pending">待開始</span> <span class="exp-reward">+300 EXP</span></span>
-                </div>
-                <div class="quest-item">
-                    <span>連續盈利 3 個月</span>
-                    <span><span class="quest-status pending">鎖定中</span> <span class="exp-reward">+400 EXP</span></span>
+                    <span>建立每日習慣</span>
+                    <span><span class="quest-status pending">待完成</span> <span class="exp-reward">+200 EXP</span></span>
                 </div>
             </div>
             
@@ -1018,7 +1014,7 @@
                 <h3>🏆 成就</h3>
                 <div class="quest-item">
                     <span>🎖️ 首次進化</span>
-                    <span class="quest-status done">已解鎖</span>
+                    <span class="quest-status pending">未解鎖</span>
                 </div>
                 <div class="quest-item">
                     <span>🔮 預言家</span>

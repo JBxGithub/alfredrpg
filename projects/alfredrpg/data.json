@@ -65,21 +65,31 @@
   },
   "trustSystem": {
     "enabled": true,
-    "currentScore": 30,
+    "currentScore": 10,
     "maxScore": 100,
-    "lastUpdate": "2026-04-24T23:00:00Z",
+    "lastUpdate": "2026-04-25T16:39:07.760088",
     "history": [
       {
         "date": "2026-04-24",
         "change": -70,
         "reason": "文件誤刪災難：執行 git reset --hard 導致 2,284 個文件丟失",
         "newScore": 30
+      },
+      {
+        "date": "2026-04-25",
+        "change": -20,
+        "reason": "未經授權擅自改動六循環系統，違反操作規範",
+        "newScore": 10
       }
     ]
   },
   "penaltySystem": {
     "enabled": true,
-    "activePenalties": ["P1", "P3"],
+    "activePenalties": [
+      "P1",
+      "P3",
+      "P4"
+    ],
     "penaltyTypes": [
       {
         "id": "P1",

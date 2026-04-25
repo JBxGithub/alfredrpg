@@ -6,10 +6,10 @@
   "exp": 0,
   "nextEvolution": 500,
   "stats": {
-    "int": 50,
-    "dex": 50,
+    "int": 15,
+    "dex": 15,
     "loy": 50,
-    "crt": 50
+    "crt": 15
   },
   "bond": 1,
   "code": "ASBCXR",
